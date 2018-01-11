@@ -5,17 +5,19 @@
   "author": "troywith77 <ruitang307@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "ENV=sit nodemon server.js",
     "build": "nuxt build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "ENV=sit NODE_ENV=production node server.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "js-cookie": "^2.2.0",
     "nuxt": "^1.0.0"
   },
   "devDependencies": {
+    "axios": "^0.17.1",
     "babel-eslint": "^7.2.3",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",

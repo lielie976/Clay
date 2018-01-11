@@ -1,27 +1,33 @@
 <template>
   <section class="container">
     <div>
-      <logo/>
-      <h1 class="title">
-        nuxt
-      </h1>
-      <h2 class="subtitle">
-        Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
-      </div>
+      <ul>
+        <li v-for="msg in msgs" :key="msg.Id">
+          {{ msg.Title }}
+        </li>
+      </ul>
     </div>
   </section>
 </template>
 
 <script>
 import Logo from '~/components/Logo.vue'
+import { getPcMsgs } from '~/api/message'
 
 export default {
+  async asyncData (context) {
+    const msgs = await getPcMsgs({ subjids: '9', limit: 30 })
+    return {
+      msgs: msgs.NewMsgs
+    }
+  },
   components: {
     Logo
+  },
+  data () {
+    return {
+      msgs: []
+    }
   }
 }
 </script>
