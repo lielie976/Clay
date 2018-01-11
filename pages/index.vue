@@ -3,7 +3,7 @@
     <div>
       <ul>
         <li v-for="msg in msgs" :key="msg.Id">
-          {{ msg.Title }}
+          <a :href="`/article/${msg.Id}`">{{ msg.Title }}</a>
         </li>
       </ul>
     </div>
