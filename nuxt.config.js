@@ -40,8 +40,12 @@ module.exports = {
           CONFIG: JSON.stringify(require('./config'))
         })
       )
-    }
+    },
+    vendor: ['axios']
   },
+  plugins: [
+    '~/plugins/filters'
+  ],
   env: {
     ENV: process.env.ENV
   },

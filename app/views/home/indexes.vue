@@ -12,25 +12,25 @@
             >{{ value[index.Symbol].last_px }}</span>
             <span 
               :class="{'home-stockindex-index-item-info-change-value': true, [renderMarketColor(value[index.Symbol].px_change)]: true}"
-            >{{ value[index.Symbol].px_change.toFixed(2) }}</span>
+            >{{ value[index.Symbol].px_change | toFixed(2) }}</span>
             <span 
               :class="{'home-stockindex-index-item-info-change-ratio': true, [renderMarketColor(value[index.Symbol].px_change)]: true}"
-            >({{ value[index.Symbol].px_change_rate.toFixed(2) }})</span>
+            >({{ value[index.Symbol].px_change_rate | toFixed(2) }}%)</span>
           </div>
         </a>
       </div>
       <div class="home-stockindex-ratio">
         <div class="home-stockindex-ratio-item">
           <span class="-market-color--red home-stockindex-ratio-item-label">涨</span>
-          <span class="-market-color--red home-stockindex-ratio-item-count">{{1}}</span>
+          <span class="-market-color--red home-stockindex-ratio-item-count">{{ quoteChange.surged_num_count }}</span>
         </div>
         <div class="home-stockindex-ratio-item">
           <span class="-market-color--green home-stockindex-ratio-item-label">跌</span>
-          <span class="-market-color--green home-stockindex-ratio-item-count">{{1}}</span>
+          <span class="-market-color--green home-stockindex-ratio-item-count">{{ quoteChange.decline_num_count }}</span>
         </div>
         <div class="home-stockindex-ratio-item">
           <span class="-market-color--gray home-stockindex-ratio-item-label">平</span>
-          <span class="-market-color--gray home-stockindex-ratio-item-count">{{1}}</span>
+          <span class="-market-color--gray home-stockindex-ratio-item-count">{{ quoteChange.stable_stocks_count }}</span>
         </div>
       </div>
     </div>
@@ -41,6 +41,9 @@
 export default {
   props: {
     value: {
+      type: Object
+    },
+    quoteChange: {
       type: Object
     }
   },

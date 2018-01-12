@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <indexes :value="indexes" />
+    <indexes :value="indexes" :quoteChange="quoteChange" />
     <div>
       <ul>
         <li v-for="msg in msgs" :key="msg.Id">
@@ -14,29 +14,20 @@
 <script>
 import { getPcMsgs } from '~/api/message'
 import { getStockIndex } from '~/api/forex'
+import { getQuoteChange } from '~/api/wows'
 import Indexes from '~/views/home/indexes'
-
-function extractStocksReal (data) {
-  const real = {}
-  for (var i in data) {
-    if (i !== 'fields') {
-      real[i] = {}
-      data.fields.forEach((field, idx) => {
-        real[i][field] = data[i][idx]
-      })
-    }
-  }
-  return real
-}
+import { extractStocksReal } from '~/utils/helpers'
 
 export default {
   async asyncData (context) {
     const msgs = await getPcMsgs({ subjids: '9', limit: 30 })
+    const quoteChange = await getQuoteChange()
     let indexes = await getStockIndex()
-    indexes = extractStocksReal(indexes.data.snapshot)
+    indexes = extractStocksReal(indexes)
     return {
+      indexes,
       msgs: msgs.NewMsgs,
-      indexes
+      quoteChange: quoteChange.data
     }
   },
   components: {
