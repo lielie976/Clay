@@ -1,13 +1,23 @@
-import { getTrending } from '~/api/settings'
+import { getTrending, getSettings } from '~/api/settings'
 import { getZhutiTopStocks } from '~/api/wows'
 
 export const state = () => ({
-  trending: []
+  trending: [],
+  settings: {}
 })
+
+export const getters = {
+  ambush (state) {
+    return state.settings.TiQianMaiFu || []
+  }
+}
 
 export const mutations = {
   saveTrending (state, data) {
     state.trending = data
+  },
+  saveSettings (state, data) {
+    state.settings = data
   }
 }
 
@@ -32,6 +42,14 @@ export const actions = {
           })
           commit('saveTrending', trending)
         })
+        resolve()
+      }).catch(err => reject(err))
+    })
+  },
+  getSettings ({ commit }) {
+    return new Promise((resolve, reject) => {
+      getSettings().then((res) => {
+        commit('saveSettings', res)
         resolve()
       }).catch(err => reject(err))
     })

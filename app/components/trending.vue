@@ -20,7 +20,6 @@
       </section>
     </toolbox>
   </section>
-
 </template>
 
 <script>

@@ -34,7 +34,7 @@ export default {
   created () {
     if (typeof window === 'undefined') return
     this.getReal()
-    this.timer = setInterval(this.getReal, 5000)
+    // this.timer = setInterval(this.getReal, 5000)
   },
   destroyed () {
     clearInterval(this.timer)

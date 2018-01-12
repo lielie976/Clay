@@ -11,6 +11,7 @@
         <data-center />
         <yuanchuang />
         <trending />
+        <ambush />
       </aside>
     </section>
   </section>
@@ -24,6 +25,7 @@ import zhutiku from '~/views/home/zhutiku'
 import yuanchuang from '~/views/home/yuanchuang'
 import dataCenter from '~/components/data-center'
 import trending from '~/components/trending'
+import ambush from '~/components/ambush'
 
 export default {
   async asyncData ({ store }) {
@@ -36,7 +38,8 @@ export default {
       store.dispatch('zhutiku/getZhutikuRankAsc'),
       store.dispatch('zhutiku/getZhutikuRankDesc'),
       store.dispatch('yuanchuang/getTop'),
-      store.dispatch('settings/getTrending')
+      store.dispatch('settings/getTrending'),
+      store.dispatch('settings/getSettings')
     ])
   },
   components: {
@@ -46,7 +49,8 @@ export default {
     zhutiku,
     dataCenter,
     yuanchuang,
-    trending
+    trending,
+    ambush
   }
 }
 </script>
