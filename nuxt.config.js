@@ -28,6 +28,8 @@ module.exports = {
     ** Run ESLint on save
     */
     extend (config, { isDev, isClient }) {
+      config.resolve.extensions.push('.ts')
+
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
@@ -50,5 +52,6 @@ module.exports = {
   env: {
     ENV: process.env.ENV
   },
-  srcDir: 'app/'
+  srcDir: 'app/',
+  modules: ['~modules/typescript.js']
 }

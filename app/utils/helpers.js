@@ -22,7 +22,6 @@ export function extractFieldsToArray (data) {
 }
 
 export function renderMarketColor (val) {
-  console.log(val)
   if (val >= 0) {
     return '-market-color--rise'
   } else {

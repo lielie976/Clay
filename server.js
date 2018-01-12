@@ -21,5 +21,7 @@ app.use(nuxt.render)
 
 // Start express server
 app.listen(port, host, () => {
-  console.log(`Server running at port ${port}`)
+  if (!config.dev) {
+    console.log(`Server running at port ${port}`)
+  }
 })
