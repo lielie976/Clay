@@ -1,9 +1,16 @@
 <template>
-  <section class="container">
+  <section>
     <banner />
     <indexes />
     <zhutiku />
-    <msgs />
+    <section class="home-main-container main-container">
+      <section class="home-msgs-container">
+        1   
+      </section>
+      <aside class="home-aside">
+        <data-center />
+      </aside>
+    </section>
   </section>
 </template>
 
@@ -12,6 +19,7 @@ import Indexes from '~/views/home/indexes'
 import msgs from '~/views/home/msgs'
 import banner from '~/views/home/banner'
 import zhutiku from '~/views/home/zhutiku'
+import dataCenter from '~/components/data-center'
 
 export default {
   async asyncData ({ store }) {
@@ -20,6 +28,7 @@ export default {
       store.dispatch('home/getBanner'),
       store.dispatch('market/getIndexes'),
       store.dispatch('market/getQuoteChange'),
+      store.dispatch('market/getThermometer'),
       store.dispatch('zhutiku/getZhutikuRankAsc'),
       store.dispatch('zhutiku/getZhutikuRankDesc')
     ])
@@ -28,13 +37,24 @@ export default {
     Indexes,
     msgs,
     banner,
-    zhutiku
+    zhutiku,
+    dataCenter
   }
 }
 </script>
 
 <style lang="less">
-.container {
-  min-height: 100vh;
+.home-main-container {
+  margin: 20px auto;
+}
+
+.home-msgs-container {
+  float: left;
+  width: 832px;
+}
+
+.home-aside {
+  float: right;
+  width: 344px;
 }
 </style>

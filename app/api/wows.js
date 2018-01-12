@@ -32,3 +32,5 @@ api.interceptors.response.use((response) => {
 export default api
 
 export const getQuoteChange = () => api.get('statis_data/quote_change')
+
+export const getThermometer = () => api.get('/v2/sheet/market_temperature')

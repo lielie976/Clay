@@ -1,5 +1,5 @@
 import { getStockIndex } from '~/api/forex'
-import { getQuoteChange } from '~/api/wows'
+import { getQuoteChange, getThermometer } from '~/api/wows'
 import { extractFieldsToObj } from '~/utils/helpers'
 
 export const state = () => ({
@@ -13,7 +13,8 @@ export const state = () => ({
     Name: '创业板指',
     Symbol: '399006.SZ'
   }],
-  quoteChange: {}
+  quoteChange: {},
+  thermometer: {}
 })
 
 export const mutations = {
@@ -27,6 +28,9 @@ export const mutations = {
   },
   saveQuoteChange (state, data) {
     state.quoteChange = data
+  },
+  saveThermometer (state, data) {
+    state.thermometer = data
   }
 }
 
@@ -43,6 +47,25 @@ export const actions = {
     return new Promise((resolve, reject) => {
       getQuoteChange().then((res) => {
         commit('saveQuoteChange', res.data)
+        resolve()
+      }).catch(err => reject(err))
+    })
+  },
+  getThermometer ({ commit }) {
+    return new Promise((resolve, reject) => {
+      getThermometer().then((res) => {
+        const data = {
+          ...res.data,
+          temperatureCeil: Math.ceil(res.data.temperature),
+          boardStockCount: res.data.up_limited_count - res.data.new_limited_count,
+          boomStockCount: res.data.up_limited_open_count,
+          boomRatio:
+            res.data.up_limited_open_count /
+            (res.data.up_limited_count +
+              res.data.up_limited_open_count -
+              res.data.new_limited_count)
+        }
+        commit('saveThermometer', data)
         resolve()
       }).catch(err => reject(err))
     })
