@@ -20,7 +20,6 @@ export const actions = {
   getTop ({ commit }, payload) {
     return new Promise((resolve, reject) => {
       getYuanchuangTop().then((res) => {
-        console.log(res.data)
         commit('saveTop', res)
         resolve()
       }).catch(err => reject(err))

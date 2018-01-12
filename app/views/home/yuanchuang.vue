@@ -8,7 +8,7 @@
         <i class="iconfont icon-shijianicon"></i>
         {{ top.CreatedAt * 1000 | formatDate('YYYY/MM/DD HH:mm') }}
       </time>
-      <!-- {{> Stock/stockGroup data=Stocks}} -->
+      <stocks :stocks="top.Stocks" />
     </article>
   </toolbox>
 </template>
@@ -16,10 +16,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import toolbox from '~/components/toolbox'
+import stocks from '~/components/stocks'
 
 export default {
   components: {
-    toolbox
+    toolbox,
+    stocks
   },
   computed: mapGetters({
     top: 'yuanchuang/firstYuanchuangTop'
@@ -37,11 +39,16 @@ export default {
     font-size: 16px;
     color: #333333;
     line-height: 24px;
+    a {
+      display: block;
+    }
   }
   &-time {
+    display: block;
     font-size: 12px;
     color: #999999;
     line-height: 12px;
+    margin: 6px 0;
     .iconfont {
       font-size: 12px;
     }

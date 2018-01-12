@@ -31,6 +31,18 @@ api.interceptors.response.use((response) => {
 
 export default api
 
+export const getStocksReal = ({
+  fields = 'prod_name,px_change,last_px,px_change_rate,trade_status,circulation_value,pe_rate,market_value,turnover_ratio',
+  stocks
+}) => api.get('real', {
+  params: {
+    fields,
+    en_prod_code: stocks
+  }
+})
+
 export const getQuoteChange = () => api.get('statis_data/quote_change')
 
 export const getThermometer = () => api.get('/v2/sheet/market_temperature')
+
+export const getZhutiTopStocks = params => api.get('/v3/aioria/plates/stocks/top', { params })

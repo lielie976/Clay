@@ -10,6 +10,7 @@
       <aside class="home-aside">
         <data-center />
         <yuanchuang />
+        <trending />
       </aside>
     </section>
   </section>
@@ -22,6 +23,7 @@ import banner from '~/views/home/banner'
 import zhutiku from '~/views/home/zhutiku'
 import yuanchuang from '~/views/home/yuanchuang'
 import dataCenter from '~/components/data-center'
+import trending from '~/components/trending'
 
 export default {
   async asyncData ({ store }) {
@@ -33,7 +35,8 @@ export default {
       store.dispatch('market/getThermometer'),
       store.dispatch('zhutiku/getZhutikuRankAsc'),
       store.dispatch('zhutiku/getZhutikuRankDesc'),
-      store.dispatch('yuanchuang/getTop')
+      store.dispatch('yuanchuang/getTop'),
+      store.dispatch('settings/getTrending')
     ])
   },
   components: {
@@ -42,7 +45,8 @@ export default {
     banner,
     zhutiku,
     dataCenter,
-    yuanchuang
+    yuanchuang,
+    trending
   }
 }
 </script>

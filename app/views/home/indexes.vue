@@ -79,6 +79,7 @@ export default {
 }
 
 .home-stockindex{
+  background: #353A47;
   height: 32px;
   width: 1200px;
   display: flex;
