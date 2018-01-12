@@ -9,6 +9,7 @@
       </section>
       <aside class="home-aside">
         <data-center />
+        <yuanchuang />
       </aside>
     </section>
   </section>
@@ -19,6 +20,7 @@ import Indexes from '~/views/home/indexes'
 import msgs from '~/views/home/msgs'
 import banner from '~/views/home/banner'
 import zhutiku from '~/views/home/zhutiku'
+import yuanchuang from '~/views/home/yuanchuang'
 import dataCenter from '~/components/data-center'
 
 export default {
@@ -30,7 +32,8 @@ export default {
       store.dispatch('market/getQuoteChange'),
       store.dispatch('market/getThermometer'),
       store.dispatch('zhutiku/getZhutikuRankAsc'),
-      store.dispatch('zhutiku/getZhutikuRankDesc')
+      store.dispatch('zhutiku/getZhutikuRankDesc'),
+      store.dispatch('yuanchuang/getTop')
     ])
   },
   components: {
@@ -38,7 +41,8 @@ export default {
     msgs,
     banner,
     zhutiku,
-    dataCenter
+    dataCenter,
+    yuanchuang
   }
 }
 </script>

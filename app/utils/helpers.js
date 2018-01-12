@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 export function extractFieldsToObj (data) {
   const real = {}
   for (var i in data) {
@@ -27,4 +29,8 @@ export function renderMarketColor (val) {
   } else {
     return '-market-color--descline'
   }
+}
+
+export function formatDate (date, formats) {
+  return format(date, formats)
 }
