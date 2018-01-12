@@ -1,47 +1,34 @@
 <template>
   <section class="container">
-    <indexes :value="indexes" :quoteChange="quoteChange" />
-    <div>
-      <ul>
-        <li v-for="msg in msgs" :key="msg.Id">
-          <a :href="`/article/${msg.Id}`">{{ msg.Title }}</a>
-        </li>
-      </ul>
-    </div>
+    <banner />
+    <indexes />
+    <msgs />
   </section>
 </template>
 
 <script>
-import { getPcMsgs } from '~/api/message'
-import { getStockIndex } from '~/api/forex'
-import { getQuoteChange } from '~/api/wows'
 import Indexes from '~/views/home/indexes'
-import { extractStocksReal } from '~/utils/helpers'
+import msgs from '~/views/home/msgs'
+import banner from '~/views/home/banner'
 
 export default {
-  async asyncData (context) {
-    const msgs = await getPcMsgs({ subjids: '9', limit: 30 })
-    const quoteChange = await getQuoteChange()
-    let indexes = await getStockIndex()
-    indexes = extractStocksReal(indexes)
-    return {
-      indexes,
-      msgs: msgs.NewMsgs,
-      quoteChange: quoteChange.data
-    }
+  async asyncData ({ store }) {
+    await store.dispatch('home/getMsgs', { subjids: '9', limit: 30 })
+    await store.dispatch('home/getBanner')
+    await store.dispatch('market/getIndexes')
+    await store.dispatch('market/getQuoteChange')
   },
   components: {
-    Indexes
-  },
-  data () {
-    return {
-      msgs: []
-    }
+    Indexes,
+    msgs,
+    banner
   }
 }
 </script>
 
-<style>
+<style lang="less">
+@import '../styles/global.less';
+
 .container {
   min-height: 100vh;
 }

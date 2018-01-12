@@ -8,14 +8,23 @@
           </div>
           <div class="home-stockindex-index-item-info">
             <span 
-              :class="{'home-stockindex-index-item-info-value': true, [renderMarketColor(value[index.Symbol].px_change)]: true}"
-            >{{ value[index.Symbol].last_px }}</span>
+              :class="{
+                'home-stockindex-index-item-info-value': true,
+                [renderMarketColor(index.px_change)]: true
+              }"
+            >{{ index.last_px }}</span>
             <span 
-              :class="{'home-stockindex-index-item-info-change-value': true, [renderMarketColor(value[index.Symbol].px_change)]: true}"
-            >{{ value[index.Symbol].px_change | toFixed(2) }}</span>
+              :class="{
+                'home-stockindex-index-item-info-change-value': true,
+                [renderMarketColor(index.px_change)]: true
+              }"
+            >{{ index.px_change | toFixed(2) }}</span>
             <span 
-              :class="{'home-stockindex-index-item-info-change-ratio': true, [renderMarketColor(value[index.Symbol].px_change)]: true}"
-            >({{ value[index.Symbol].px_change_rate | toFixed(2) }}%)</span>
+              :class="{
+                'home-stockindex-index-item-info-change-ratio': true,
+                [renderMarketColor(index.px_change)]: true
+              }"
+            >({{ index.px_change_rate | toFixed(2) }}%)</span>
           </div>
         </a>
       </div>
@@ -39,27 +48,8 @@
 
 <script>
 export default {
-  props: {
-    value: {
-      type: Object
-    },
-    quoteChange: {
-      type: Object
-    }
-  },
   data () {
-    return {
-      indexes: [{
-        Name: '上证指数',
-        Symbol: '000001.SS'
-      }, {
-        Name: '深证成指',
-        Symbol: '399001.SZ'
-      }, {
-        Name: '创业板指',
-        Symbol: '399006.SZ'
-      }]
-    }
+    return {}
   },
   methods: {
     renderMarketColor (val) {
@@ -68,6 +58,20 @@ export default {
       } else {
         return '-market-color--green'
       }
+    }
+  },
+  mounted () {
+    // setInterval(() => {
+    //   this.$store.dispatch('market/getIndexes')
+    //   this.$store.dispatch('market/getQuoteChange')
+    // }, 5000)
+  },
+  computed: {
+    indexes () {
+      return this.$store.state.market.indexes
+    },
+    quoteChange () {
+      return this.$store.state.market.quoteChange
     }
   }
 }
