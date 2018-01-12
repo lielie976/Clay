@@ -1,6 +1,6 @@
 import { getStockIndex } from '~/api/forex'
 import { getQuoteChange } from '~/api/wows'
-import { extractStocksReal } from '~/utils/helpers'
+import { extractFieldsToObj } from '~/utils/helpers'
 
 export const state = () => ({
   indexes: [{
@@ -34,7 +34,7 @@ export const actions = {
   getIndexes ({ commit }) {
     return new Promise((resolve, reject) => {
       getStockIndex().then((res) => {
-        commit('saveIndexes', extractStocksReal(res))
+        commit('saveIndexes', extractFieldsToObj(res.data.snapshot))
         resolve()
       }).catch(err => reject(err))
     })

@@ -29,4 +29,6 @@ api.interceptors.response.use((response) => {
   return Promise.reject(error)
 })
 
+export default api
+
 export const getQuoteChange = () => api.get('statis_data/quote_change')

@@ -2,6 +2,7 @@
   <section class="container">
     <banner />
     <indexes />
+    <zhutiku />
     <msgs />
   </section>
 </template>
@@ -10,47 +11,30 @@
 import Indexes from '~/views/home/indexes'
 import msgs from '~/views/home/msgs'
 import banner from '~/views/home/banner'
+import zhutiku from '~/views/home/zhutiku'
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('home/getMsgs', { subjids: '9', limit: 30 })
-    await store.dispatch('home/getBanner')
-    await store.dispatch('market/getIndexes')
-    await store.dispatch('market/getQuoteChange')
+    await Promise.all([
+      store.dispatch('home/getMsgs', { subjids: '9', limit: 30 }),
+      store.dispatch('home/getBanner'),
+      store.dispatch('market/getIndexes'),
+      store.dispatch('market/getQuoteChange'),
+      store.dispatch('zhutiku/getZhutikuRankAsc'),
+      store.dispatch('zhutiku/getZhutikuRankDesc')
+    ])
   },
   components: {
     Indexes,
     msgs,
-    banner
+    banner,
+    zhutiku
   }
 }
 </script>
 
 <style lang="less">
-@import '../styles/global.less';
-
 .container {
   min-height: 100vh;
-}
-
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>

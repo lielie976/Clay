@@ -30,16 +30,16 @@
       </div>
       <div class="home-stockindex-ratio">
         <div class="home-stockindex-ratio-item">
-          <span class="-market-color--red home-stockindex-ratio-item-label">涨</span>
-          <span class="-market-color--red home-stockindex-ratio-item-count">{{ quoteChange.surged_num_count }}</span>
+          <span class="-market-color--rise home-stockindex-ratio-item-label">涨</span>
+          <span class="-market-color--rise home-stockindex-ratio-item-count">{{ quoteChange.surged_num_count }}</span>
         </div>
         <div class="home-stockindex-ratio-item">
-          <span class="-market-color--green home-stockindex-ratio-item-label">跌</span>
-          <span class="-market-color--green home-stockindex-ratio-item-count">{{ quoteChange.decline_num_count }}</span>
+          <span class="-market-color--descline home-stockindex-ratio-item-label">跌</span>
+          <span class="-market-color--descline home-stockindex-ratio-item-count">{{ quoteChange.decline_num_count }}</span>
         </div>
         <div class="home-stockindex-ratio-item">
-          <span class="-market-color--gray home-stockindex-ratio-item-label">平</span>
-          <span class="-market-color--gray home-stockindex-ratio-item-count">{{ quoteChange.stable_stocks_count }}</span>
+          <span class="-market-color--balance home-stockindex-ratio-item-label">平</span>
+          <span class="-market-color--balance home-stockindex-ratio-item-count">{{ quoteChange.stable_stocks_count }}</span>
         </div>
       </div>
     </div>
@@ -47,18 +47,14 @@
 </template>
 
 <script>
+import { renderMarketColor } from '~/utils/helpers'
+
 export default {
   data () {
     return {}
   },
   methods: {
-    renderMarketColor (val) {
-      if (val >= 0) {
-        return '-market-color--red'
-      } else {
-        return '-market-color--green'
-      }
-    }
+    renderMarketColor
   },
   mounted () {
     // setInterval(() => {
