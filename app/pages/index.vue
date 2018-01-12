@@ -1,5 +1,6 @@
 <template>
   <section class="container">
+    <indexes :value="indexes" />
     <div>
       <ul>
         <li v-for="msg in msgs" :key="msg.Id">
@@ -11,18 +12,35 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
 import { getPcMsgs } from '~/api/message'
+import { getStockIndex } from '~/api/forex'
+import Indexes from '~/views/home/indexes'
+
+function extractStocksReal (data) {
+  const real = {}
+  for (var i in data) {
+    if (i !== 'fields') {
+      real[i] = {}
+      data.fields.forEach((field, idx) => {
+        real[i][field] = data[i][idx]
+      })
+    }
+  }
+  return real
+}
 
 export default {
   async asyncData (context) {
     const msgs = await getPcMsgs({ subjids: '9', limit: 30 })
+    let indexes = await getStockIndex()
+    indexes = extractStocksReal(indexes.data.snapshot)
     return {
-      msgs: msgs.NewMsgs
+      msgs: msgs.NewMsgs,
+      indexes
     }
   },
   components: {
-    Logo
+    Indexes
   },
   data () {
     return {
@@ -35,10 +53,6 @@ export default {
 <style>
 .container {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 
 .title {

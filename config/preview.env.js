@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   NODE_ENV: '"preview"',
   runTimeConfig: JSON.stringify({
     API: 'prod',

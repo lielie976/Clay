@@ -20,4 +20,6 @@ if (config.dev) {
 app.use(nuxt.render)
 
 // Start express server
-app.listen(port, host)
+app.listen(port, host, () => {
+  console.log(`Server running at port ${port}`)
+})

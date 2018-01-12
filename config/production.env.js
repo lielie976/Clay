@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   NODE_ENV: '"production"',
   runTimeConfig: JSON.stringify({
     API: 'prod',

@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   NODE_ENV: '"stage"',
   runTimeConfig: JSON.stringify({
     API: 'stage',

@@ -35,9 +35,15 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          CONFIG: JSON.stringify(require('./config'))
+        })
+      )
     }
   },
   env: {
     ENV: process.env.ENV
-  }
+  },
+  srcDir: 'app/'
 }

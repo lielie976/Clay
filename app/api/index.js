@@ -1,8 +1,6 @@
 import axios from 'axios'
 // import Cookies from 'js-cookie'
-import config from '~/config'
-
-console.log(config.env.runTimeConfig.BASE_API)
+import config from '~/conf'
 
 const api = axios.create({
   baseURL: config.env.runTimeConfig.BASE_API,

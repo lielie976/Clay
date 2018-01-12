@@ -13,4 +13,4 @@ const configs = {
   }
 }
 
-export default configs[process.env.ENV]
+module.exports = configs[process.env.ENV]
