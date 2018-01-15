@@ -5,7 +5,7 @@
     <zhutiku />
     <section class="home-main-container main-container">
       <section class="home-msgs-container">
-        1   
+        <msgs-container />
       </section>
       <aside class="home-aside">
         <data-center />
@@ -22,6 +22,7 @@ import Indexes from '~/views/home/indexes'
 import msgs from '~/views/home/msgs'
 import banner from '~/views/home/banner'
 import zhutiku from '~/views/home/zhutiku'
+import MsgsContainer from '~/views/home/MsgsContainer'
 import yuanchuang from '~/views/home/yuanchuang'
 import dataCenter from '~/components/data-center'
 import trending from '~/components/trending'
@@ -50,7 +51,8 @@ export default {
     dataCenter,
     yuanchuang,
     trending,
-    ambush
+    ambush,
+    MsgsContainer
   }
 }
 </script>
