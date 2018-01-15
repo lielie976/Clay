@@ -147,7 +147,7 @@ export default {
     cursor: pointer;
     i {
       font-size: 20px;
-      margin: 0 6px 0 3px;
+      margin-left: 3px;
       position: relative;
       top: 3px;
       color: #666;

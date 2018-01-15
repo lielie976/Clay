@@ -8,7 +8,7 @@
           name="fast-subj-checkbox"
           :id="`fast-subj-filter-${item.Id}`"
           :checked="isActive(item.Id)"
-          @change="() => setActiveHotSubject(item.Id)"
+          @change="e => setActiveHotSubject({ value: e.target.checked, id: item.Id })"
         />
           <label :for="`fast-subj-filter-${item.Id}`">{{ item.Title }}</label>
       </li>

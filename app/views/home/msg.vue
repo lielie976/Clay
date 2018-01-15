@@ -30,7 +30,7 @@
     <div class="news-item-main">
       <div class="news-item-container">
         <div class="news-item-container-info">
-          <div class="news-item-title">
+          <div :class="{'news-item-title': true, [isBigNews]: true}">
             <a :href="`/article/${msg.Id}`" target="_blank">
               <span v-if="msg.NeedExplained && !msg.ExplainInfos" class="news-item-title-needexplain">解读中</span>
               {{msg.Title}}
@@ -284,6 +284,7 @@ export default {
       background: #fff;
       line-height: 12px;
       padding: 4px;
+      margin-right: 4px;
       &:hover {
         display: inline-block;
         font-size: 12px;

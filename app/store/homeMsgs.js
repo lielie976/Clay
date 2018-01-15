@@ -8,6 +8,7 @@ export const state = () => ({
   hasExplain: false,
   headmark: null,
   tailmark: null,
+  tailMsgId: null,
   limit: 30,
   msgIdMark: null,
   msgs: [],
@@ -21,7 +22,7 @@ export const state = () => ({
 
 export const getters = {
   msgsParams (state) {
-    const { activeHotSubjects, hasExplain, activeFixedSubjects } = state
+    const { activeHotSubjects, hasExplain, activeFixedSubjects, headmark, tailmark, msgIdMark } = state
     let subj
     if (activeHotSubjects) {
       subj = {
@@ -35,13 +36,16 @@ export const getters = {
       }
     } else {
       subj = {
-        subjids: '9,10,723,35,469',
+        subjids: hasExplain ? undefined : '9,10,723,35,469',
         hasExplain: hasExplain ? true : undefined
       }
     }
     return {
       ...subj,
-      limit: 30
+      limit: 30,
+      headmark,
+      tailmark,
+      msgIdMark
     }
   }
 }
@@ -77,18 +81,50 @@ export const mutations = {
   },
   toggleExplain (state) {
     state.hasExplain = !state.hasExplain
+    state.activeHotSubjects = null
   },
   saveHotSubjects (state, data) {
     state.hotSubjects = data
   },
-  setActiveHotSubject (state, id) {
-    state.activeHotSubjects = id
+  setActiveHotSubject (state, payload) {
+    const { value, id } = payload
+    state.activeHotSubjects = value ? id : null
     state.activeFixedSubjects = []
     state.hasExplain = false
   },
+  saveMsgMarks (state, data) {
+    state.headmark = data.HeadMark !== '0' ? data.HeadMark : undefined
+    state.tailmark = data.TailMark !== '0' ? data.TailMark : undefined
+    state.msgIdMark = data.TailMsgId !== '0' ? data.TailMsgId : undefined
+  },
   saveMsgs (state, data) {
-    console.log(data)
     state.msgs = data.NewMsgs
+  },
+  appendMsgs (state, data) {
+    if (!data.NewMsgs) return
+    state.msgs = [...state.msgs, ...data.NewMsgs]
+  },
+  refreshMsgs (state, data) {
+    let { msgs } = state
+    const { NewMsgs, DeletedMsgs, UpdatedMsgs, HeadMark } = data
+    if (NewMsgs && NewMsgs.length) {
+      msgs = [...NewMsgs.reverse(), ...msgs]
+    }
+    if (DeletedMsgs && DeletedMsgs.length) {
+      const deletedMsgIds = DeletedMsgs.map(i => i.Id)
+      msgs = msgs.filter(msg => deletedMsgIds.indexOf(msg.Id) === -1)
+    }
+    if (UpdatedMsgs && UpdatedMsgs.length) {
+      const updatedMsgsMap = {}
+      UpdatedMsgs.forEach((msg) => {
+        updatedMsgsMap[msg.Id] = msg
+      })
+      msgs = msgs.map((msg) => {
+        return updatedMsgsMap[msg.Id] || msg
+      })
+    }
+    state.headmark = HeadMark !== '0' ? HeadMark : state.headmark
+    state.msgs = msgs
   }
 }
 
@@ -102,11 +138,13 @@ export const actions = {
   initPush ({ commit }, payload) {
     commit('initPush')
   },
-  selectFixedSubject ({ commit }, payload) {
+  selectFixedSubject ({ commit, dispatch }, payload) {
     commit('selectFixedSubject', payload)
+    dispatch('getMsgs')
   },
-  toggleExplain ({ commit }) {
+  toggleExplain ({ commit, dispatch }) {
     commit('toggleExplain')
+    dispatch('getMsgs')
   },
   getHotSubjects ({ commit }) {
     return new Promise((resolve, reject) => {
@@ -116,15 +154,40 @@ export const actions = {
       }).catch(err => reject(err))
     })
   },
-  setActiveHotSubject ({ commit }, id) {
-    commit('setActiveHotSubject', id)
+  setActiveHotSubject ({ commit, dispatch }, payload) {
+    commit('setActiveHotSubject', payload)
+    dispatch('getMsgs')
   },
   getMsgs ({ commit, getters }) {
     return new Promise((resolve, reject) => {
-      getHomeMsgs(getters.msgsParams).then((res) => {
+      getHomeMsgs({
+        ...getters.msgsParams,
+        headmark: undefined,
+        tailmark: undefined,
+        msgIdMark: undefined
+      }).then((res) => {
         commit('saveMsgs', res)
+        commit('saveMsgMarks', res)
         resolve()
       }).catch(err => reject(err))
+    })
+  },
+  loadMore ({ commit, getters }) {
+    getHomeMsgs({
+      ...getters.msgsParams,
+      headmark: undefined
+    }).then((res) => {
+      commit('appendMsgs', res)
+      commit('saveMsgMarks', res)
+    })
+  },
+  refreshMsgs ({ commit, getters }) {
+    getHomeMsgs({
+      ...getters.msgsParams,
+      tailmark: undefined,
+      msgIdMark: undefined
+    }).then((res) => {
+      commit('refreshMsgs', res)
     })
   }
 }

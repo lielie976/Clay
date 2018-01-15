@@ -9,9 +9,7 @@
       <msgs-hot-subjects />
       <msgs />
     </div>
-    <div class="home-news-loadmore"><span class="home-news-loadmore-text">点击加载更多</span></div>
   </div>
-
 </template>
 
 <script>
@@ -55,25 +53,6 @@ export default {
       height: 12px;
       width: 1px;
       background: @border-color-dark;
-    }
-  }
-  &-loadmore {
-    display: block;
-    margin-top: 16px;
-    background: #fff;
-    height: 45px;
-    text-align: center;
-    cursor: pointer;
-    &-text {
-      line-height: 45px;
-      font-size: 16px;
-      position: relative;
-      &:before {
-        content: "\e639";
-        font-family: "iconfont";
-        position: absolute;
-        left: -25px;
-      }
     }
   }
 }
