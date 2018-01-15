@@ -48,7 +48,8 @@ module.exports = {
     vendor: ['axios']
   },
   plugins: [
-    '~/plugins/filters'
+    '~/plugins/filters',
+    '~/plugins/iview'
   ],
   env: {
     ENV: process.env.ENV
