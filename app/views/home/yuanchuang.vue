@@ -1,5 +1,5 @@
 <template>
-  <toolbox href="/yuanchuang" title="原创热文">
+  <widget-box href="/yuanchuang" title="原创热文">
     <article class="home-original-article">
       <h3 class="home-original-article-title">
         <a :href="`/article/${top.Id}`" target="_blank">{{ top.Title }}</a>
@@ -10,17 +10,17 @@
       </time>
       <stocks :stocks="top.Stocks" />
     </article>
-  </toolbox>
+  </widget-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import toolbox from '~/components/toolbox'
+import WidgetBox from '~/components/WidgetBox'
 import stocks from '~/components/stocks'
 
 export default {
   components: {
-    toolbox,
+    WidgetBox,
     stocks
   },
   computed: mapGetters({

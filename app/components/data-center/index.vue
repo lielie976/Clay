@@ -1,5 +1,5 @@
 <template>
-  <toolbox href="/ban/0" title="打板神器">
+  <widget-box href="/ban/0" title="打板神器">
     <div class="datacenter-body">
       <div class="datacenter-temperature">
         <div class="datacenter-temperature-title">
@@ -11,18 +11,18 @@
       </div>
       <detail :data="thermometer" />
     </div>
-  </toolbox>
+  </widget-box>
 </template>
 
 <script>
 import dataCenter from '~/components/data-center/canvas'
-import toolbox from '../toolbox'
+import WidgetBox from '../WidgetBox'
 import temperature from './temperature.vue'
 import detail from './detail.vue'
 
 export default {
   components: {
-    toolbox,
+    WidgetBox,
     temperature,
     detail
   },

@@ -1,6 +1,6 @@
 <template>
   <section class="ztk-jinrifengkou-container">
-    <toolbox title="提前埋伏">
+    <widget-box title="提前埋伏">
       <div class="ambush-body">
       <a :href="`/article/${msg.MsgId}`" class="ambush-item" target="_blank" v-for="msg in msgs" :key="msg.Id">
         <div class="ambush-item-title">
@@ -14,18 +14,18 @@
         </div>
       </a>
     </div>
-    </toolbox>
+    </widget-box>
   </section>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import toolbox from './toolbox';
+import WidgetBox from './WidgetBox';
 import stocks from './stocks';
 
 export default {
   components: {
-    toolbox,
+    WidgetBox,
     stocks
   },
   computed: mapGetters({

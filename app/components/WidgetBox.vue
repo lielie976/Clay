@@ -1,8 +1,8 @@
 <template>
-  <div class="toolbox-container">
-    <div class="toolbox-titlebar">
-      <span class="toolbox-titlebar-label">{{title}}</span>
-      <a v-if="href" :href="href" target="_blank" class="toolbox-titlebar-more">更多<i class="iconfont">&#xe634;</i></a>
+  <div class="widgetBox-container">
+    <div class="widgetBox-titlebar">
+      <span class="widgetBox-titlebar-label">{{title}}</span>
+      <a v-if="href" :href="href" target="_blank" class="widgetBox-titlebar-more">更多<i class="iconfont">&#xe634;</i></a>
     </div>
     <slot />
   </div>
@@ -24,10 +24,10 @@ export default {
 <style lang="less" scoped>
 @import '../styles/variables.less';
 
-.toolbox-container{
+.widgetBox-container{
   margin-bottom: 20px;
 }
-.toolbox-titlebar{
+.widgetBox-titlebar{
   height: 30px;
   padding: 0 15px 0 0;
   border-bottom:1px solid @border-color-dark;

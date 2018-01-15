@@ -1,6 +1,6 @@
 <template>
   <section class="ztk-jinrifengkou-container">
-    <toolbox title="今日盘中风口">
+    <widget-box title="今日盘中风口">
       <section class="ztk-jinrifengkou" id="ztk-jinrifengkou">
         <div class="ztk-jinrifengkou-content" v-for="(item, index) in trending" :key="item.plate_id">
           <div 
@@ -18,17 +18,17 @@
           </div>
         </div>
       </section>
-    </toolbox>
+    </widget-box>
   </section>
 </template>
 
 <script>
-import toolbox from './toolbox'
+import WidgetBox from './WidgetBox'
 import stocks from './stocks'
 
 export default {
   components: {
-    toolbox,
+    WidgetBox,
     stocks
   },
   computed: {
