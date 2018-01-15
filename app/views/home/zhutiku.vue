@@ -71,5 +71,8 @@ export default {
   line-height: 72px;
   padding-left: 10px;
   color: #bcbcbc;
+  &:hover {
+    color: #333;
+  }
 }
 </style>

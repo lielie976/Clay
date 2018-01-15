@@ -58,16 +58,16 @@ export default {
       this.$store.dispatch('market/getQuoteChange')
       this.$store.dispatch('market/getThermometer')
       this.$store.dispatch('settings/getTrending')
-    }, 5000)
+    }, 1000 * 5)
     this.longTimer = setInterval(() => {
       this.$store.dispatch('zhutiku/getZhutikuRankAsc')
       this.$store.dispatch('zhutiku/getZhutikuRankDesc')
       this.$store.dispatch('yuanchuang/getTop')
       this.$store.dispatch('settings/getSettings')
-    }, 30000)
+    }, 1000 * 30)
     this.FiveMinuteTimer = setInterval(() => {
       this.$store.dispatch('homeMsgs/getHotSubjects')
-    })
+    }, 1000 * 60 * 5)
   },
   destroyed () {
     clearInterval(this.shortTimer)

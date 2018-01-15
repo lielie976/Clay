@@ -2,6 +2,7 @@
 
 import Vue from 'vue'
 import iView from 'iview'
-import 'iview/dist/styles/iview.css'
+import '~/styles/iview-overrides.less'
+// import 'iview/dist/styles/iview.css'
 
 Vue.use(iView)

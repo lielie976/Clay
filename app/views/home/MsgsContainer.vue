@@ -52,7 +52,7 @@ export default {
       display: block;
       position: absolute;
       right: -18px;
-      top: 6px;
+      top: 8px;
       height: 12px;
       width: 1px;
       background: @border-color-dark;
