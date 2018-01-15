@@ -30,7 +30,6 @@ import ambush from '~/components/ambush'
 export default {
   async asyncData ({ store }) {
     await Promise.all([
-      store.dispatch('home/getBanner'),
       store.dispatch('homeMsgs/getMsgs'),
       store.dispatch('market/getIndexes'),
       store.dispatch('market/getQuoteChange'),
@@ -51,6 +50,24 @@ export default {
     trending,
     ambush,
     MsgsContainer
+  },
+  mounted () {
+    this.shortTimer = setInterval(() => {
+      this.$store.dispatch('market/getIndexes')
+      this.$store.dispatch('market/getQuoteChange')
+      this.$store.dispatch('market/getThermometer')
+      this.$store.dispatch('settings/getTrending')
+    }, 5000)
+    this.longTimer = setInterval(() => {
+      this.$store.dispatch('zhutiku/getZhutikuRankAsc')
+      this.$store.dispatch('zhutiku/getZhutikuRankDesc')
+      this.$store.dispatch('yuanchuang/getTop')
+      this.$store.dispatch('settings/getSettings')
+    }, 30000)
+  },
+  destroyed () {
+    clearInterval(this.shortTimer)
+    clearInterval(this.longTimer)
   }
 }
 </script>

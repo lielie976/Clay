@@ -1,7 +1,7 @@
 <template>
-  <div class="home-banner" :style="`background-image: url(${banner.ImgUrl})`">
+  <div class="home-banner" :style="`background-image: url(${banner.ImgUrl})`" v-if="showBanner">
     <a :href="`${banner.RedirectUrl}`" target="_blank" class="home-banner-content"></a>
-    <span class="home-banner-close">
+    <span class="home-banner-close" @click="hideBanner">
       关闭
       <i class="iconfont icon-guanbiduihuakuang"></i>
     </span>
@@ -12,8 +12,19 @@
 export default {
   computed: {
     banner () {
-      return this.$store.state.home.banner
+      return this.$store.state.home.bannerInfo.info
+    },
+    showBanner () {
+      return !this.$store.state.home.bannerInfo.hided
     }
+  },
+  methods: {
+    hideBanner () {
+      this.$store.dispatch('home/hideBanner')
+    }
+  },
+  mounted () {
+    this.$store.dispatch('home/getBanner')
   }
 }
 </script>

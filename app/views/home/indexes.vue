@@ -56,12 +56,6 @@ export default {
   methods: {
     renderMarketColor
   },
-  mounted () {
-    // setInterval(() => {
-    //   this.$store.dispatch('market/getIndexes')
-    //   this.$store.dispatch('market/getQuoteChange')
-    // }, 5000)
-  },
   computed: {
     indexes () {
       return this.$store.state.market.indexes
