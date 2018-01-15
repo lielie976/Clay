@@ -1,6 +1,6 @@
 module.exports = {
   NODE_ENV: '"preview"',
-  runTimeConfig: JSON.stringify({
+  runTimeConfig: {
     API: 'prod',
     PC_DOMAIN: 'https://xuangubao.cn',
     M_DOMAIN: 'https://m.xuangubao.cn',
@@ -16,6 +16,7 @@ module.exports = {
     CRAWLER_API: 'https://athena.wallstreetcn.com/',
     CRAWLER_SOCKET_API: 'https://athena-socket.wallstreetcn.com',
     CRAWLER_API_KEY: '3685d433173f576c27877915c71e86ca',
-    BRAIN: 'https://brain-api.wallstreetcn.com'
-  })
+    BRAIN: 'https://brain-api.wallstreetcn.com',
+    FOREX_API: 'https://forexdata.wallstreetcn.com'
+  }
 }
