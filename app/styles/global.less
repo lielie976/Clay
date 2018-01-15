@@ -1,6 +1,6 @@
 @import 'variables.less';
 
-body {
+html {
   background: #f6f7fb;
 }
 
@@ -8,6 +8,10 @@ a {
   color: @mainFontColor;
   cursor: pointer;
   text-decoration: none;
+  &:visited,
+  &:hover {
+    color: @mainFontColor;
+  }
 }
 
 img {

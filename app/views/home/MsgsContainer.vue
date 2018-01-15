@@ -5,7 +5,7 @@
       <msgs-subjects />
       <msgs-settings />
     </div>
-    <div>
+    <div class="home-news-main">
       <msgs-hot-subjects />
       <msgs />
     </div>
@@ -36,6 +36,9 @@ export default {
     padding: 0;
     border-bottom: 1px solid @border-color-dark;
     position: relative;
+  }
+  &-main {
+    margin-top: 10px;
   }
   &-titlebar-label {
     font-size: 16px;

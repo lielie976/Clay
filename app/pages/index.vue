@@ -31,6 +31,7 @@ export default {
   async asyncData ({ store }) {
     await Promise.all([
       store.dispatch('homeMsgs/getMsgs'),
+      store.dispatch('homeMsgs/getHotSubjects'),
       store.dispatch('market/getIndexes'),
       store.dispatch('market/getQuoteChange'),
       store.dispatch('market/getThermometer'),
@@ -64,10 +65,14 @@ export default {
       this.$store.dispatch('yuanchuang/getTop')
       this.$store.dispatch('settings/getSettings')
     }, 30000)
+    this.FiveMinuteTimer = setInterval(() => {
+      this.$store.dispatch('homeMsgs/getHotSubjects')
+    })
   },
   destroyed () {
     clearInterval(this.shortTimer)
     clearInterval(this.longTimer)
+    clearInterval(this.FiveMinuteTimer)
   }
 }
 </script>

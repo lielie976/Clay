@@ -1,7 +1,7 @@
 <template>
   <div class="home-news-fast-subject">
     <span class="home-news-fast-subject-header">热门话题：</span>
-    <ul class="home-news-fast-subject-list">
+    <ul class="home-news-fast-subject-list" v-if="hotSubjects.length">
       <li class="home-news-fast-subject-listitem" v-for="item in hotSubjects" :key="item.Id">
         <input
           type="checkbox"
@@ -27,15 +27,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      getHotSubjects: 'homeMsgs/getHotSubjects',
       setActiveHotSubject: 'homeMsgs/setActiveHotSubject'
     }),
     isActive (id) {
       return id === this.$store.state.homeMsgs.activeHotSubjects
     }
-  },
-  mounted () {
-    this.getHotSubjects()
   }
 }
 </script>
@@ -43,7 +39,6 @@ export default {
 <style lang="less" scoped>
 .home-news-fast-subject {
     display: flex;
-    margin-top: 10px;
     padding: 26px 24px 0;
     background: #fff;
     &-header {
