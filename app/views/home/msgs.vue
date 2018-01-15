@@ -1,20 +1,32 @@
 <template>
-  <ul>
-    <msg v-for="msg in msgs" :key="msg.Id" :msg="msg" />
+  <ul class="home-news-container">
+    <msg
+      v-for="msg in msgs"
+      :key="msg.Id"
+      :msg="msg"
+    />
   </ul>
 </template>
 
 <script>
-import msg from './msg'
+import Msg from './Msg'
 
 export default {
   components: {
-    msg
+    Msg
   },
   computed: {
     msgs () {
-      return this.$store.state.home.msgs
+      return this.$store.state.homeMsgs.msgs
     }
   }
 }
 </script>
+
+<style lang="less" scoped>
+.home-news-container {
+  padding-top: 30px;
+  background: #fff;
+}
+</style>
+

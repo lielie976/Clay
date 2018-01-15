@@ -7,9 +7,7 @@
     </div>
     <div>
       <msgs-hot-subjects />
-      <div class="home-news-container">
-        <!-- {{#each msg as |data|}} {{> home/news/newsItem/newsItem data}} {{/each}} -->
-      </div>
+      <msgs />
     </div>
     <div class="home-news-loadmore"><span class="home-news-loadmore-text">点击加载更多</span></div>
   </div>
@@ -17,27 +15,17 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import MsgsSettings from './MsgsSettings'
 import MsgsSubjects from './MsgsSubjects'
 import MsgsHotSubjects from './MsgsHotSubjects'
+import Msgs from './Msgs'
 
 export default {
   components: {
     MsgsSettings,
     MsgsSubjects,
-    MsgsHotSubjects
-  },
-  computed: {
-    data () {
-      return this.$store.state.homeMsgs
-    }
-  },
-  methods: {
-    ...mapActions({
-      selectFixedSubject: 'homeMsgs/selectFixedSubject',
-      toggleExplain: 'homeMsgs/toggleExplain'
-    })
+    MsgsHotSubjects,
+    Msgs
   }
 }
 </script>
@@ -68,10 +56,6 @@ export default {
       width: 1px;
       background: @border-color-dark;
     }
-  }
-  &-container {
-    padding-top: 30px;
-    background: #fff;
   }
   &-loadmore {
     display: block;

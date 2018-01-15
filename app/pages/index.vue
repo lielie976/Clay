@@ -19,7 +19,6 @@
 
 <script>
 import Indexes from '~/views/home/indexes'
-import msgs from '~/views/home/msgs'
 import banner from '~/views/home/banner'
 import zhutiku from '~/views/home/zhutiku'
 import MsgsContainer from '~/views/home/MsgsContainer'
@@ -31,8 +30,8 @@ import ambush from '~/components/ambush'
 export default {
   async asyncData ({ store }) {
     await Promise.all([
-      store.dispatch('home/getMsgs', { subjids: '9', limit: 30 }),
       store.dispatch('home/getBanner'),
+      store.dispatch('homeMsgs/getMsgs'),
       store.dispatch('market/getIndexes'),
       store.dispatch('market/getQuoteChange'),
       store.dispatch('market/getThermometer'),
@@ -45,7 +44,6 @@ export default {
   },
   components: {
     Indexes,
-    msgs,
     banner,
     zhutiku,
     dataCenter,

@@ -1,10 +1,16 @@
 import { getFastSubjects } from '~/api/subject'
+import { getHomeMsgs } from '~/api/message'
 
 export const state = () => ({
   activeFixedSubjects: [],
   hotSubjects: [],
   activeHotSubjects: null,
   hasExplain: false,
+  headmark: null,
+  tailmark: null,
+  limit: 30,
+  msgIdMark: null,
+  msgs: [],
   pushSettingsOpen: false,
   push: {
     notification: true,
@@ -16,21 +22,26 @@ export const state = () => ({
 export const getters = {
   msgsParams (state) {
     const { activeHotSubjects, hasExplain, activeFixedSubjects } = state
+    let subj
     if (activeHotSubjects) {
-      return {
+      subj = {
         subjids: activeHotSubjects,
         isHotSubject: true
       }
     } else if (activeFixedSubjects.length) {
-      return {
+      subj = {
         subjids: activeFixedSubjects.join(','),
         hasExplain: hasExplain ? true : undefined
       }
     } else {
-      return {
+      subj = {
         subjids: '9,10,723,35,469',
         hasExplain: hasExplain ? true : undefined
       }
+    }
+    return {
+      ...subj,
+      limit: 30
     }
   }
 }
@@ -74,6 +85,10 @@ export const mutations = {
     state.activeHotSubjects = id
     state.activeFixedSubjects = []
     state.hasExplain = false
+  },
+  saveMsgs (state, data) {
+    console.log(data)
+    state.msgs = data.NewMsgs
   }
 }
 
@@ -97,10 +112,19 @@ export const actions = {
     return new Promise((resolve, reject) => {
       getFastSubjects().then((res) => {
         commit('saveHotSubjects', res)
-      })
+        resolve()
+      }).catch(err => reject(err))
     })
   },
   setActiveHotSubject ({ commit }, id) {
     commit('setActiveHotSubject', id)
+  },
+  getMsgs ({ commit, getters }) {
+    return new Promise((resolve, reject) => {
+      getHomeMsgs(getters.msgsParams).then((res) => {
+        commit('saveMsgs', res)
+        resolve()
+      }).catch(err => reject(err))
+    })
   }
 }
