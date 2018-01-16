@@ -5,7 +5,7 @@
   "author": "troywith77 <ruitang307@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "ENV=sit node server.js",
+    "dev": "ENV=sit nodemon server.js",
     "build": "ENV=production nuxt build",
     "build:sit": "ENV=sit nuxt build",
     "build:stage": "ENV=stage nuxt build",
@@ -20,6 +20,8 @@
     "date-fns": "^1.29.0",
     "iview": "^2.8.0",
     "js-cookie": "^2.2.0",
+    "lg-zoom.js": "^1.0.1",
+    "lightgallery.js": "^1.0.2",
     "nuxt": "^1.0.0",
     "underscore": "^1.8.3"
   },

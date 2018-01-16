@@ -27,10 +27,10 @@
       <article class="article-content">
         <template v-if="data.IsPremium">
           <p>本文为收费内容，请在 <span style="color: #E6394D">微信</span> 中扫描二维码后购买阅读</p>
-          <div id="qrcode"></div>
+          <div ref="qrcode"></div>
         </template>
         <template v-else>
-          <div v-html="data.Content"></div>
+          <div ref="content" v-html="data.Content"></div>
         </template>
 
         <p v-if="data.OriginalUrl">本文来源{{data.Source}}，<a class="not-article-content" :href="data.OriginalUrl">查看原文</a></p>
@@ -44,119 +44,163 @@
     <aside class="article-aside">
       <bkj-aside-list :data="data.BkjInfos" v-if="data.BkjInfos" />
       
-      <stocks-aside-list :stocks="data.Stocks" />
+      <stocks-aside-list :stocks="data.Stocks" v-if="data.Stocks" />
     </aside>
   </section>
 
 </template>
 
 <script>
-import { getMessage } from '~/api/message'
-import BkjAsideList from '~/components/BkjAsideList'
-import StocksAsideList from '~/components/StocksAsideList'
+import { getMessage } from '~/api/message';
+import BkjAsideList from '~/components/BkjAsideList';
+import StocksAsideList from '~/components/StocksAsideList';
+import config from '~/conf'
 
 export default {
   async asyncData ({ params }) {
-    const data = await getMessage(params.id)
-    return { data }
+    const data = await getMessage(params.id);
+    return { data };
   },
   components: {
     BkjAsideList,
     StocksAsideList
   },
-  data () {
-    return {}
-  },
   head () {
     return {
       title: this.data.Title
+    };
+  },
+  methods: {
+    generateQrcode () {
+      const qrcode = new window.QRCode(this.$refs.qrcode)
+      qrcode.makeCode(`${config.M_DOMAIN}/message/${this.data.Id}`)
+    },
+    lightGallery () {
+      if (this.$refs.content) {
+        this.$refs.content.querySelectorAll('img').forEach(img => {
+          img.setAttribute('data-src', img.getAttribute('src'))
+          window.lightGallery(img, {
+            selector: 'this'
+          })
+        })
+      }
     }
+  },
+  mounted () {
+    this.generateQrcode()
+    this.lightGallery()
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-@import '../../styles/variables.less';
+@import "../../styles/variables.less";
 
 .article-page {
-	width: 1200px;
-	min-height: calc(100vh - 56px);
-	margin: 0 auto;
-	padding: 40px 0;
-	overflow: hidden;
+  width: 1200px;
+  min-height: calc(100vh - 56px);
+  margin: 0 auto;
+  padding: 40px 0;
+  overflow: hidden;
 }
 .article {
-	float: left;
-	width: 832px;
-	padding: 32px;
-	background: #fff;
+  float: left;
+  width: 832px;
+  padding: 32px;
+  background: #fff;
 }
 .article-meta {
-	border-bottom: 1px solid #efefef;
-	padding-bottom: 16px;
-	&-time {
-		font-size: 12px;
-		color: #A6A2A3;
-		margin-top: 12px;
-	}
-	&-author {
-		margin-left: 32px;
-	}
-	&-title {
-		position: relative;
-		font-size: 28px;
-		color: #333333;
-		letter-spacing: 0;
-		line-height: 1.35;
-		&:before {
-			position: absolute;
-			top: 10px;
-			left: -32px;
-			content: '';
-			width: 4px;
-			height: 24px;
-			background: @mainColorRed;
-		}
-	}
+  border-bottom: 1px solid #efefef;
+  padding-bottom: 16px;
+  &-time {
+    font-size: 12px;
+    color: #a6a2a3;
+    margin-top: 12px;
+  }
+  &-author {
+    margin-left: 32px;
+  }
+  &-title {
+    position: relative;
+    font-size: 28px;
+    color: #333333;
+    letter-spacing: 0;
+    line-height: 1.35;
+    &:before {
+      position: absolute;
+      top: 10px;
+      left: -32px;
+      content: "";
+      width: 4px;
+      height: 24px;
+      background: @mainColorRed;
+    }
+  }
 }
 
 .article-summary {
-	background-color: #fafafa;
-	color: @subFontColor;
-	margin-top: 24px;
+  background-color: #fafafa;
+  color: @subFontColor;
+  margin-top: 24px;
   padding: 15px;
-	font-size: 16px;
-	line-height: 1.8;
+  font-size: 16px;
+  line-height: 1.8;
 }
 
 .article-content {
-	margin-top: 24px;
-	font-size: 16px;
-	color: #333333;
-	letter-spacing: 0;
-	line-height: 30px;
-	a {
-		color: @mainColorRed;
-	}
-	a * {
-		color: @mainColorRed !important;
-	}
-	p {
-		margin: 20px 0;
-	}
-	blockquote {
-		border-left: 5px solid #eee !important;
-		padding-left: 15px;
-		margin: 0 15px;
-	}
+  margin-top: 24px;
+  font-size: 16px;
+  color: #333333;
+  letter-spacing: 0;
+  line-height: 30px;
+  a {
+    color: @mainColorRed;
+  }
+  a * {
+    color: @mainColorRed !important;
+  }
+  p {
+    margin: 20px 0;
+  }
+  img {
+    cursor: zoom-in;
+  }
+  blockquote {
+    border-left: 5px solid #eee !important;
+    padding-left: 15px;
+    margin: 0 15px;
+  }
 }
 .article-aside {
-	float: right;
-	width: 344px;
+  float: right;
+  width: 344px;
 }
 
 p.article-content-download {
-	margin-top: 50px;
+  margin-top: 50px;
 }
 </style>
 
+<style lang="less">
+@import "../../styles/variables.less";
+
+.article-content {
+  a {
+    color: @mainColorRed;
+  }
+  a * {
+    color: @mainColorRed !important;
+  }
+  p {
+    margin: 20px 0;
+  }
+  img {
+    cursor: zoom-in;
+  }
+  blockquote {
+    border-left: 5px solid #eee !important;
+    padding-left: 15px;
+    margin: 0 15px;
+  }
+}
+</style>

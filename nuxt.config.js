@@ -15,6 +15,9 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', type: 'text/css', href: '//at.alicdn.com/t/font_117096_bnogj2cncxm0lik9.css' },
       { rel: 'stylesheet', type: 'text/css', href: '//cdn.bootcss.com/minireset.css/0.0.2/minireset.min.css' }
+    ],
+    script: [
+      { src: '/js/qrcode.js' }
     ]
   },
   /*
@@ -49,7 +52,8 @@ module.exports = {
   },
   plugins: [
     '~/plugins/filters',
-    '~/plugins/styles'
+    '~/plugins/styles',
+    { src: '~/plugins/lightgallerty', ssr: false }
   ],
   env: {
     ENV: process.env.ENV

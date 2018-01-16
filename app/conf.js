@@ -1,3 +1,3 @@
 /* eslint-disable no-undef */
 
-export default CONFIG
+export default CONFIG.env.runTimeConfig

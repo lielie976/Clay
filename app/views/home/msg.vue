@@ -60,7 +60,7 @@
 
         </div>
         <div class="news-item-image">
-          <img v-if="msg.Image" class="news-item-image-img lightbox" :src="msg.Image" :data-src="msg.Image" />
+          <img v-if="msg.Image" class="news-item-image-img lightbox" :src="msg.Image" :data-src="msg.Image" ref="image" />
         </div>
       </div>
     </div>
@@ -92,10 +92,12 @@ export default {
       return this.msg.BkjInfoArr && this.msg.BkjInfoArr.length
     }
   },
-  methods: {
-    // isBigNews (ids) {
-    //   return ids.indexOf('10') > -1 ? 'big-news' : ''
-    // }
+  mounted () {
+    if (this.msg.Image) {
+      window.lightGallery(this.$refs.image, {
+        selector: 'this'
+      })
+    }
   }
 }
 </script>

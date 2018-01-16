@@ -3,7 +3,7 @@ import axios from 'axios'
 import config from '~/conf'
 
 const api = axios.create({
-  baseURL: config.env.runTimeConfig.FOREX_API,
+  baseURL: config.FOREX_API,
   timeout: 60 * 1000
 })
 
