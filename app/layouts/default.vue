@@ -1,5 +1,6 @@
 <template>
   <div>
+    <nav-bar />
     <div id="nuxt-layout-container">
       <nuxt/>
     </div>
@@ -9,11 +10,13 @@
 </template>
 
 <script>
+import NavBar from '~/components/NavBar'
 import CommonFooter from '~/components/CommonFooter'
 import FixedTool from '~/components/FixedTool'
 
 export default {
   components: {
+    NavBar,
     CommonFooter,
     FixedTool
   },
