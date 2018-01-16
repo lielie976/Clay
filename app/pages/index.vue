@@ -80,6 +80,7 @@ export default {
 <style lang="less">
 .home-main-container {
   margin: 20px auto;
+  overflow: hidden;
 }
 
 .home-msgs-container {
