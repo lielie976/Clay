@@ -19,19 +19,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import WidgetBox from './WidgetBox';
-import stocks from './stocks';
+import { mapGetters } from 'vuex'
+import WidgetBox from './WidgetBox'
 
 export default {
   components: {
-    WidgetBox,
-    stocks
+    WidgetBox
   },
   computed: mapGetters({
     msgs: 'settings/ambush'
   })
-};
+}
 </script>
 
 <style lang="less" scoped>

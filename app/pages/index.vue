@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import Indexes from '~/views/home/indexes'
-import banner from '~/views/home/banner'
-import zhutiku from '~/views/home/zhutiku'
+import Indexes from '~/views/home/Indexes'
+import Banner from '~/views/home/Banner'
+import Zhutiku from '~/views/home/Zhutiku'
 import MsgsContainer from '~/views/home/MsgsContainer'
-import yuanchuang from '~/views/home/yuanchuang'
-import dataCenter from '~/components/data-center'
-import trending from '~/components/trending'
-import ambush from '~/components/ambush'
+import Yuanchuang from '~/views/home/Yuanchuang'
+import DataCenter from '~/components/DataCenter'
+import Trending from '~/components/Trending'
+import Ambush from '~/components/Ambush'
 
 export default {
   async asyncData ({ store }) {
@@ -44,12 +44,12 @@ export default {
   },
   components: {
     Indexes,
-    banner,
-    zhutiku,
-    dataCenter,
-    yuanchuang,
-    trending,
-    ambush,
+    Banner,
+    Zhutiku,
+    DataCenter,
+    Yuanchuang,
+    Trending,
+    Ambush,
     MsgsContainer
   },
   mounted () {

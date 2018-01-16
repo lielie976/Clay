@@ -24,12 +24,12 @@
 
 <script>
 import WidgetBox from './WidgetBox'
-import stocks from './stocks'
+import Stocks from './Stocks'
 
 export default {
   components: {
     WidgetBox,
-    stocks
+    Stocks
   },
   computed: {
     trending () {
@@ -55,6 +55,9 @@ export default {
     margin-left: -10px;
     font-size: 16px;
     color: #363740;
+    a {
+      color: @mainFontColorHover;
+    }
     &:hover {
       a {
         color: @mainFontColorHover;

@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import Stocks from '~/components/stocks'
+import Stocks from '~/components/Stocks'
 import BullishAndBear from './BullishAndBear'
 
 export default {
@@ -285,6 +285,7 @@ export default {
       line-height: 12px;
       padding: 4px;
       margin-right: 4px;
+      transition: 0.2s;
       &:hover {
         display: inline-block;
         font-size: 12px;

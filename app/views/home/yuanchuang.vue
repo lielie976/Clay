@@ -16,12 +16,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import WidgetBox from '~/components/WidgetBox'
-import stocks from '~/components/stocks'
+import Stocks from '~/components/Stocks'
 
 export default {
   components: {
     WidgetBox,
-    stocks
+    Stocks
   },
   computed: mapGetters({
     top: 'yuanchuang/firstYuanchuangTop'

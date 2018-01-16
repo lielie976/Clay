@@ -1,5 +1,5 @@
 <template>
-  <widget-box href="/ban/0" title="打板神器">
+  <widget-box href="/dingpan" title="智能盯盘">
     <div class="datacenter-body">
       <div class="datacenter-temperature">
         <div class="datacenter-temperature-title">
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import dataCenter from '~/components/data-center/canvas'
+import dataCenter from '~/components/dataCenter/canvas'
 import WidgetBox from '../WidgetBox'
 import temperature from './temperature.vue'
 import detail from './detail.vue'

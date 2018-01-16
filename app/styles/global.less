@@ -24,7 +24,7 @@ img {
   font-family: inherit;
   white-space: pre-wrap;
   word-wrap: break-word;
-  background-color: $white;
+  background-color: #fff;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -56,12 +56,21 @@ img {
 
 .-market-color--rise {
   color: @subRiseColor;
+  &:hover {
+    color: @subRiseColor;
+  }
 }
 
 .-market-color--descline {
   color: @subDeclineColor;
+  &:hover {
+    color: @subDeclineColor;
+  }
 }
 
 .-market-color--balance {
   color: @subBalanceColor;
+  &:hover {
+    color: @subBalanceColor;
+  }
 }
