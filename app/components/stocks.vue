@@ -28,7 +28,6 @@ export default {
   },
   watch: {
     stocks (newVal) {
-      console.log(newVal)
       if (newVal && newVal.length) {
         this.$store.dispatch('stock/addStock', newVal.map(i => i.Symbol))
       }

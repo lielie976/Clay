@@ -9,7 +9,7 @@ export default {
   mounted () {
     setInterval(() => {
       this.$store.dispatch('stock/refreshStocks')
-    }, 5000)
+    }, 30000)
   }
 }
 </script>
