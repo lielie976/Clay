@@ -5,3 +5,5 @@ export const getAvailableAd = params => api.get('/api/pc/commercialsWithPosId', 
 export const getTrending = () => api.get('/api/pc/panzhongfengkou')
 
 export const getSettings = () => api.get('/api/pc/settings')
+
+export const getmidLongTermStocks = () => api.get('/api/stocks/prices/midLongTerm')

@@ -72,6 +72,7 @@ export default {
   },
   methods: {
     generateQrcode () {
+      if (!this.$refs.qrcode) return
       const qrcode = new window.QRCode(this.$refs.qrcode)
       qrcode.makeCode(`${config.M_DOMAIN}/message/${this.data.Id}`)
     },

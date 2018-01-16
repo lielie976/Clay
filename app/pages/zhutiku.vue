@@ -8,11 +8,13 @@
     </section>
     <section class="zhutiku-settings-container">
       <section class="zhutiku-main">
+        <jin-ri-ji-hui />
+        <zhong-chang-xian-ji-hui />
         <!-- {{> zhutiku/jinri/jinri data=data.JinRiJiHuiQianZhan}} -->
         <!-- {{> zhutiku/midLongTerm/midLongTerm data=data.ZhongChangXianJiHui}} -->
       </section>
       <section class="zhutiku-aside">
-        <!-- {{> prepareBefore/prepareBefore data=data.TiQianMaiFu}} -->
+        <ambush />
       </section>
     </section>
   </section>
@@ -22,6 +24,9 @@
 <script>
 import Search from '~/views/zhutiku/Search'
 import Rank from '~/views/zhutiku/Rank'
+import JinRiJiHui from '~/views/zhutiku/JinRiJiHui'
+import ZhongChangXianJiHui from '~/views/zhutiku/ZhongChangXianJiHui'
+import Ambush from '~/components/Ambush'
 
 export default {
   async asyncData ({ store }) {
@@ -33,7 +38,21 @@ export default {
   },
   components: {
     Search,
-    Rank
+    Rank,
+    Ambush,
+    JinRiJiHui,
+    ZhongChangXianJiHui
+  },
+  mounted () {
+    const { dispatch } = this.$store
+    this.timer = setInterval(() => {
+      dispatch('zhutiku/getZhutikuRankAsc')
+      dispatch('zhutiku/getZhutikuRankDesc')
+      dispatch('settings/getSettings')
+    }, 30 * 1000)
+  },
+  destroyed () {
+    clearInterval(this.timer)
   }
 }
 </script>

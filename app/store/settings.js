@@ -3,7 +3,11 @@ import { getZhutiTopStocks } from '~/api/wows'
 
 export const state = () => ({
   trending: [],
-  settings: {}
+  settings: {
+    JinRiJiHuiQianZhan: [],
+    TiQianMaiFu: [],
+    ZhongChangXianJiHui: []
+  }
 })
 
 export const getters = {

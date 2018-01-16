@@ -29,7 +29,7 @@ export const actions = {
         stocks: stockSymbols.join(',')
       }).then((res) => {
         commit('mergeReal', extractFieldsToObj(res.data.snapshot))
-        resolve()
+        resolve(extractFieldsToObj(res.data.snapshot))
       }).catch(err => reject(err))
     })
   },
