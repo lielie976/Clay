@@ -23,7 +23,8 @@
     "lg-zoom.js": "^1.0.1",
     "lightgallery.js": "^1.0.2",
     "nuxt": "^1.0.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "vue-multiselect": "^2.0.8"
   },
   "devDependencies": {
     "axios": "^0.17.1",

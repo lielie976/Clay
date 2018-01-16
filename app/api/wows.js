@@ -48,3 +48,5 @@ export const getThermometer = () => api.get('/v2/sheet/market_temperature')
 export const getZhutiTopStocks = params => api.get('/v3/aioria/plates/stocks/top', { params })
 
 export const getPlateInfos = params => api.get('/v3/aioria/plates/summary/field', { params })
+
+export const searchBkjByName = params => api.get('/v3/search/plates', { params })
