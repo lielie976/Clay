@@ -23,11 +23,25 @@ export function extractFieldsToArray (data) {
   })
 }
 
+export function extractWowsApiTypeThree (data) {
+  const real = {}
+  for (var i in data.items) {
+    if (i !== 'fields') {
+      real[i] = {}
+      data.fields.forEach((field, idx) => {
+        real[i][field] = data.items[i][idx]
+      })
+    }
+  }
+  return real
+}
+
 export function renderMarketColor (val) {
+  if (!val) return
   if (val >= 0) {
     return '-market-color--rise'
   } else {
-    return '-market-color--descline'
+    return '-market-color--decline'
   }
 }
 

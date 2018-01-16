@@ -92,16 +92,16 @@ export const mutations = {
     state.activeFixedSubjects = []
     state.hasExplain = false
   },
-  saveMsgMarks (state, data) {
+  saveMsgs (state, data) {
     state.headmark = data.HeadMark !== '0' ? data.HeadMark : undefined
     state.tailmark = data.TailMark !== '0' ? data.TailMark : undefined
     state.msgIdMark = data.TailMsgId !== '0' ? data.TailMsgId : undefined
-  },
-  saveMsgs (state, data) {
     state.msgs = data.NewMsgs
   },
   appendMsgs (state, data) {
     if (!data.NewMsgs) return
+    state.tailmark = data.TailMark !== '0' ? data.TailMark : undefined
+    state.msgIdMark = data.TailMsgId !== '0' ? data.TailMsgId : undefined
     state.msgs = [...state.msgs, ...data.NewMsgs]
   },
   refreshMsgs (state, data) {
@@ -167,7 +167,6 @@ export const actions = {
         msgIdMark: undefined
       }).then((res) => {
         commit('saveMsgs', res)
-        commit('saveMsgMarks', res)
         resolve()
       }).catch(err => reject(err))
     })
@@ -178,7 +177,6 @@ export const actions = {
       headmark: undefined
     }).then((res) => {
       commit('appendMsgs', res)
-      commit('saveMsgMarks', res)
     })
   },
   refreshMsgs ({ commit, getters }) {

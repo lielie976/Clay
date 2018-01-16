@@ -19,29 +19,29 @@
 </template>
 
 <script>
-import { debounce } from 'underscore'
+// import { debounce } from 'underscore'
 
 function smoothscroll () {
   var currentScroll = document.documentElement.scrollTop || document.body.scrollTop
   if (currentScroll > 0) {
     window.requestAnimationFrame(smoothscroll)
-    window.scrollTo(0, currentScroll - (currentScroll / 5))
+    window.scrollTo(0, currentScroll - (currentScroll / 15))
   }
 }
 
 export default {
-  mounted () {
-    window.onscroll = debounce(function (e) {
-      let top = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop
-      if (top > 300) {
-        document.querySelector('.xgb-tools').style.bottom = '0px'
-        document.querySelector('.tools-wechatQrcode-image').style.bottom = '50px'
-      } else {
-        document.querySelector('.xgb-tools').style.bottom = '-40px'
-        document.querySelector('.tools-wechatQrcode-image').style.bottom = '10px'
-      }
-    }, 300)
-  },
+  // mounted () {
+  //   window.onscroll = debounce(function (e) {
+  //     let top = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop
+  //     if (top > 300) {
+  //       document.querySelector('.xgb-tools').style.bottom = '60px'
+  //       document.querySelector('.tools-wechatQrcode-image').style.bottom = '50px'
+  //     } else {
+  //       document.querySelector('.xgb-tools').style.bottom = '-40px'
+  //       document.querySelector('.tools-wechatQrcode-image').style.bottom = '10px'
+  //     }
+  //   }, 300)
+  // },
   methods: {
     scrollToTop () {
       smoothscroll()
@@ -54,7 +54,8 @@ export default {
 .xgb-tools {
   position: fixed;
   right: 40px;
-  bottom: -40px;
+  // bottom: -40px;
+  bottom: 60px;
   cursor: pointer;
   transition: .3s;
 }

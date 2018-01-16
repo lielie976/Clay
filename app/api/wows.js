@@ -46,3 +46,5 @@ export const getQuoteChange = () => api.get('statis_data/quote_change')
 export const getThermometer = () => api.get('/v2/sheet/market_temperature')
 
 export const getZhutiTopStocks = params => api.get('/v3/aioria/plates/stocks/top', { params })
+
+export const getPlateInfos = params => api.get('/v3/aioria/plates/summary/field', { params })

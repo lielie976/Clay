@@ -35,11 +35,6 @@ export default {
     trending () {
       return this.$store.state.settings.trending
     }
-  },
-  created () {
-    if (typeof window !== 'undefined') {
-      this.$store.dispatch('settings/getTrending')
-    }
   }
 }
 </script>

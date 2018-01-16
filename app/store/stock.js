@@ -15,18 +15,18 @@ export const mutations = {
       ...data
     }
   },
-  addStock (state, stocks) {
-    const allStocks = state.stocks
-    const unexistedStocks = stocks.filter(i => allStocks.indexOf(i) === -1)
-    state.stocks = [...allStocks, ...unexistedStocks]
+  addStock (state, stockSymbols) {
+    const unexistedStocks = stockSymbols.filter(i => state.stocks.indexOf(i) === -1)
+    state.stocks = [...state.stocks, ...unexistedStocks]
   }
 }
 
 export const actions = {
-  getReal ({ commit }, payload) {
+  getReal ({ commit, dispatch }, stockSymbols) {
+    dispatch('addStock', stockSymbols)
     return new Promise((resolve, reject) => {
       getStocksReal({
-        stocks: payload.stocks
+        stocks: stockSymbols.join(',')
       }).then((res) => {
         commit('mergeReal', extractFieldsToObj(res.data.snapshot))
         resolve()
@@ -40,7 +40,7 @@ export const actions = {
       commit('mergeReal', extractFieldsToObj(res.data.snapshot))
     }).catch(() => {})
   },
-  addStock ({ commit }, stocks) {
-    commit('addStock', stocks)
+  addStock ({ commit, dispatch }, stockSymbols) {
+    commit('addStock', stockSymbols)
   }
 }

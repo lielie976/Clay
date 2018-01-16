@@ -34,8 +34,8 @@
           <span class="-market-color--rise home-stockindex-ratio-item-count">{{ quoteChange.surged_num_count }}</span>
         </div>
         <div class="home-stockindex-ratio-item">
-          <span class="-market-color--descline home-stockindex-ratio-item-label">跌</span>
-          <span class="-market-color--descline home-stockindex-ratio-item-count">{{ quoteChange.decline_num_count }}</span>
+          <span class="-market-color--decline home-stockindex-ratio-item-label">跌</span>
+          <span class="-market-color--decline home-stockindex-ratio-item-count">{{ quoteChange.decline_num_count }}</span>
         </div>
         <div class="home-stockindex-ratio-item">
           <span class="-market-color--balance home-stockindex-ratio-item-label">平</span>

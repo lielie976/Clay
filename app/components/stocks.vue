@@ -1,17 +1,18 @@
 <template>
   <ul class="stock-group" v-if="stocks">
-    <li class="stock-group-item" v-for="stock in stocks" :key="stock.symbol" v-if="real[stock.Symbol]">
+    <li class="stock-group-item" v-for="stock in stocks" :key="stock.symbol">
       <a 
         :class="{
           'stock-group-item-link': true,
-          [renderFontColor(real[stock.Symbol])]: true
+          [renderFontColor(real[stock.Symbol])]: true,
+          '-market-color--balance': !renderFontColor(real[stock.Symbol])
         }"
         :href="`/stock/${stock.Symbol}`"
         target="_blank"
       >
         <i :class="{'iconfont': true, [renderIcon(real, stock.Symbol)]: true}"></i>
         <span class="stock-group-item-name">{{  stock.Name }}</span>
-        <span class="stock-group-item-rate">{{ renderRate(real[stock.Symbol]) }}</span>
+        <span class="stock-group-item-rate">{{ renderRate(real[stock.Symbol]) || '--' }}</span>
       </a>
       
     </li>
@@ -29,7 +30,8 @@ export default {
   watch: {
     stocks (newVal) {
       if (newVal && newVal.length) {
-        this.$store.dispatch('stock/addStock', newVal.map(i => i.Symbol))
+        const stockSymbols = newVal.map(i => i.Symbol)
+        this.$store.dispatch('stock/getReal', stockSymbols)
       }
     }
   },
@@ -45,19 +47,15 @@ export default {
     getReal () {
       const stocks = this.stocks
       if (stocks && stocks.length) {
-        this.$store.dispatch('stock/getReal', {
-          stocks: stocks.map(i => i.Symbol).join(',')
-        })
+        this.$store.dispatch('stock/getReal', stocks.map(i => i.Symbol))
       }
     },
     renderFontColor (val) {
-      if (!val) return
-      if (val.trade_status === 'HALT') {
-        return '-market-color--balance'
-      } else {
-        const rate = val.px_change_rate
-        return rate >= 0 ? `-market-color--rise` : `-market-color--descline`
-      }
+      if (!val || val.trade_status === 'HALT') return
+      // 默认给了balance的class
+      // return '-market-color--balance'
+      const rate = val.px_change_rate
+      return rate >= 0 ? `-market-color--rise` : `-market-color--decline`
     },
     renderIcon (val, b) {
       return val.px_change_rate >= 0 ? 'icon-gupiaozhang' : 'icon-gupiaodie'

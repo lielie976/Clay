@@ -1,4 +1,5 @@
 @import 'variables.less';
+@import 'explain-msg';
 
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -14,6 +15,11 @@ html {
 
 body {
   background: #f6f7fb;
+  font-size: 16px;
+}
+
+#nuxt-layout-container {
+  min-height: 100vh;
 }
 
 *, *:before, *:after {
@@ -22,9 +28,6 @@ body {
 }
 
 a {
-  color: @mainFontColor;
-  cursor: pointer;
-  text-decoration: none;
   &:visited,
   &:hover {
     color: @mainFontColor;
@@ -57,7 +60,7 @@ img {
   }
 }
 
-.-market-bg--descline {
+.-market-bg--decline {
   background-color: @subDeclineBlockColor;
   &:hover {
     background-color: @subDeclineBlockHoverColor;
@@ -78,7 +81,7 @@ img {
   }
 }
 
-.-market-color--descline {
+.-market-color--decline {
   color: @subDeclineColor;
   &:hover {
     color: @subDeclineColor;

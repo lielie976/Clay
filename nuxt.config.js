@@ -49,7 +49,6 @@ module.exports = {
   },
   plugins: [
     '~/plugins/filters',
-    '~/plugins/iview',
     '~/plugins/styles'
   ],
   env: {

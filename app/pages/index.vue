@@ -53,20 +53,22 @@ export default {
     MsgsContainer
   },
   mounted () {
+    const { dispatch } = this.$store
+    dispatch('settings/getTrending')
     this.shortTimer = setInterval(() => {
-      this.$store.dispatch('market/getIndexes')
-      this.$store.dispatch('market/getQuoteChange')
-      this.$store.dispatch('market/getThermometer')
-      this.$store.dispatch('settings/getTrending')
+      dispatch('market/getIndexes')
+      dispatch('market/getQuoteChange')
+      dispatch('market/getThermometer')
+      dispatch('settings/getTrending')
     }, 1000 * 30)
     this.longTimer = setInterval(() => {
-      this.$store.dispatch('zhutiku/getZhutikuRankAsc')
-      this.$store.dispatch('zhutiku/getZhutikuRankDesc')
-      this.$store.dispatch('yuanchuang/getTop')
-      this.$store.dispatch('settings/getSettings')
+      dispatch('zhutiku/getZhutikuRankAsc')
+      dispatch('zhutiku/getZhutikuRankDesc')
+      dispatch('yuanchuang/getTop')
+      dispatch('settings/getSettings')
     }, 1000 * 30)
     this.FiveMinuteTimer = setInterval(() => {
-      this.$store.dispatch('homeMsgs/getHotSubjects')
+      dispatch('homeMsgs/getHotSubjects')
     }, 1000 * 60 * 5)
   },
   destroyed () {

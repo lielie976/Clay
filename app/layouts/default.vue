@@ -1,6 +1,8 @@
 <template>
   <div>
-    <nuxt/>
+    <div id="nuxt-layout-container">
+      <nuxt/>
+    </div>
     <fixed-tool />
     <common-footer />
   </div>
