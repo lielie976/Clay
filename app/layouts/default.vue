@@ -4,6 +4,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  mounted () {
+    setInterval(() => {
+      this.$store.dispatch('stock/refreshStocks')
+    }, 5000)
+  }
+}
+</script>
+
 <style lang="less">
 @import '../styles/global.less';
 

@@ -58,7 +58,7 @@ export default {
       this.$store.dispatch('market/getQuoteChange')
       this.$store.dispatch('market/getThermometer')
       this.$store.dispatch('settings/getTrending')
-    }, 1000 * 5)
+    }, 1000 * 30)
     this.longTimer = setInterval(() => {
       this.$store.dispatch('zhutiku/getZhutikuRankAsc')
       this.$store.dispatch('zhutiku/getZhutikuRankDesc')

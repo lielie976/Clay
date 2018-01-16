@@ -26,18 +26,21 @@ export default {
       type: Array
     }
   },
+  watch: {
+    stocks (newVal) {
+      console.log(newVal)
+      if (newVal && newVal.length) {
+        this.$store.dispatch('stock/addStock', newVal.map(i => i.Symbol))
+      }
+    }
+  },
   computed: {
     real () {
       return this.$store.state.stock.real
     }
   },
-  created () {
-    if (typeof window === 'undefined') return
+  mounted () {
     this.getReal()
-    // this.timer = setInterval(this.getReal, 5000)
-  },
-  destroyed () {
-    clearInterval(this.timer)
   },
   methods: {
     getReal () {
