@@ -84,7 +84,7 @@
             </span>
           </div>
         </div>
-        <div class="stock-info-detail" v-if="stockInfo.securities_type === 'index'">
+        <div class="stock-info-detail is-index" v-if="stockInfo.securities_type === 'index'">
           <div class="stock-info-detail-container">
             <span class="stock-info-detail-item">
               <span class="stock-info-detail-item-label">昨收</span>
@@ -92,7 +92,7 @@
             </span>
             <span class="stock-info-detail-item">
               <span class="stock-info-detail-item-label">最高</span>
-              <span class="stock-info-detail-item-text">{{ stockInfo.high_px | toFixed(2) }}</span>
+              <span :class="['stock-info-detail-item-text', renderRateStatusColor(stockInfo.high_px, stockInfo.preclose_px)]">{{ stockInfo.high_px | toFixed(2) }}</span>
             </span>
             <span class="stock-info-detail-item">
               <span class="stock-info-detail-item-label">成交量</span>
@@ -100,11 +100,11 @@
             </span>
             <span class="stock-info-detail-item">
               <span class="stock-info-detail-item-label">今开</span>
-              <span class="stock-info-detail-item-text">{{ stockInfo.open_px | toFixed(2) }}</span>
+              <span :class="['stock-info-detail-item-text', renderRateStatusColor(stockInfo.open_px, stockInfo.preclose_px)]">{{ stockInfo.open_px | toFixed(2) }}</span>
             </span>
             <span class="stock-info-detail-item">
               <span class="stock-info-detail-item-label">最低</span>
-              <span class="stock-info-detail-item-text">{{ stockInfo.low_px | toFixed(2) }}</span>
+              <span :class="['stock-info-detail-item-text', renderRateStatusColor(stockInfo.low_px, stockInfo.preclose_px)]">{{ stockInfo.low_px | toFixed(2) }}</span>
             </span>
             <span class="stock-info-detail-item">
               <span class="stock-info-detail-item-label">成交额</span>
@@ -264,9 +264,13 @@ export default {
           display: flex;
           flex-wrap: wrap;
           height: 100%;
+          align-items: center;
+        }
+        &.is-index {
+          flex: 0.5 1 0%;
         }
         &-item {
-          width: 16%;
+          width: 143px;
           &-label {
             display: inline-block;
           }
