@@ -55,6 +55,7 @@ import { getMessage } from '~/api/message';
 import BkjAsideList from '~/components/BkjAsideList';
 import StocksAsideList from '~/components/StocksAsideList';
 import config from '~/conf'
+import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ params }) {
@@ -67,7 +68,12 @@ export default {
   },
   head () {
     return {
-      title: this.data.Title
+      title: `${this.data.Title} | ${texts.slogan}`,
+      meta: [{
+        hid: `description`,
+        name: 'description',
+        content: this.data.Summary
+      }]
     };
   },
   methods: {

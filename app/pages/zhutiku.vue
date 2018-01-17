@@ -27,6 +27,7 @@ import Rank from '~/views/zhutiku/Rank'
 import JinRiJiHui from '~/views/zhutiku/JinRiJiHui'
 import ZhongChangXianJiHui from '~/views/zhutiku/ZhongChangXianJiHui'
 import Ambush from '~/components/Ambush'
+import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
@@ -35,6 +36,11 @@ export default {
       store.dispatch('zhutiku/getZhutikuRankDesc'),
       store.dispatch('settings/getSettings')
     ])
+  },
+  head () {
+    return {
+      title: `主题库 | ${texts.slogan}`
+    }
   },
   components: {
     Search,

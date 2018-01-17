@@ -10,6 +10,7 @@
 <script>
 import Subject from '~/views/subject'
 import { getSubject } from '~/api/subject'
+import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ params }) {
@@ -17,6 +18,11 @@ export default {
     return {
       data,
       id: params.id
+    }
+  },
+  head () {
+    return {
+      title: `${this.data.Subject.Title} | ${texts.slogan}`
     }
   },
   components: {

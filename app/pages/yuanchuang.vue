@@ -93,6 +93,7 @@
 <script>
 import WidgetBox from '~/components/WidgetBox'
 import YuanchuangMsgs from '~/views/yuanchuang/Msgs'
+import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
@@ -108,6 +109,11 @@ export default {
         }
       })
     ])
+  },
+  head () {
+    return {
+      title: `原创频道 | ${texts.slogan}`
+    }
   },
   components: {
     WidgetBox,

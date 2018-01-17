@@ -10,6 +10,7 @@
 <script>
 import Subject from '~/views/subject'
 import { getBkjLinkedSubject } from '~/api/bkj'
+import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ params }) {
@@ -17,6 +18,11 @@ export default {
     return {
       data,
       id: params.id
+    }
+  },
+  head () {
+    return {
+      title: `${this.data.BkjName} | ${texts.slogan}`
     }
   },
   components: {

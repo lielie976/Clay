@@ -130,6 +130,7 @@
 <script>
 import { getStocksReal } from '~/api/wows'
 import { extractFieldsToObj, getMarketTextColor } from '~/utils/helpers'
+import texts from '~/utils/texts'
 
 const fields = 'prod_name,trade_status,update_time,last_px,px_change,px_change_rate,preclose_px,open_px,high_px,low_px,amplitude,turnover_ratio,pe_rate,dyn_pb_rate,market_value,circulation_value,business_amount,business_balance,hq_type_code,securities_type'
 
@@ -143,6 +144,11 @@ export default {
     return {
       symbol: params.symbol,
       stockInfo: extractFieldsToObj(res.data.snapshot)[symbol]
+    }
+  },
+  head () {
+    return {
+      title: `${this.stockInfo.prod_name} ${this.symbol} | ${texts.slogan}`
     }
   },
   methods: {
