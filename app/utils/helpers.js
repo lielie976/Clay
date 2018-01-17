@@ -48,3 +48,7 @@ export function renderMarketColor (val) {
 export function formatDate (date, formats) {
   return format(date, formats)
 }
+
+export function reachWindowBottom () {
+  return (window.innerHeight + window.scrollY) + 500 >= document.body.offsetHeight
+}

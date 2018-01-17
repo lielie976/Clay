@@ -1,5 +1,5 @@
 <template>
-  <widget-box title="相关板块">
+  <widget-box :title="title">
     <a 
       :href="`/theme/${bkj.Id}`"
       :class="{
@@ -26,6 +26,10 @@ export default {
   props: {
     data: {
       type: Array
+    },
+    title: {
+      type: String,
+      default: '相关板块'
     }
   },
   data () {
