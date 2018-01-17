@@ -63,7 +63,9 @@ export default {
     },
     getStocksReal () {
       getmidLongTermStocks().then((historyReal) => {
-        this.$store.dispatch('stock/getReal', this.data.map(i => i.TrackStock ? i.TrackStock.Symbol : null)).then((data) => {
+        this.$store.dispatch('stock/getReal', {
+          symbols: this.data.map(i => i.TrackStock ? i.TrackStock.Symbol : null)
+        }).then((data) => {
           const real = {}
           Object.keys(data).forEach((symbol) => {
             real[symbol] = data[symbol]

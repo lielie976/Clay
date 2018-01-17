@@ -1,6 +1,22 @@
 import { format } from 'date-fns'
 import Timeago from 'timeago.js'
 
+export function toFixed (value, digit) {
+  return (value && typeof value === 'number') ? value.toFixed(digit) : value
+}
+
+export function numToRate (value, noPositive) {
+  if (value && typeof value === 'number') {
+    const num = toFixed(value, 2)
+    return num >= 0 ? `${noPositive ? '' : '+'}${num}%` : `${num}%`
+  }
+}
+
+export function truncate (str, digit, suffix) {
+  let newSuffix = typeof suffix === 'string' && str.length > digit ? suffix : ''
+  return str.trim().substring(0, digit) + newSuffix
+}
+
 export function extractFieldsToObj (data) {
   const real = {}
   for (var i in data) {
@@ -56,4 +72,31 @@ export function reachWindowBottom () {
 
 export function timeago (time) {
   return Timeago().format(time, 'zh_CN')
+}
+
+export function getCNPriceNum (num) {
+  if (!num || typeof num !== 'number') return
+  if (num > 1e8) {
+    return (num / 1e8).toFixed(1) + '亿'
+  } else if (num > 1e4) {
+    return (num / 1e4).toFixed(2) + '万'
+  } else {
+    return num.toFixed(2)
+  }
+}
+
+export function getStockTradeStatus (status) {
+  const tradeStatus = {
+    OCALL: '集合竞价',
+    TRADE: '交易中',
+    HALT: '停牌',
+    BREAK: '休市',
+    INDEX: '指数'
+  }
+  return tradeStatus[status]
+}
+
+export function getMarketTextColor (rate) {
+  if (!rate) return '-market-color--balance'
+  return rate >= 0 ? '-market-color--rise' : '-market-color--decline'
 }

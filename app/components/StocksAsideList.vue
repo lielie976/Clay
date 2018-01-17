@@ -47,7 +47,7 @@ export default {
   mounted () {
     const stocks = this.stocks
     if (stocks && stocks.length) {
-      this.$store.dispatch('stock/getReal', stocks.map(i => i.Symbol))
+      this.$store.dispatch('stock/getReal', { symbols: stocks.map(i => i.Symbol) })
     }
   },
   methods: {

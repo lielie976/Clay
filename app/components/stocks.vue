@@ -19,7 +19,7 @@ export default {
     stocks (newVal) {
       if (newVal && newVal.length) {
         const stockSymbols = newVal.map(i => i.Symbol)
-        this.$store.dispatch('stock/getReal', stockSymbols)
+        this.$store.dispatch('stock/getReal', { symbols: stockSymbols })
       }
     }
   },
@@ -35,7 +35,7 @@ export default {
     getReal () {
       const stocks = this.stocks
       if (stocks && stocks.length) {
-        this.$store.dispatch('stock/getReal', stocks.map(i => i.Symbol))
+        this.$store.dispatch('stock/getReal', { symbols: stocks.map(i => i.Symbol) })
       }
     }
   }

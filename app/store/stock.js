@@ -22,11 +22,12 @@ export const mutations = {
 }
 
 export const actions = {
-  getReal ({ commit, dispatch }, stockSymbols) {
-    dispatch('addStock', stockSymbols)
+  getReal ({ commit, dispatch }, payload) {
+    dispatch('addStock', payload.symbols)
     return new Promise((resolve, reject) => {
       getStocksReal({
-        stocks: stockSymbols.join(',')
+        stocks: payload.symbols.join(','),
+        fields: payload.fields
       }).then((res) => {
         commit('mergeReal', extractFieldsToObj(res.data.snapshot))
         resolve(extractFieldsToObj(res.data.snapshot))
