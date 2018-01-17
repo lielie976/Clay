@@ -7,3 +7,5 @@ export const getTrending = () => api.get('/api/pc/panzhongfengkou')
 export const getSettings = () => api.get('/api/pc/settings')
 
 export const getmidLongTermStocks = () => api.get('/api/stocks/prices/midLongTerm')
+
+export const getBaiduTTSToken = () => api.get('/api/pc/baiduToken')

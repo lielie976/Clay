@@ -180,12 +180,15 @@ export const actions = {
     })
   },
   refreshMsgs ({ commit, getters }) {
-    getHomeMsgs({
-      ...getters.msgsParams,
-      tailmark: undefined,
-      msgIdMark: undefined
-    }).then((res) => {
-      commit('refreshMsgs', res)
+    return new Promise((resolve, reject) => {
+      getHomeMsgs({
+        ...getters.msgsParams,
+        tailmark: undefined,
+        msgIdMark: undefined
+      }).then((res) => {
+        commit('refreshMsgs', res)
+        resolve(res)
+      }).catch(err => reject(err))
     })
   }
 }

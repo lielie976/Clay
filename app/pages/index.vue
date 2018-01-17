@@ -54,6 +54,7 @@ export default {
   },
   mounted () {
     const { dispatch } = this.$store
+    dispatch('external/getBaiduTTSToken')
     dispatch('settings/getTrending')
     this.shortTimer = setInterval(() => {
       dispatch('market/getIndexes')

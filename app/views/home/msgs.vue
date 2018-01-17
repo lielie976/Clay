@@ -14,6 +14,9 @@
 </template>
 
 <script>
+// import Mytip from '~/services/notification'
+import Push from 'push.js'
+import readFromBaidu from '~/services/baiduTTS'
 import Msg from './Msg'
 
 function checkIfMsgCrossDay (msgs) {
@@ -43,6 +46,9 @@ export default {
       let msgs = this.$store.state.homeMsgs.msgs
       msgs = checkIfMsgCrossDay(msgs)
       return msgs
+    },
+    homeMsgs () {
+      return this.$store.state.homeMsgs
     }
   },
   methods: {
@@ -52,7 +58,33 @@ export default {
   },
   mounted () {
     this.timer = setInterval(() => {
-      this.$store.dispatch('homeMsgs/refreshMsgs')
+      this.$store.dispatch('homeMsgs/refreshMsgs').then((res) => {
+        if (!res.NewMsgs) return
+        if (this.homeMsgs.push.tts) {
+          const newMsgsTitle = res.NewMsgs.map((i) => {
+            const hour = new Date(i.CreatedAtInSec * 1000).getHours()
+            const minute = new Date(i.CreatedAtInSec * 1000).getMinutes()
+            return `${hour}点${minute}分 ${i.Title} `
+          }).join(' ')
+          readFromBaidu(newMsgsTitle, this.$store.state.external.baiduTTSToken.Token)
+        }
+        if (this.homeMsgs.push.notification) {
+          const msg = res.NewMsgs[res.NewMsgs.length - 1]
+          Push.create(msg.Title, {
+            body: msg.Summary,
+            icon: 'http://image.bao.wallstreetcn.com/baoer_logo/120x120.png',
+            timeout: 10000,
+            onClick: function () {
+              window.focus()
+              this.close()
+            }
+          })
+        }
+        if (this.homeMsgs.push.audio) {
+          const audio = new Audio('/ringstone/alert.mp3')
+          audio.play()
+        }
+      })
     }, 5000)
   },
   destroyed () {
