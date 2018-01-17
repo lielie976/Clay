@@ -1,5 +1,4 @@
 import { getBaiduTTSToken } from '~/api/settings'
-import readFromBaidu from '~/services/baiduTTS'
 
 export const state = () => ({
   baiduTTSToken: {}
