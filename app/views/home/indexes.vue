@@ -18,7 +18,7 @@
                 'home-stockindex-index-item-info-change-value': true,
                 [renderMarketColor(index.px_change)]: true
               }"
-            >{{ index.px_change | toFixed(2) }}</span>
+            >{{ index.px_change | numToRate(false, true) }}</span>
             <span 
               :class="{
                 'home-stockindex-index-item-info-change-ratio': true,
@@ -69,11 +69,11 @@ export default {
 
 <style lang="less" scoped>
 #home-stockIndex-container {
-  background: #353A47;
+  background: #353a47;
 }
 
-.home-stockindex{
-  background: #353A47;
+.home-stockindex {
+  background: #353a47;
   height: 32px;
   width: 1200px;
   display: flex;
@@ -81,53 +81,53 @@ export default {
   color: #e6e6e6;
   font-size: 14px;
   line-height: 32px;
-  &-index{
-    display:flex;
-    &-item{
+  &-index {
+    display: flex;
+    &-item {
       position: relative;
       width: 290px;
-      &:after{
+      &:after {
         content: '';
         height: 60px;
         display: block;
-        width:1px;
+        width: 1px;
         position: absolute;
         right: 0;
         top: 10px;
       }
     }
   }
-  &-ratio{
-    &-item{
+  &-ratio {
+    &-item {
       display: inline-block;
       margin-right: 20px;
-      &-label{
-        text-align:center;
+      &-label {
+        text-align: center;
       }
-      &-count{
-        text-align:center;
+      &-count {
+        text-align: center;
       }
     }
   }
 }
-.home-stockindex-index-item{
+.home-stockindex-index-item {
   color: #fff;
   &:hover {
     color: #fff;
   }
-  &-title{
+  &-title {
     display: inline-block;
     margin-right: 5px;
   }
-  &-info{
+  &-info {
     display: inline-block;
-    &-value{
+    span {
+      margin-left: 5px;
+    }
+    &-value {
       line-height: 32px;
       text-align: right;
     }
   }
 }
-
-
 </style>
-

@@ -81,6 +81,7 @@ export default {
 
 <style lang="less">
 .home-main-container {
+  width: 1200px;
   margin: 20px auto;
   overflow: hidden;
 }

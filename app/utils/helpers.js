@@ -5,10 +5,11 @@ export function toFixed (value, digit) {
   return (value && typeof value === 'number') ? value.toFixed(digit) : value
 }
 
-export function numToRate (value, noPositive) {
+export function numToRate (value, noPositive, noPercentage) {
   if (value && typeof value === 'number') {
     const num = toFixed(value, 2)
-    return num >= 0 ? `${noPositive ? '' : '+'}${num}%` : `${num}%`
+    const percentage = noPercentage ? '' : '%'
+    return num >= 0 ? `${noPositive ? '' : '+'}${num}${percentage}` : `${num}${percentage}`
   }
 }
 
