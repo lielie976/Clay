@@ -28,11 +28,10 @@
 </template>
 
 <script>
-import { debounce } from 'underscore'
-import { reachWindowBottom } from '~/utils/helpers'
 import WidgetBox from '~/components/WidgetBox'
 import StocksAsideList from '~/components/StocksAsideList'
 import BkjAsideList from '~/components/BkjAsideList'
+import pageScrolledToBottom from '~/mixins/pageScrolledToBottom'
 import MsgItem from './MsgItem'
 
 export default {
@@ -59,12 +58,11 @@ export default {
       type: Function
     }
   },
-  mounted () {
-    window.onscroll = debounce(() => {
-      if (reachWindowBottom()) {
-        this.loadMore()
-      }
-    }, 250)
+  mixins: [pageScrolledToBottom],
+  methods: {
+    reachedBottom () {
+      this.loadMore()
+    }
   }
 }
 </script>

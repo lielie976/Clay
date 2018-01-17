@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import Timeago from 'timeago.js'
 
 export function extractFieldsToObj (data) {
   const real = {}
@@ -51,4 +52,8 @@ export function formatDate (date, formats) {
 
 export function reachWindowBottom () {
   return (window.innerHeight + window.scrollY) + 500 >= document.body.offsetHeight
+}
+
+export function timeago (time) {
+  return Timeago().format(time, 'zh_CN')
 }

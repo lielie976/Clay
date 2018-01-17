@@ -9,14 +9,14 @@
         <nuxt-link to="/" exact class="nav-item">
           7 x 24
         </nuxt-link>
-        <nuxt-link to="/zhutiku" exact class="nav-item">
+        <nuxt-link to="/zhutiku" exact class="nav-item" target="_blank">
           主题库
         </nuxt-link>
-        <nuxt-link to="/dingpan" exact class="nav-item">
+        <nuxt-link to="/dingpan" exact class="nav-item" target="_blank">
           智能盯盘
           <img src="/img/HOT.png" class="is-hot" />
         </nuxt-link>
-        <nuxt-link to="/yuanchuang" exact class="nav-item">
+        <nuxt-link to="/yuanchuang" exact class="nav-item" target="_blank">
           原创
         </nuxt-link>
       </div>
