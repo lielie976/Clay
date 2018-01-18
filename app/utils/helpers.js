@@ -2,11 +2,11 @@ import { format } from 'date-fns'
 import Timeago from 'timeago.js'
 
 export function toFixed (value, digit) {
-  return (value && typeof value === 'number') ? value.toFixed(digit) : value
+  return (value && typeof value === 'number') || value === 0 ? value.toFixed(digit) : value
 }
 
 export function numToRate (value, noPositive, noPercentage) {
-  if (value && typeof value === 'number') {
+  if ((value && typeof value === 'number') || value === 0) {
     const num = toFixed(value, 2)
     const percentage = noPercentage ? '' : '%'
     return num >= 0 ? `${noPositive ? '' : '+'}${num}${percentage}` : `${num}${percentage}`
@@ -55,7 +55,7 @@ export function extractWowsApiTypeThree (data) {
 }
 
 export function renderMarketColor (val) {
-  if (!val) return
+  if (!val) return '-market-color--balance'
   if (val >= 0) {
     return '-market-color--rise'
   } else {
