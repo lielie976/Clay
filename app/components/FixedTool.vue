@@ -83,7 +83,7 @@ export default {
 .tools-wechatQrcode-image {
   visibility: hidden;
   position: fixed;
-  bottom: 10px;
+  bottom: 80px;
   right: 80px;
   width: 100px;
   height: 100px;

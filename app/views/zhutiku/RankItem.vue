@@ -2,7 +2,7 @@
   <li 
     :class="{
       'zhutiku-sort-bkj': true,
-      'hint--bottom': index > 2
+      'hint--bottom': index > 2 && bkj.plate_name.length > 7
     }"
     :data-url="bkj.plate_id"
     :style="{background: getBkjSortBg(bkj.pcp)}"

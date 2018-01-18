@@ -13,10 +13,10 @@
                 target="_blank"
                 v-if="item.Subj.FeaturedMsgStyle !== '1'"
               >
-                {{item.Subj.FeaturedMsgTitle}}
+                {{item.Subj.FeaturedMsgTitle | truncate(56, '...')}}
               </a>
               <span v-else>
-                {{item.Subj.FeaturedMsgTitle}}
+                {{item.Subj.FeaturedMsgTitle | truncate(56, '...')}}
               </span>
             </div>
             <div class="jinri-msg-rate">
