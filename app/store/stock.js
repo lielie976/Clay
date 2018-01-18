@@ -35,6 +35,7 @@ export const actions = {
     })
   },
   refreshStocks ({ commit, state }) {
+    if (!state.stocks.length) return
     getStocksReal({
       stocks: state.stocks.join(',')
     }).then((res) => {

@@ -19,6 +19,12 @@
         <nuxt-link to="/yuanchuang" exact class="nav-item" target="_blank">
           原创
         </nuxt-link>
+        <nuxt-link to="/tuoshui" exact class="nav-item" target="_blank">
+          脱水研报
+        </nuxt-link>
+        <nuxt-link to="/zaozhidao" exact class="nav-item" target="_blank">
+          早知道
+        </nuxt-link>
       </div>
       <div class="nav-right">
         <span class="go-login nav-item" data-type="login">登录</span>
