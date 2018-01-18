@@ -84,7 +84,6 @@ export default {
   .logo img {
     width: 108px;
     height: 26px;
-    background: #e6394d;
   }
   .slogan {
     display: inline-block;

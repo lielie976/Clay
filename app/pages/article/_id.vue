@@ -51,16 +51,17 @@
 </template>
 
 <script>
-import { getMessage } from '~/api/message';
-import BkjAsideList from '~/components/BkjAsideList';
-import StocksAsideList from '~/components/StocksAsideList';
+import URI from 'urijs'
+import { getMessage } from '~/api/message'
+import BkjAsideList from '~/components/BkjAsideList'
+import StocksAsideList from '~/components/StocksAsideList'
 import config from '~/conf'
 import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ params }) {
-    const data = await getMessage(params.id);
-    return { data };
+    const data = await getMessage(params.id)
+    return { data }
   },
   components: {
     BkjAsideList,
@@ -69,12 +70,14 @@ export default {
   head () {
     return {
       title: `${this.data.Title} | ${texts.slogan}`,
-      meta: [{
-        hid: `description`,
-        name: 'description',
-        content: this.data.Summary
-      }]
-    };
+      meta: [
+        {
+          hid: `description`,
+          name: 'description',
+          content: this.data.Summary
+        }
+      ]
+    }
   },
   methods: {
     generateQrcode () {
@@ -91,17 +94,38 @@ export default {
           })
         })
       }
+    },
+    handleLinks (selector) {
+      const links = selector.querySelectorAll('a')
+      for (var i = 0; i < links.length; i++) {
+        const pathname = URI(links[i].href).pathname()
+        const segment = URI(links[i].href).segment()
+        if (pathname) {
+          if (pathname.indexOf('web/stocks') > -1) {
+            links[i].href = `/stock/${segment[2]}`
+          } else if (pathname.indexOf('web/subjects') > -1) {
+            links[i].href = `/subject/${segment[2]}`
+          } else if (
+            pathname.indexOf('web/articles') > -1 ||
+            pathname.indexOf('web/messages') > -1 ||
+            pathname.indexOf('web/3rdparty') > -1
+          ) {
+            links[i].href = `/article/${segment[segment.length - 1]}`
+          }
+        }
+      }
     }
   },
   mounted () {
     this.generateQrcode()
     this.lightGallery()
+    this.handleLinks(this.$refs.content)
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
-@import "../../styles/variables.less";
+@import '../../styles/variables.less';
 
 .article-page {
   width: 1200px;
@@ -137,7 +161,7 @@ export default {
       position: absolute;
       top: 10px;
       left: -32px;
-      content: "";
+      content: '';
       width: 4px;
       height: 24px;
       background: @mainColorRed;
@@ -189,7 +213,7 @@ p.article-content-download {
 </style>
 
 <style lang="less">
-@import "../../styles/variables.less";
+@import '../../styles/variables.less';
 
 .article-content {
   a {
