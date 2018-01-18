@@ -29,18 +29,48 @@ import Ambush from '~/components/Ambush'
 
 export default {
   async asyncData ({ store }) {
-    await Promise.all([
-      store.dispatch('homeMsgs/getMsgs'),
-      store.dispatch('homeMsgs/getHotSubjects'),
-      store.dispatch('market/getIndexes'),
-      store.dispatch('market/getQuoteChange'),
-      store.dispatch('market/getThermometer'),
-      store.dispatch('zhutiku/getZhutikuRankAsc'),
-      store.dispatch('zhutiku/getZhutikuRankDesc'),
-      store.dispatch('yuanchuang/getTop'),
-      store.dispatch('settings/getTrending'),
-      store.dispatch('settings/getSettings')
-    ])
+    try {
+      await store.dispatch('homeMsgs/getMsgs')
+    } catch (err) {
+      console.log(err)
+    }
+    try {
+      await store.dispatch('homeMsgs/getHotSubjects')
+    } catch (err) {
+      console.log(err)
+    }
+    try {
+      await Promise.all([
+        store.dispatch('market/getIndexes'),
+        store.dispatch('market/getQuoteChange'),
+        store.dispatch('market/getThermometer')
+      ])
+    } catch (err) {
+      console.log(err)
+    }
+    try {
+      await Promise.all([
+        store.dispatch('zhutiku/getZhutikuRankAsc'),
+        store.dispatch('zhutiku/getZhutikuRankDesc')
+      ])
+    } catch (err) {
+      console.log(err)
+    }
+    try {
+      await store.dispatch('yuanchuang/getTop')
+    } catch (err) {
+      console.log(err)
+    }
+    try {
+      await store.dispatch('settings/getTrending')
+    } catch (err) {
+      console.log(err)
+    }
+    try {
+      await store.dispatch('settings/getSettings')
+    } catch (err) {
+      console.log(err)
+    }
   },
   components: {
     Indexes,
