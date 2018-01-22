@@ -21,7 +21,7 @@ import PremiumSubjectMeta from '~/components/PremiumSubject/Meta'
 import PremiumSubjectMsgList from '~/components/PremiumSubject/MsgList'
 import TrialMsgs from '~/components/TrialMsgs'
 import WidgetBox from '~/components/WidgetBox'
-import AsideBoughtMsgs from '~/components/AsideBoughtMsgs'
+import AsideBoughtMsgs from '~/components/BoughtMsgs/AsideBoughtMsgs'
 import HotMsgs from './HotMsgs'
 
 export default {
