@@ -28,10 +28,11 @@ export default {
   margin-bottom: 20px;
 }
 .widgetBox-titlebar{
+  position: relative;
   height: 30px;
   padding: 0 15px 0 0;
+  margin-bottom: 8px;
   border-bottom:1px solid @border-color-dark;
-  position: relative;
   &-label{
     font-size: 16px;
     display: inline-block;

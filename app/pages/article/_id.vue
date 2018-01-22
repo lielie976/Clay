@@ -86,16 +86,16 @@ export default {
       qrcode.makeCode(`${config.M_DOMAIN}/message/${this.data.Id}`)
     },
     lightGallery () {
-      if (this.$refs.content) {
-        this.$refs.content.querySelectorAll('img').forEach(img => {
-          img.setAttribute('data-src', img.getAttribute('src'))
-          window.lightGallery(img, {
-            selector: 'this'
-          })
+      if (!this.$refs.content) return
+      this.$refs.content.querySelectorAll('img').forEach(img => {
+        img.setAttribute('data-src', img.getAttribute('src'))
+        window.lightGallery(img, {
+          selector: 'this'
         })
-      }
+      })
     },
     handleLinks (selector) {
+      if (!selector) return
       const links = selector.querySelectorAll('a')
       for (var i = 0; i < links.length; i++) {
         const pathname = URI(links[i].href).pathname()

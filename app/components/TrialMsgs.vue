@@ -6,11 +6,13 @@
         :key="msg.Id"
         class="trial-msg"
       >
-        <img :src="msg.Title" alt="试读文章配图" class="trial-msg-img">
-        <div class="trial-msg-title">
-          {{ msg.Title | truncate(20, '...') }}
-          <div class="trial-msg-flag">试读</div>
-        </div>
+        <a :href="`/article/${msg.Id}`" target="_blank">
+          <img :src="msg.Title" alt="试读文章配图" class="trial-msg-img">
+          <div class="trial-msg-title">
+            {{ msg.Title | truncate(20, '...') }}
+            <div class="trial-msg-flag">试读</div>
+          </div>
+        </a>
       </li>
     </ul>
   </widget-box>
@@ -33,14 +35,16 @@ export default {
 .trial-msgs {
   display: flex;
   justify-content: space-around;
-  margin-top: 8px;
 }
 .trial-msg {
-  display: flex;
   flex: 0 0 272px;
-  padding: 8px;
-  background: #FFFFFF;
-  border: 1px solid #EEEEEE;
+  // padding: 8px;
+  background: #fff;
+  border: 1px solid #eee;
+  a {
+    display: flex;
+    padding: 8px;
+  }
   &-img {
     flex: 0 0 72px;
     width: 72px;

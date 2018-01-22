@@ -21,7 +21,7 @@ export default {
   color: #999;
   .iconfont {
     font-size: 12px;
-    margin-right: 10px;
+    margin-right: 5px;
   }
 }
 </style>
