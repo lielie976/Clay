@@ -1,19 +1,14 @@
 <template>
-  <zao-zhi-dao :data="data" />
+  <zao-zhi-dao />
 </template>
 
 <script>
-import { getSubject } from '~/api/subject'
 import ZaoZhiDao from '~/views/zaozhidao'
 import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('homeMsgs/getMsgs')
-    const data = await getSubject(679, { limit: 20 })
-    return {
-      data
-    }
+    await store.dispatch('zaozhidao/getInfo')
   },
   components: {
     ZaoZhiDao

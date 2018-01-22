@@ -7,8 +7,7 @@
         class="trial-msg"
       >
         <a :href="`/article/${msg.Id}`" target="_blank">
-          <img src="/img/tuo-shui-yan-bao-msg.png" alt="试读文章配图" class="trial-msg-img">
-          <!-- <img :src="msg.Title" alt="试读文章配图" class="trial-msg-img"> -->
+          <img :src="msg.Image" alt="试读文章配图" class="trial-msg-img">
           <div class="trial-msg-title">
             {{ msg.Title | truncate(20, '...') }}
             <div class="trial-msg-flag">试读</div>
@@ -35,11 +34,10 @@ export default {
 <style lang="less" scoped>
 .trial-msgs {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .trial-msg {
   flex: 0 0 272px;
-  // padding: 8px;
   background: #fff;
   border: 1px solid #eee;
   a {

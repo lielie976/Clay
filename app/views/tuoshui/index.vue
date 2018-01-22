@@ -5,7 +5,7 @@
     </div>
     <section class="main-container">
       <section class="main-container-left">
-        <trial-msgs :msgs="trialMsgs" />
+        <trial-msgs :msgs="data.trialMsgs" />
         <msg-list :msgs="data.Messages" :data="data" />
       </section>
       <section class="main-container-right">
@@ -42,9 +42,6 @@ export default {
         Specialty: this.data.Subject.Specialty.replace(/\n/g, '\n\n'),
         slogan: '每天6分钟，每天6元起，基金经理都在看的全球研报精华'
       }
-    },
-    trialMsgs () {
-      return this.data.Messages.slice(0, 3)
     }
   }
 }

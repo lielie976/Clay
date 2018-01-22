@@ -1,65 +1,103 @@
 <template>
-  <div class="premium-subject-list-container">
+  <widget-box title="早知道更新">
     <ul class="premium-subject-list">
       <li
-        v-for="msg in msgs"
+        v-for="(msg, index) in processedMsgs"
         :key="msg.Id"
-        class="premium-subject-list-item"
+        :class="{
+          'premium-subject-list-item': true,
+          'is-newest': checkNewest(index)
+        }"
       >
-        <div class="premium-subject-list-item-headertime">
-          <span>{{formatDate(msg.CreatedAtInSec * 1000, 'MM月DD日')}}</span>
-          <span>{{getDateDay(msg.CreatedAtInSec * 1000, true)}}</span>
+        <div class="premium-subject-list-item-headertime" v-if="msg.divideDay">
+          <span>{{formatDate(msg.CreatedAt * 1000, 'MM月DD日')}}</span>
+          <span>{{getDateDay(msg.CreatedAt * 1000, true)}}</span>
         </div>
         <div class="premium-subject-list-item-inner">
           <div class="premium-subject-list-item-meta">
-            <!-- <div class="premium-subject-list-item-meta-categ">
-              <p>{{formatDate(msg.CreatedAtInSec * 1000, 'MM月DD日')}}</p>
-              <p>早知道</p>
-            </div> -->
             <img src="/img/zaozhidao-banner.jpg" :alt="msg.Title">
           </div>
           <div class="premium-subject-list-item-content">
             <h3 class="premium-subject-list-item-title">
-              <a :href="`/article/${msg.Id}`" target="_blank">{{msg.Title}}</a>
+              <a
+                :href="`/article/${msg.Id}`"
+                target="_blank"
+                :class="{
+                  'hint--top': msg.Title.length > 64
+                }"
+                :aria-label="msg.Title"
+              >
+                {{msg.Title | truncate(64, '...')}}
+              </a>
             </h3>
             <div class="premium-subject-list-item-summary">
               <pre class="normal-pre-text">{{msg.Summary}}</pre>
             </div>
             <p>
-              <time-widget :time="msg.CreatedAtInSec"  />
+              <time-widget :time="msg.CreatedAt"  />
             </p>
           </div>
         </div>
       </li>
     </ul>
     <div class="pagination">
-      <Page :total="100" show-elevator @on-change="onChangePagi"></Page>
+      <Page
+        :current="data.params.page"
+        :total="100"
+        show-elevator
+        @on-change="changePage"
+      />
     </div>
-  </div>
+  </widget-box>
 </template>
 
 <script>
-import { formatDate, getDateDay } from '~/utils/helpers'
+import { formatDate, getDateDay, smoothscroll } from '~/utils/helpers'
 import TimeWidget from '~/components/TimeWidget'
+import WidgetBox from '~/components/WidgetBox'
 
 export default {
   props: {
-    msgs: Array
+    msgs: Array,
+    data: Object
   },
   components: {
-    TimeWidget
+    TimeWidget,
+    WidgetBox
+  },
+  computed: {
+    processedMsgs () {
+      const tmp = {}
+      const msgs = this.msgs.map((i) => {
+        const date = new Date(i.CreatedAt * 1000).getDate()
+        const msg = tmp[date] ? i : {
+          ...i,
+          divideDay: true
+        }
+        tmp[date] = true
+        return msg
+      })
+      return msgs
+    }
   },
   methods: {
     formatDate,
     getDateDay,
-    onChangePagi (page) {
-      console.log(page)
+    changePage (page) {
+      const top = document.querySelector('.premium-subject-list').offsetTop - 100
+      smoothscroll(top)
+      this.$store.commit('zaozhidao/changePage', page)
+    },
+    checkNewest (index) {
+      return index === 0 && this.data.params.page === 1
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+@import '../../styles/variables.less';
+
 .premium-subject-list {
   padding: 16px 0 24px;
   background-color: #fff;
@@ -67,6 +105,13 @@ export default {
 .premium-subject-list-item {
   position: relative;
   margin: 0 0 24px 0;
+  &.is-newest {
+    color: red;
+    .premium-subject-list-item-headertime {
+      color: @mainRed;
+      border-left-color: @mainRed;
+    }
+  }
   &-inner {
     display: flex;
     height: 182px;
@@ -74,6 +119,9 @@ export default {
     border: solid 1px #efefef;
     transition: 0.4s;
     margin-top: 15px;
+    &:hover {
+      box-shadow: 0 0 8px 0 rgba(29, 33, 38, 0.1);
+    }
   }
   &-headertime {
     color: #999999;
@@ -84,9 +132,6 @@ export default {
     span {
       margin-right: 10px;
     }
-  }
-  &:hover {
-    box-shadow: 0 0 8px 0 rgba(29, 33, 38, 0.1);
   }
   &-meta {
     position: relative;
@@ -105,6 +150,9 @@ export default {
       color: #fff;
       text-align: center;
       line-height: 22px;
+      &.is-stock {
+        background-image: linear-gradient(-133deg, #5283C5 0%, #D53C51 100%);
+      }
     }
     img {
       width: 180px;
@@ -137,6 +185,10 @@ export default {
     font-size: 14px;
     line-height: 1.57;
     color: #666;
+    pre {
+      max-height: 64px;
+      overflow: hidden;
+    }
   }
 }
 .pagination {

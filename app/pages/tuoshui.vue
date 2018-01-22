@@ -8,7 +8,6 @@ import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('homeMsgs/getMsgs')
     await store.dispatch('tuoshui/getInfo')
   },
   components: {

@@ -1,18 +1,16 @@
 <template>
   <div>
-    <div class="zzd-meta-container">
+    <div class="zaozhidao-meta-container">
       <premium-subject-meta :subject="subject" />
     </div>
     <section class="main-container">
       <section class="main-container-left">
-        <trial-msgs :msgs="trialMsgs" />
-        <widget-box title="早知道更新">
-          <msg-list :msgs="$store.state.homeMsgs.msgs" />
-        </widget-box>
+        <trial-msgs :msgs="data.trialMsgs" />
+        <msg-list :msgs="data.Messages" :data="data" />
       </section>
       <section class="main-container-right">
-        <aside-bought-msgs :msgs="$store.state.homeMsgs.msgs" />
-        <hot-msgs :msgs="$store.state.homeMsgs.msgs" />
+        <aside-bought-msgs :msgs="data.Messages" />
+        <hot-msgs :msgs="data.Messages" />
       </section>
     </section>
   </div>
@@ -35,21 +33,17 @@ export default {
     HotMsgs,
     MsgList
   },
-  props: {
-    data: Object
-  },
   computed: {
+    data () {
+      return this.$store.state.zaozhidao
+    },
     subject () {
-      console.log(this.data.Subject)
       return {
         ...this.data.Subject,
         Title: 'A股主题早知道',
         Specialty: this.data.Subject.Specialty.replace(/\n/g, '\n\n'),
         slogan: '为人不识早知道，炒遍A股也枉然！'
       }
-    },
-    trialMsgs () {
-      return this.$store.state.homeMsgs.msgs.slice(0, 3)
     }
   }
 }
@@ -59,7 +53,7 @@ export default {
 .main-container {
   margin: 24px auto;
 }
-.zzd-meta-container {
+.zaozhidao-meta-container {
   background: url('/img/zaozhidao-banner.jpg') no-repeat;
   background-size: cover;
   background-position: center center;

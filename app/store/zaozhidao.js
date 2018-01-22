@@ -27,7 +27,7 @@ export const mutations = {
 export const actions = {
   getInfo ({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getSubject(581, state.params).then((res) => {
+      getSubject(679, state.params).then((res) => {
         commit('saveInfo', res)
         resolve()
       }).catch(err => reject(err))
