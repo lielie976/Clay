@@ -45,7 +45,7 @@ export default {
 .premium-subject-meta-info {
   position: relative;
   flex: 0 0 976px;
-  background: rgba( 53, 58, 71, 0.6);
+  background: rgba( 53, 58, 71, 0.8);
   padding: 56px 72px 24px 160px;
   &::after {
     content: '';
@@ -54,7 +54,7 @@ export default {
     right: 976px;
     height: 100%;
     width: 1000px;
-    background: rgba( 53, 58, 71, 0.6);
+    background: rgba( 53, 58, 71, 0.8);
   }
   &-title {
     font-size: 36px;
@@ -74,9 +74,12 @@ export default {
     p {
       line-height: 22px;
       margin-bottom: 24px;
+      color: #ccc;
     }
     pre {
       background-color: transparent;
+      color: #ccc;
+      margin-bottom: 24px;
     }
   }
   &-toggle {

@@ -3,7 +3,7 @@
     <div class="premium-subject-meta">
       <meta-info :subject="subject" />
       <div class="premium-subject-meta-subscribe">
-        subscribe
+        <subscribe-status />
       </div>
     </div>
   </div>
@@ -11,13 +11,15 @@
 
 <script>
 import MetaInfo from './MetaInfo'
+import SubscribeStatus from './SubscribeStatus'
 
 export default {
   props: {
     subject: Object
   },
   components: {
-    MetaInfo
+    MetaInfo,
+    SubscribeStatus
   }
 }
 </script>
@@ -39,7 +41,7 @@ export default {
   &-subscribe {
     position: relative;
     flex: 0 0 464px;
-    background: rgba( 53, 58, 71, 0.8);
+    background: rgba( 53, 58, 71, 0.95);
     &::after {
       content: '';
       position: absolute;
@@ -47,7 +49,7 @@ export default {
       left: 464px;
       height: 100%;
       width: 1000px;
-      background: rgba( 53, 58, 71, 0.8);
+      background: rgba( 53, 58, 71, 0.95);
     }
   }
 }
