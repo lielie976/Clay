@@ -17,7 +17,7 @@
 import { truncate } from '~/utils/helpers'
 import NonLogin from '~/components/NonLogin'
 import WidgetBox from '~/components/WidgetBox'
-import MsgItem from './MsgItem'
+import MsgItem from './AsideMsgItem'
 
 export default {
   components: {

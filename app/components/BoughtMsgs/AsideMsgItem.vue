@@ -29,9 +29,6 @@ export default {
 <style lang="less" scoped>
 .bought-msgs-item {
   padding: 16px 24px 16px 0;
-  a {
-    font-weight: 500;
-  }
   &:not(:last-child) {
     border-bottom: 1px solid #efefef;
   }
