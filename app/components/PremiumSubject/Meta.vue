@@ -1,10 +1,8 @@
 <template>
-  <div class="premium-subject-meta-container">
-    <div class="premium-subject-meta">
-      <meta-info :subject="subject" />
-      <div class="premium-subject-meta-subscribe">
-        <subscribe-status />
-      </div>
+  <div class="premium-subject-meta">
+    <meta-info :subject="subject" />
+    <div class="premium-subject-meta-subscribe">
+      <subscribe-status />
     </div>
   </div>
 </template>
@@ -25,13 +23,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.premium-subject-meta-container {
-  background: url('/img/tuoshui-banner.jpg') no-repeat;
-  background-size: cover;
-  background-position: center center;
-  overflow: hidden;
-}
-
 .premium-subject-meta {
   display: flex;
   width: 1440px;

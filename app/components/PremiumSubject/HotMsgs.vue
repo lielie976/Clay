@@ -6,7 +6,7 @@
         {{msg.Title}}
       </a>
       <p class="premium-subject-hot-list-item-time">
-        <time-widget :time="msg.CreatedAtInSec" />
+        <time-widget :time="msg.CreatedAt" />
       </p>
     </li>
   </ul>

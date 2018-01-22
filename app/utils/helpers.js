@@ -112,3 +112,11 @@ export function getDateDay (time, useToday) {
     return days[day]
   }
 }
+
+export function smoothscroll (top = 0) {
+  var currentScroll = document.documentElement.scrollTop || document.body.scrollTop
+  if (currentScroll > top) {
+    window.requestAnimationFrame(smoothscroll.bind(null, top))
+    window.scrollTo(top, currentScroll - (currentScroll / 15))
+  }
+}

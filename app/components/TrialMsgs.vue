@@ -7,7 +7,8 @@
         class="trial-msg"
       >
         <a :href="`/article/${msg.Id}`" target="_blank">
-          <img :src="msg.Title" alt="试读文章配图" class="trial-msg-img">
+          <img src="/img/tuo-shui-yan-bao-msg.png" alt="试读文章配图" class="trial-msg-img">
+          <!-- <img :src="msg.Title" alt="试读文章配图" class="trial-msg-img"> -->
           <div class="trial-msg-title">
             {{ msg.Title | truncate(20, '...') }}
             <div class="trial-msg-flag">试读</div>
@@ -57,11 +58,12 @@ export default {
     color: #333333;
     letter-spacing: 0;
     line-height: 22px;
+    padding-left: 8px;
   }
   &-flag {
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 8px;
     width: 32px;
     height: 16px;
     line-height: 16px;

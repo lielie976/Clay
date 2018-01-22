@@ -12,11 +12,11 @@
         </div>
         <div class="premium-subject-list-item-inner">
           <div class="premium-subject-list-item-meta">
-            <div class="premium-subject-list-item-meta-categ">
+            <!-- <div class="premium-subject-list-item-meta-categ">
               <p>{{formatDate(msg.CreatedAtInSec * 1000, 'MM月DD日')}}</p>
-              <p>脱水研报</p>
-            </div>
-            <img src="/img/tuo-shui-ge-gu-msg.png" :alt="msg.Title">
+              <p>早知道</p>
+            </div> -->
+            <img src="/img/zaozhidao-banner.jpg" :alt="msg.Title">
           </div>
           <div class="premium-subject-list-item-content">
             <h3 class="premium-subject-list-item-title">
@@ -67,12 +67,6 @@ export default {
 .premium-subject-list-item {
   position: relative;
   margin: 0 0 24px 0;
-  // display: flex;
-  // height: 182px;
-  // margin: 0 16px 24px;
-  // border: solid 1px #efefef;
-  // transition: 0.4s;
-  // margin-top: 45px;
   &-inner {
     display: flex;
     height: 182px;
@@ -82,10 +76,6 @@ export default {
     margin-top: 15px;
   }
   &-headertime {
-    // content: attr(data-time);
-    // position: absolute;
-    // top: -30px;
-    // left: -17px;
     color: #999999;
     font-size: 14px;
     line-height: 12px;

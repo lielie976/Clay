@@ -7,7 +7,7 @@
         只做龙头
       </span>
       <span class="bought-msgs-item-time">
-        <time-widget :time="msg.CreatedAtInSec" />
+        <time-widget :time="msg.CreatedAt" />
       </span>
     </p>
   </li>

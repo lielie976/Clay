@@ -1,7 +1,7 @@
 <template>
   <div class="subscribe-status">
-    <template v-if="0">
-      <p class="subscribe-status-price">￥432.00 <small>起</small></p>
+    <template v-if="1">
+      <p class="subscribe-status-price"><small id="rmb">￥</small>432.00 <small>起</small></p>
       <p class="subscribe-status-discount">包年/月/年立省 1843.20</p>
       <a class="subscribe-status-action" href="javascript: void(0)">我要订阅</a>
     </template>
@@ -35,6 +35,9 @@ export default {
     small {
       font-size: 20px;
       color: #ccc;
+      &#rmb {
+        color: #f2564e;
+      }
     }
   }
   &-discount {
