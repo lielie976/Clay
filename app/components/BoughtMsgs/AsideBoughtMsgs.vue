@@ -1,5 +1,5 @@
 <template>
-  <widget-box title="已购文章">
+  <widget-box title="已购文章" href="/bought" subTitle="查看全部">
     <div>
       <template v-if="0">
         <non-login />

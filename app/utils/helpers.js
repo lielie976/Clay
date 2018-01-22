@@ -101,3 +101,14 @@ export function getMarketTextColor (rate) {
   if (!rate) return '-market-color--balance'
   return rate >= 0 ? '-market-color--rise' : '-market-color--decline'
 }
+
+export function getDateDay (time, useToday) {
+  const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+  const day = new Date(time).getDay()
+  const today = new Date().getDay()
+  if (useToday) {
+    return day === today ? '今天' : days[day]
+  } else {
+    return days[day]
+  }
+}
