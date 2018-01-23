@@ -69,7 +69,7 @@
         :value="isActive(469)"
         @on-change="value => selectFixedSubject({ value, id: 469 })"
       >
-        盘中异动
+        市场机会
       </Checkbox>
     </span>
     <span>

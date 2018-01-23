@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tuoshui-meta-container">
+    <div class="tuoshui-meta-container" :style="{'background-image': `url(${this.data.Subject.Image})`}">
       <premium-subject-meta :subject="subject" />
     </div>
     <section class="main-container">
@@ -52,9 +52,9 @@ export default {
   margin: 24px auto;
 }
 .tuoshui-meta-container {
-  background: url('/img/tuoshui-banner.jpg') no-repeat;
-  background-size: cover;
-  background-position: center center;
+  background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: center center;
   overflow: hidden;
 }
 </style>

@@ -61,17 +61,6 @@ export default {
 <style lang="less" scoped>
 @import '../../styles/variables.less';
 
-.original-own {
-  background: #E6394D;
-  color: #fff;
-  padding: 2px 3px;
-  margin-right: 3px;
-  font-size: 12px;
-  .iconfont {
-    font-size: 12px;
-  }
-}
-
 .original-subj-item {
   display: flex;
   margin-bottom: 8px;

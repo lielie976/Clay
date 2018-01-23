@@ -28,7 +28,7 @@
           <div class="premium-subject-list-item-content">
             <h3 class="premium-subject-list-item-title">
               <a
-                :href="`/article/${msg.Id}`"
+                :href="`/premium-article/${msg.Id}`"
                 target="_blank"
                 :class="{
                   'hint--top': msg.Title.length > 64

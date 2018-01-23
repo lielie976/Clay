@@ -1,11 +1,11 @@
 <template>
-  <article-index :data="data" />
+  <premium-article :data="data" />
 </template>
 
 <script>
 import { getMessage } from '~/api/message'
 import texts from '~/utils/texts'
-import ArticleIndex from '~/views/article'
+import PremiumArticle from '~/views/premium-article'
 
 export default {
   async asyncData ({ params }) {
@@ -25,7 +25,7 @@ export default {
     }
   },
   components: {
-    ArticleIndex
+    PremiumArticle
   }
 }
 </script>

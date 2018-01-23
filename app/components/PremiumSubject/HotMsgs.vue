@@ -1,7 +1,7 @@
 <template>
   <ul class="premium-subject-hot-list">
     <li v-for="(msg, index) in msgs" :key="msg.Id" :class="['premium-subject-hot-list-item', `${index < 3 && 'main'}`]">
-      <a :href="`/article/${msg.Id}`" target="_blank"  class="premium-subject-hot-list-item-title">
+      <a :href="`/premium-article/${msg.Id}`" target="_blank"  class="premium-subject-hot-list-item-title">
         <i :class="{iconfont: true, [`icon-0${index + 1}`]: true}"></i>
         {{msg.Title}}
       </a>
