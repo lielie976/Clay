@@ -9,6 +9,6 @@ export const actions = {
     const cookies = new Cookies(req, res)
     const token = cookies.get('_token')
     // const user = JSON.parse(decodeURIComponent(cookies.get('_user')))
-    commit('userrr/saveToken', token)
+    commit('auth/saveToken', token)
   }
 }

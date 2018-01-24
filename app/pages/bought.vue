@@ -22,6 +22,7 @@ export default {
     BoughtMsgs
   },
   async asyncData ({ store }) {
+    await store.dispatch('boughtMsgs/getBoughtMsgs')
     await store.dispatch('tuoshui/getInfo')
     await store.dispatch('zaozhidao/getInfo')
   },
