@@ -2,17 +2,19 @@
   <div>
     <article-meta :data="data" />
     <premium-article :data="data" :readable="readable" /> 
-    {{readable}}
+    <premium-article-footer :subject="data.FromSubject" />
   </div>
 </template>
 
 <script>
 import PremiumArticle from '~/components/PremiumArticle'
+import PremiumArticleFooter from '~/components/PremiumArticle/Footer'
 import ArticleMeta from './ArticleMeta'
 
 export default {
   components: {
     PremiumArticle,
+    PremiumArticleFooter,
     ArticleMeta
   },
   props: {

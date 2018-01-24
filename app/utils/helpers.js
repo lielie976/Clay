@@ -75,14 +75,14 @@ export function timeago (time) {
   return Timeago().format(time, 'zh_CN')
 }
 
-export function getCNPriceNum (num) {
-  if (!num || typeof num !== 'number') return
+export function getCNPriceNum (num, isInt) {
+  if (typeof num !== 'number') return
   if (num > 1e8) {
     return (num / 1e8).toFixed(1) + '亿'
   } else if (num > 1e4) {
-    return (num / 1e4).toFixed(2) + '万'
+    return (num / 1e4).toFixed(1) + '万'
   } else {
-    return num.toFixed(2)
+    return !isInt ? num.toFixed(1) : num
   }
 }
 

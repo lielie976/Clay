@@ -1,6 +1,8 @@
 <template>
   <widget-box title="相关股票">
-    123
+    <a>
+      <img src="/img/aside-stocks-locked.png">
+    </a>
   </widget-box>  
 </template>
 

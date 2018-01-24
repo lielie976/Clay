@@ -1,6 +1,8 @@
 <template>
   <widget-box title="相应板块">
-    123
+    <a class="aside-bkj-locked">
+      <img src="/img/aside-bkj-locked.png">
+    </a>
   </widget-box>  
 </template>
 
@@ -13,3 +15,9 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.aside-bkj-locked {
+  height: 64px;
+}
+</style>
