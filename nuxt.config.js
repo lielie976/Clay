@@ -39,7 +39,6 @@ module.exports = {
     */
     extend (config, { isDev, isClient }) {
       config.resolve.extensions.push('.ts')
-
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',

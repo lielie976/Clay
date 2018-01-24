@@ -21,8 +21,10 @@
         </nuxt-link>
       </div>
       <div class="nav-right">
-        <span class="go-login nav-item" data-type="login">登录</span>
-        <span class="go-login nav-item" data-type="register">注册</span>
+        <span v-if="!userInfo.Token" @click="login" class="go-login nav-item" data-type="login">登录</span>
+        <span v-if="!userInfo.Token" class="go-login nav-item" data-type="register">注册</span>
+        <span v-if="userInfo.Token" class="nickname nav-item">{{userInfo.nickname}}</span>
+        <span @click="logOut" v-if="userInfo.Token" class="log-out nav-item">退出</span>
       </div>
     </div>
   </nav>
@@ -30,18 +32,53 @@
 
 <script>
 import texts from '~/utils/texts'
-
+import * as Cookies from 'js-cookie'
 export default {
   computed: {
     texts: () => texts
+  },
+  data () {
+    return {
+      userInfo: {
+        isLogged: false,
+        Token: '',
+        nickname: ''
+      }
+    }
+  },
+  mounted () {
+    if (Cookies.get('token') && Cookies.get('nickname')) {
+      this.userInfo = {
+        isLogged: false,
+        Token: Cookies.get('token'),
+        nickname: Cookies.get('nickname')
+      }
+      this.$store.dispatch('user/checkLogin', {
+        Token: Cookies.get('token'),
+        nickname: Cookies.get('nickname')
+      })
+    }
+  },
+  methods: {
+    login () {
+      this.$store.dispatch('login/showLogin')
+    },
+    logOut () {
+      this.$store.dispatch('user/logOut')
+      this.userInfo = {
+        isLogged: false,
+        Token: '',
+        nickname: ''
+      }
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .nav {
-  height: 56px; 
-  line-height: 56px; 
+  height: 56px;
+  line-height: 56px;
   box-shadow: 0 2px 3px hsla(0,0%,4%,.1);
   background-color: #30333f;
   color: #fff;
@@ -60,11 +97,14 @@ export default {
     .nav-item {
       color: #fff;
     }
+    .go-login{
+      cursor: pointer;
+    }
   }
   .nav-item {
     color: #d8d8d8;
-    height: 56px; 
-    line-height: 56px; 
+    height: 56px;
+    line-height: 56px;
     margin-right: 40px;
     &:hover {
       color: #fff;

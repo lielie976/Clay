@@ -8,10 +8,8 @@
               <a target="_blank" :href="`/theme/${bkj.Id}`">{{bkj.Name}}</a>
             </li>
           </ul>
-
           <img :src="msg.Image" v-if="msg.Image">
           <img src="/default-original.png" v-else>
-
           <div class="original-meta-top-item-modal">
           </div>
           <div class="original-meta-top-item-inner">
@@ -153,7 +151,7 @@ export default {
       &:hover {
         img {
           transform: scale(1.1)
-        }  
+        }
       }
       &-bkj {
         position: absolute;

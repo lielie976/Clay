@@ -1,0 +1,103 @@
+<template>
+  <div>
+    <theme-title />
+    <theme-intro @mutate-intro="mutateIntro" @show-modal="modal = true" :modal.sync="modal" :intro.sync="intro" />
+    <theme-stock @refresh="refresh" :id="id"/>
+    <theme-modal @mutate-intro="mutateIntro" @hide-modal="modal = false" :modal.sync="modal" :intro.sync="intro" />
+  </div>
+</template>
+
+<script>
+import themeTitle from '~/views/theme/themeTitle'
+import themeIntro from '~/views/theme/themeIntro'
+import themeModal from '~/views/theme/themeModal'
+import themeStock from '~/views/theme/themeStock'
+
+export default {
+  async asyncData ({ store, params, req }) {
+    function getCookie (cookieName, stringCookie) {
+      let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+      return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+    }
+    let token = getCookie('token', req.headers.cookie)
+    await store.dispatch('theme/getThemeInfo', {
+      id: params.id,
+      token: token
+    });
+    console.log(getCookie('token', req.headers.cookie))
+    await store.dispatch('theme/getThemeMessage', params.id);
+    await store.dispatch('theme/getPlateSetInfo', params.id);
+    await store.dispatch('theme/getThemeStock')
+    await store.dispatch('theme/getBkjInfo')
+    await store.dispatch('theme/getStockFlow')
+    await store.dispatch('theme/getLongtou', params.id)
+    return {
+      intro: {},
+      modal: false,
+      id: params.id
+    }
+  },
+  head () {
+    return {
+      title: ``,
+      meta: [
+        {
+          hid: `description`,
+          name: 'description',
+          content: ``
+        }
+      ]
+    }
+  },
+  methods: {
+    mutateIntro (item) {
+      this.intro = this.intro.map(i => {
+        if (i.Question === item.Question) {
+          i.selected = true
+        } else {
+          i.selected = false
+        }
+        return i
+      })
+    },
+    refresh () {
+      this.$store.dispatch('theme/getThemeStock')
+    }
+  },
+  mounted () {
+    let introData = []
+    try {
+      let intro = JSON.parse(JSON.stringify(this.$store.state.theme.themeInfo.QuestionAnswers))
+      if (intro && intro.length) {
+        introData = intro.map(item => {
+          item.selected = false
+          item.HtmlAnswer = item.HtmlAnswer.replace(/< img .*?>/g, '')
+          // console.log(item.HtmlAnswer)
+          item.HtmlAnswer = item.HtmlAnswer.replace(/class=".+?"/g, '')
+          return item
+        })
+        introData[0].selected = true
+      }
+    } catch (error) {
+      introData = []
+    }
+    this.intro = introData
+  },
+  components: {
+    themeTitle,
+    themeIntro,
+    themeModal,
+    themeStock
+  }
+}
+</script>
+
+<style lang="less" scoped>
+@import '../../styles/variables.less';
+
+</style>
+
+<style lang="less">
+@import '../../styles/variables.less';
+
+</style>
