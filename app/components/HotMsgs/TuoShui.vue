@@ -13,8 +13,10 @@ export default {
     PremiumSubjectHotMsgs,
     WidgetBox
   },
-  props: {
-    msgs: Array
+  computed: {
+    msgs () {
+      return this.$store.state.premium.Messages
+    }
   }
 }
 </script>

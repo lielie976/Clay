@@ -104,10 +104,11 @@ export function getMarketTextColor (rate) {
 
 export function getDateDay (time, useToday) {
   const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-  const day = new Date(time).getDay()
-  const today = new Date().getDay()
+  const oldDay = new Date(time)
+  const day = oldDay.getDay()
+  const today = new Date()
   if (useToday) {
-    return day === today ? '今天' : days[day]
+    return (oldDay.getDate() === today.getDate() && oldDay.getMonth() === today.getMonth()) ? '今天' : days[day]
   } else {
     return days[day]
   }

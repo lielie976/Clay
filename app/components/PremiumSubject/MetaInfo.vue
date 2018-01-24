@@ -2,9 +2,9 @@
   <div class="premium-subject-meta-info">
     <h1 class="premium-subject-meta-info-title">
       {{subject.Title}}
+      <i class="iconfont icon-tarengoumai"></i>
       <span class="premium-subject-meta-info-count">{{subject.SubscribeCount}}人订阅</span>
     </h1>
-    <p class="premium-subject-meta-info-slogan">{{subject.slogan}}</p>
     <section class="premium-subject-meta-info-detail">
       <h3>简介</h3>
       <p>{{subject.Introduction}}</p>
@@ -31,7 +31,15 @@
 <script>
 export default {
   props: {
-    subject: Object
+    data: Object
+  },
+  computed: {
+    subject () {
+      return {
+        ...this.data,
+        Specialty: this.data.Specialty ? this.data.Specialty.replace(/\n/g, '\n\n') : this.data.Specialty
+      }
+    }
   },
   data () {
     return {
@@ -59,12 +67,14 @@ export default {
   &-title {
     font-size: 36px;
     line-height: 36px;
+    margin-bottom: 24px;
+    .iconfont {
+      font-size: 24px;
+      color: #e6394d;
+    }
   }
   &-count {
     font-size: 16px;
-  }
-  &-slogan {
-    margin: 24px 0;
   }
   &-detail {
     font-size: 14px;

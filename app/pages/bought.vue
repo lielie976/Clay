@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import TuoShuiHotMsgs from '~/views/tuoshui/HotMsgs'
-import ZaoZhiDaoHotMsgs from '~/views/zaozhidao/HotMsgs'
+import TuoShuiHotMsgs from '~/components/HotMsgs/TuoShui'
+import ZaoZhiDaoHotMsgs from '~/components/HotMsgs/ZaoZhiDao'
 import BoughtMsgs from '~/components/BoughtMsgs'
 
 export default {

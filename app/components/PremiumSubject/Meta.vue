@@ -1,6 +1,6 @@
 <template>
   <div class="premium-subject-meta">
-    <meta-info :subject="subject" />
+    <meta-info :data="subject" />
     <div class="premium-subject-meta-subscribe">
       <subscribe-status />
     </div>

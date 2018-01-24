@@ -6,13 +6,13 @@
     <section class="main-container">
       <section class="main-container-left">
         <trial-msgs :msgs="data.trialMsgs" />
-        <widget-box title="早知道更新">
+        <widget-box :title="customization.msgListTitle">
           <msg-list :msgs="data.Messages" :data="data" />
         </widget-box>
       </section>
       <section class="main-container-right">
         <aside-bought-msgs :msgs="data.Messages" />
-        <hot-msgs />
+        <slot name="hotMsgs"></slot>
       </section>
     </section>
   </div>
@@ -24,7 +24,6 @@ import PremiumSubjectMeta from '~/components/PremiumSubject/Meta'
 import TrialMsgs from '~/components/TrialMsgs'
 import AsideBoughtMsgs from '~/components/BoughtMsgs/AsideBoughtMsgs'
 import MsgList from '~/components/PremiumSubject/MsgList'
-import HotMsgs from '~/components/HotMsgs/ZaoZhiDao'
 
 export default {
   components: {
@@ -32,13 +31,15 @@ export default {
     PremiumSubjectMeta,
     MsgList,
     TrialMsgs,
-    AsideBoughtMsgs,
-    HotMsgs
+    AsideBoughtMsgs
   },
   computed: {
     data () {
       return this.$store.state.premium
     }
+  },
+  props: {
+    customization: Object
   }
 }
 </script>

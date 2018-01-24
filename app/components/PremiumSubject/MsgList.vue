@@ -1,5 +1,5 @@
 <template>
-  <widget-box title="研报更新">
+  <div>
     <ul class="premium-subject-list">
       <li
         v-for="(msg, index) in processedMsgs"
@@ -15,15 +15,15 @@
         </div>
         <div class="premium-subject-list-item-inner">
           <div class="premium-subject-list-item-meta">
-            <div :class="{
+            <!-- <div :class="{
               'premium-subject-list-item-meta-categ': true,
               'is-stock': isStock(msg)
             }">
               <p>{{formatDate(msg.CreatedAt * 1000, 'MM月DD日')}}</p>
               <p>{{isStock(msg) || '脱水研报'}}</p>
-            </div>
-            <img v-if="isStock(msg)" src="/img/tuo-shui-ge-gu-msg.png" :alt="msg.Title">
-            <img v-else src="/img/tuo-shui-yan-bao-msg.png" :alt="msg.Title">
+            </div> -->
+            <!-- <img src="/img/tuo-shui-ge-gu-msg.png" :alt="msg.Title"> -->
+            <img  src="/img/tuo-shui-yan-bao-msg.png" :alt="msg.Title">
           </div>
           <div class="premium-subject-list-item-content">
             <h3 class="premium-subject-list-item-title">
@@ -56,13 +56,12 @@
         @on-change="changePage"
       />
     </div>
-  </widget-box>
+  </div>
 </template>
 
 <script>
 import { formatDate, getDateDay, smoothscroll } from '~/utils/helpers'
 import TimeWidget from '~/components/TimeWidget'
-import WidgetBox from '~/components/WidgetBox'
 
 export default {
   props: {
@@ -70,8 +69,7 @@ export default {
     data: Object
   },
   components: {
-    TimeWidget,
-    WidgetBox
+    TimeWidget
   },
   computed: {
     processedMsgs () {

@@ -1,30 +1,34 @@
 <template>
   <div>
-    <div class="tuoshui-meta-container" :style="{'background-image': `url(${this.data.Subject.Image})`}">
-      <premium-subject-meta :subject="subject" />
+    <div class="meta-container" :style="{'background-image': `url(${this.data.Subject.Image})`}">
+      <premium-subject-meta :subject="data.Subject" />
     </div>
     <section class="main-container">
       <section class="main-container-left">
         <trial-msgs :msgs="data.trialMsgs" />
-        <msg-list :msgs="data.Messages" :data="data" />
+        <widget-box title="研报更新">
+          <msg-list :msgs="data.Messages" :data="data" />
+        </widget-box>
       </section>
       <section class="main-container-right">
         <aside-bought-msgs :msgs="data.Messages" />
-        <hot-msgs :msgs="data.Messages" />
+        <hot-msgs />
       </section>
     </section>
   </div>
 </template>
 
 <script>
+import WidgetBox from '~/components/WidgetBox'
 import PremiumSubjectMeta from '~/components/PremiumSubject/Meta'
 import TrialMsgs from '~/components/TrialMsgs'
 import AsideBoughtMsgs from '~/components/BoughtMsgs/AsideBoughtMsgs'
-import MsgList from './MsgList'
-import HotMsgs from './HotMsgs'
+import MsgList from '~/components/PremiumSubject/MsgList'
+import HotMsgs from '~/components/HotMsgs/TuoShui'
 
 export default {
   components: {
+    WidgetBox,
     PremiumSubjectMeta,
     MsgList,
     TrialMsgs,
@@ -33,15 +37,7 @@ export default {
   },
   computed: {
     data () {
-      return this.$store.state.tuoshui
-    },
-    subject () {
-      return {
-        ...this.data.Subject,
-        Title: 'A股脱水研报',
-        Specialty: this.data.Subject.Specialty.replace(/\n/g, '\n\n'),
-        slogan: '每天6分钟，每天6元起，基金经理都在看的全球研报精华'
-      }
+      return this.$store.state.premium
     }
   }
 }
@@ -51,10 +47,10 @@ export default {
 .main-container {
   margin: 24px auto;
 }
-.tuoshui-meta-container {
+.meta-container {
   background-repeat: no-repeat;
-  // background-size: cover;
-  // background-position: center center;
+  background-size: cover;
+  background-position: center center;
   overflow: hidden;
 }
 </style>
