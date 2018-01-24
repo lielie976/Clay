@@ -20,9 +20,9 @@
           <span class="discount">1843.20</span>
         </p>
       </div>
-      <div class="premium-article-footer-subject-subscribe-action">
+      <a class="premium-article-footer-subject-subscribe-action">
         我要订阅
-      </div>
+      </a>
     </section>
     <div class="premium-article-footer-close" @click="show = false">
       <i class="iconfont icon-guanbiduihuakuang"></i>

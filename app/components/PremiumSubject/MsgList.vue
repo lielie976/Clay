@@ -95,7 +95,7 @@ export default {
     changePage (page) {
       const top = document.querySelector('.premium-subject-list').offsetTop - 100
       smoothscroll(top)
-      this.$store.commit('tuoshui/changePage', page)
+      this.$store.commit('premium/changePage', page)
     },
     checkNewest (index) {
       return index === 0 && this.data.params.page === 1
