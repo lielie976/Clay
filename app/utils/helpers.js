@@ -75,14 +75,14 @@ export function timeago (time) {
   return Timeago().format(time, 'zh_CN')
 }
 
-export function getCNPriceNum (num) {
-  if (!num || typeof num !== 'number') return
+export function getCNPriceNum (num, isInt) {
+  if (typeof num !== 'number') return
   if (num > 1e8) {
     return (num / 1e8).toFixed(1) + '亿'
   } else if (num > 1e4) {
-    return (num / 1e4).toFixed(2) + '万'
+    return (num / 1e4).toFixed(1) + '万'
   } else {
-    return num.toFixed(2)
+    return !isInt ? num.toFixed(1) : num
   }
 }
 
@@ -100,4 +100,24 @@ export function getStockTradeStatus (status) {
 export function getMarketTextColor (rate) {
   if (!rate) return '-market-color--balance'
   return rate >= 0 ? '-market-color--rise' : '-market-color--decline'
+}
+
+export function getDateDay (time, useToday) {
+  const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+  const oldDay = new Date(time)
+  const day = oldDay.getDay()
+  const today = new Date()
+  if (useToday) {
+    return (oldDay.getDate() === today.getDate() && oldDay.getMonth() === today.getMonth()) ? '今天' : days[day]
+  } else {
+    return days[day]
+  }
+}
+
+export function smoothscroll (top = 0) {
+  var currentScroll = document.documentElement.scrollTop || document.body.scrollTop
+  if (currentScroll > top) {
+    window.requestAnimationFrame(smoothscroll.bind(null, top))
+    window.scrollTo(top, currentScroll - (currentScroll / 15))
+  }
 }

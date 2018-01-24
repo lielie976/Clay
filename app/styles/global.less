@@ -21,6 +21,22 @@ body {
   font-size: 16px;
 }
 
+.main-container {
+  width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.main-container-left {
+  width: 832px;
+  float: left;
+}
+
+.main-container-right {
+  width: 344px;
+  float: right;
+}
+
 #nuxt-layout-container {
   min-height: 100vh;
 }
@@ -101,6 +117,16 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   border: 1px solid #999;
   -webkit-text-fill-color: #000;
-  -webkit-box-shadow: 0 0 0px 1000px #fff inset;;
-  // transition: none;
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+}
+
+.original-own {
+  background: #E6394D;
+  color: #fff;
+  padding: 2px 3px;
+  margin-right: 3px;
+  font-size: 12px;
+  .iconfont {
+    font-size: 12px;
+  }
 }

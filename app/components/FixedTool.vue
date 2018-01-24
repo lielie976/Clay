@@ -20,14 +20,7 @@
 
 <script>
 // import { debounce } from 'underscore'
-
-function smoothscroll () {
-  var currentScroll = document.documentElement.scrollTop || document.body.scrollTop
-  if (currentScroll > 0) {
-    window.requestAnimationFrame(smoothscroll)
-    window.scrollTo(0, currentScroll - (currentScroll / 15))
-  }
-}
+import { smoothscroll } from '~/utils/helpers'
 
 export default {
   // mounted () {

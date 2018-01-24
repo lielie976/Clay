@@ -2,7 +2,7 @@
   <div class="widgetBox-container">
     <div class="widgetBox-titlebar">
       <span class="widgetBox-titlebar-label">{{title}}</span>
-      <a v-if="href" :href="href" target="_blank" class="widgetBox-titlebar-more">更多<i class="iconfont">&#xe634;</i></a>
+      <a v-if="href" :href="href" target="_blank" class="widgetBox-titlebar-more">{{subTitle}}<i class="iconfont">&#xe634;</i></a>
     </div>
     <slot />
   </div>
@@ -16,6 +16,10 @@ export default {
     },
     title: {
       type: String
+    },
+    subTitle: {
+      type: String,
+      default: '更多'
     }
   }
 }
@@ -28,10 +32,11 @@ export default {
   margin-bottom: 20px;
 }
 .widgetBox-titlebar{
+  position: relative;
   height: 30px;
   padding: 0 15px 0 0;
+  margin-bottom: 8px;
   border-bottom:1px solid @border-color-dark;
-  position: relative;
   &-label{
     font-size: 16px;
     display: inline-block;
@@ -41,8 +46,8 @@ export default {
   &-more{
     font-size: 14px;
     position: absolute;
-    right: 15px;
-    color:#666666;
+    right: 0;
+    color:#999;
     cursor: pointer;
     .iconfont{
       font-size: 14px;
