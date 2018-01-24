@@ -1,4 +1,5 @@
 import { getSubject } from '~/api/subject'
+import { getSubjectDetail } from '~/api/premium'
 
 export const state = () => ({
   params: {
@@ -19,6 +20,9 @@ export const mutations = {
     state.NextMark = data.NextMark
     state.trialMsgs = data.Messages.slice(0, 3)
   },
+  saveSubjectDetail (state, data) {
+    state.subjectDetail = data
+  },
   changePage (state, page) {
     state.params.page = page
   }
@@ -29,6 +33,14 @@ export const actions = {
     return new Promise((resolve, reject) => {
       getSubject(id, state.params).then((res) => {
         commit('saveInfo', res)
+        resolve()
+      }).catch(err => reject(err))
+    })
+  },
+  getSubjectDetail ({ commit, state, rootState }, id) {
+    return new Promise((resolve, reject) => {
+      getSubjectDetail(id, state.params, rootState.auth.headers).then((res) => {
+        commit('saveSubjectDetail', res)
         resolve()
       }).catch(err => reject(err))
     })

@@ -16,6 +16,7 @@ import texts from '~/utils/texts'
 export default {
   async asyncData ({ store }) {
     await store.dispatch('premium/getInfo', 581)
+    await store.dispatch('premium/getSubjectDetail', 581)
   },
   components: {
     TuoShui,

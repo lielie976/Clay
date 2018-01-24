@@ -1,13 +1,6 @@
 <template>
-  <div class="article-meta">
+  <div class="article-meta" :style="{'background-image': `url(${data.FromSubject.Image})`}">
     <div class="inner">
-      <div :class="{
-        'article-meta-flag': true,
-        'is-stock': !!isStock
-      }">
-        <p>{{data.CreatedAt * 1000 | formatDate('MM月DD日')}}</p>
-        <p>{{isStock || '脱水研报'}}</p>
-      </div>
       <section class="main-container">
         <section class="main-container-left">
           <p class="article-meta-title">{{data.Title}}</p>
@@ -34,9 +27,9 @@ export default {
 .article-meta {
   position: relative;
   height: 120px;
-  background: url('/img/tuoshui-banner.jpg') no-repeat;
   background-size: cover;
   background-position: center center;
+  background-repeat: no-repeat;
   color: #fff;
   .inner {
     padding: 20px 0;

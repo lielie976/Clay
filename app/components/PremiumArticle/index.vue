@@ -1,7 +1,14 @@
 <template>
   <section class="main-container">
     <section class="main-container-left">
-      <article-content :html="data.Content" />
+      <article-content :html="data.Content" v-if="readable" />
+      <template v-else>
+        <article-content :html="data.PreviewContent" />
+        <div class="unlock-msg">
+          <img src="/img/unlock.png" alt="解锁全文">
+          解锁全文
+        </div>
+      </template>
     </section>
     <section class="main-container-right">
       <locked-aside-bkj />
@@ -22,7 +29,8 @@ export default {
     ArticleContent
   },
   props: {
-    data: Object
+    data: Object,
+    readable: Boolean
   }
 }
 </script>
@@ -33,5 +41,23 @@ export default {
 .main-container-left {
   padding: 24px 32px;
   background-color: #fff;
+}
+
+.main-container-right {
+  margin-top: 16px;
+}
+
+.unlock-msg {
+  text-align: center;  
+  color: #e6394d;
+  font-size: 14px;
+  margin: 64px 0;
+  cursor: pointer;
+  img {
+    width: 40px;
+    height: 48px;
+    display: block;
+    margin: 0 auto 12px;
+  }
 }
 </style>

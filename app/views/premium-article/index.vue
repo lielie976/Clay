@@ -1,7 +1,8 @@
 <template>
   <div>
     <article-meta :data="data" />
-    <premium-article :data="data" /> 
+    <premium-article :data="data" :readable="readable" /> 
+    {{readable}}
   </div>
 </template>
 
@@ -17,9 +18,10 @@ export default {
   props: {
     data: Object
   },
-  methods: {
-  },
-  mounted () {
+  computed: {
+    readable () {
+      return this.data.FromSubject.RemainingDays > 0 || this.data.IsPaid || this.data.IsTrial || !this.data.IsPremium
+    }
   }
 }
 </script>
