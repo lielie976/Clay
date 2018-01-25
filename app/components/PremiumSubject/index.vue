@@ -1,21 +1,21 @@
 <template>
   <div>
-    <div class="meta-container" :style="{'background-image': `url(${this.data.Subject.Image})`}">
-      <premium-subject-meta :subject="data.Subject" />
+    <div class="meta-container" :style="{'background-image': `url(${this.data.subjectInfo.image})`}">
+      <premium-subject-meta :subject="data.subjectInfo" />
     </div>
     <section class="main-container">
       <section class="main-container-left">
         <trial-msgs :msgs="data.trialMsgs" />
         <widget-box :title="customization.msgListTitle">
-          <msg-list :msgs="data.Messages" :data="data" />
+          <msg-list :msgs="data.msgs" :data="data" />
         </widget-box>
       </section>
       <section class="main-container-right">
-        <aside-bought-msgs :msgs="data.Messages" />
+        <aside-bought-msgs :msgs="data.msgs" />
         <slot name="hotMsgs"></slot>
       </section>
     </section>
-    <subscribe-form-with-modal :subject="data.Subject" />
+    <subscribe-form-with-modal :subject="data.subjectInfo" />
   </div>
 </template>
 

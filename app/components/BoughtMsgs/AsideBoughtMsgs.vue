@@ -6,7 +6,7 @@
       </template>
       <template v-else>
         <ul class="aside-bought-msgs">
-          <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="processMsg(msg)" />
+          <msg-item  v-for="msg in msgs" :key="msg.id" :msg="processMsg(msg)" />
         </ul>
       </template>
     </div>
@@ -32,7 +32,7 @@ export default {
     processMsg (msg) {
       return {
         ...msg,
-        Title: truncate(msg.Title, 35, '...')
+        title: truncate(msg.title, 35, '...')
       }
     }
   }

@@ -1,21 +1,21 @@
 <template>
   <div class="premium-subject-meta-info">
     <h1 class="premium-subject-meta-info-title">
-      {{subject.Title}}
+      {{subject.title}}
       <i class="iconfont icon-tarengoumai"></i>
-      <span class="premium-subject-meta-info-count">{{subject.SubscribeCount}}人订阅</span>
+      <span class="premium-subject-meta-info-count">{{subject.subscribe_count}}人订阅</span>
     </h1>
     <section class="premium-subject-meta-info-detail">
       <h3>简介</h3>
-      <p>{{subject.Introduction}}</p>
+      <p>{{subject.introduction}}</p>
     </section>
     <section class="premium-subject-meta-info-detail"  v-if="showAll">
       <h3>能力圈</h3>
-      <div><pre class="normal-pre-text">{{subject.Specialty}}</pre></div>
+      <div><pre class="normal-pre-text">{{subject.specialty}}</pre></div>
     </section>
     <section class="premium-subject-meta-info-detail"  v-if="showAll">
       <h3>更新频率</h3>
-      <p>{{subject.UpdateFrequency}}</p>
+      <p>{{subject.update_frequency}}</p>
     </section>
     <span class="premium-subject-meta-info-toggle" @click="showAll = !showAll">
       <template v-if="!showAll">
@@ -37,7 +37,7 @@ export default {
     subject () {
       return {
         ...this.data,
-        Specialty: this.data.Specialty ? this.data.Specialty.replace(/\n/g, '\n\n') : this.data.Specialty
+        specialty: this.data.specialty ? this.data.specialty.replace(/\n/g, '\n\n') : this.data.specialty
       }
     }
   },

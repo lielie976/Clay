@@ -20,7 +20,6 @@ export const mutations = {
 
 export const actions = {
   getBoughtMsgs ({ commit, rootState, state }) {
-    console.log(rootState.auth)
     return getBoughtMsgs(state.params, rootState.auth.headers).then((res) => {
       commit('saveBoughtMsgs', res.data)
     })

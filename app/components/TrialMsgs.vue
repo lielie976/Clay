@@ -3,13 +3,13 @@
     <ul class="trial-msgs">
       <li
         v-for="msg in msgs"
-        :key="msg.Id"
+        :key="msg.id"
         class="trial-msg"
       >
-        <a :href="`/article/${msg.Id}`" target="_blank">
-          <img :src="msg.Image" alt="试读文章配图" class="trial-msg-img">
+        <a :href="`/article/${msg.id}`" target="_blank">
+          <img :src="`${msg.image || '/img/tuo-shui-yan-bao-msg.png'}`" alt="试读文章配图" class="trial-msg-img">
           <div class="trial-msg-title">
-            {{ msg.Title | truncate(20, '...') }}
+            {{ msg.title | truncate(20, '...') }}
             <div class="trial-msg-flag">试读</div>
           </div>
         </a>

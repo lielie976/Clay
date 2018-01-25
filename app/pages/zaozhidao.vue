@@ -1,7 +1,5 @@
 <template>
-  <premium-subject
-    :customization="customization"
-  >
+  <premium-subject :customization="customization">
     <HotMsgs slot="hotMsgs" />
   </premium-subject>
 </template>
@@ -14,8 +12,9 @@ import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('premium/getInfo', 679)
-    await store.dispatch('premium/getSubjectDetail', 679)
+    await store.dispatch('premium/init', 679)
+    await store.dispatch('boughtMsgs/getBoughtMsgs')
+    await store.dispatch('premiumHotMsgs/getHotMsgs', 679)
   },
   components: {
     TuoShui,

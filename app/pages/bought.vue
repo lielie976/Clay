@@ -23,8 +23,8 @@ export default {
   },
   async asyncData ({ store }) {
     await store.dispatch('boughtMsgs/getBoughtMsgs')
-    await store.dispatch('tuoshui/getInfo')
-    await store.dispatch('zaozhidao/getInfo')
+    await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
+    await store.dispatch('premiumHotMsgs/getHotMsgs', 679)
   },
   computed: {
     boughtMsgs () {

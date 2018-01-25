@@ -3,15 +3,15 @@
     <ul class="premium-subject-list">
       <li
         v-for="(msg, index) in processedMsgs"
-        :key="msg.Id"
+        :key="msg.id"
         :class="{
           'premium-subject-list-item': true,
           'is-newest': checkNewest(index)
         }"
       >
         <div class="premium-subject-list-item-headertime" v-if="msg.divideDay">
-          <span>{{formatDate(msg.CreatedAt * 1000, 'MM月DD日')}}</span>
-          <span>{{getDateDay(msg.CreatedAt * 1000, true)}}</span>
+          <span>{{formatDate(msg.created_at * 1000, 'MM月DD日')}}</span>
+          <span>{{getDateDay(msg.created_at * 1000, true)}}</span>
         </div>
         <div class="premium-subject-list-item-inner">
           <div class="premium-subject-list-item-meta">
@@ -19,30 +19,30 @@
               'premium-subject-list-item-meta-categ': true,
               'is-stock': isStock(msg)
             }">
-              <p>{{formatDate(msg.CreatedAt * 1000, 'MM月DD日')}}</p>
+              <p>{{formatDate(msg.created_at * 1000, 'MM月DD日')}}</p>
               <p>{{isStock(msg) || '脱水研报'}}</p>
             </div> -->
-            <!-- <img src="/img/tuo-shui-ge-gu-msg.png" :alt="msg.Title"> -->
-            <img  src="/img/tuo-shui-yan-bao-msg.png" :alt="msg.Title">
+            <!-- <img src="/img/tuo-shui-ge-gu-msg.png" :alt="msg.title"> -->
+            <img  src="/img/tuo-shui-yan-bao-msg.png" :alt="msg.title">
           </div>
           <div class="premium-subject-list-item-content">
             <h3 class="premium-subject-list-item-title">
               <a
-                :href="`/premium-article/${msg.Id}`"
+                :href="`/premium-article/${msg.id}`"
                 target="_blank"
                 :class="{
-                  'hint--top': msg.Title.length > 64
+                  'hint--top': msg.title.length > 64
                 }"
-                :aria-label="msg.Title"
+                :aria-label="msg.title"
               >
-                {{msg.Title | truncate(64, '...')}}
+                {{msg.title | truncate(64, '...')}}
               </a>
             </h3>
             <div class="premium-subject-list-item-summary">
-              <pre class="normal-pre-text">{{msg.Summary}}</pre>
+              <pre class="normal-pre-text">{{msg.summary}}</pre>
             </div>
             <p>
-              <time-widget :time="msg.CreatedAt"  />
+              <time-widget :time="msg.created_at"  />
             </p>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default {
     processedMsgs () {
       const tmp = {}
       const msgs = this.msgs.map((i) => {
-        const date = new Date(i.CreatedAt * 1000).getDate()
+        const date = new Date(i.created_at * 1000).getDate()
         const msg = tmp[date] ? i : {
           ...i,
           divideDay: true
@@ -90,12 +90,12 @@ export default {
     formatDate,
     getDateDay,
     isStock (msg) {
-      return msg.Title.indexOf('脱水个股') > -1 && '脱水个股'
+      return msg.title.indexOf('脱水个股') > -1 && '脱水个股'
     },
     changePage (page) {
       const top = document.querySelector('.premium-subject-list').offsetTop - 100
       smoothscroll(top)
-      this.$store.commit('premium/changePage', page)
+      this.$store.dispatch('premium/changePage', page)
     },
     checkNewest (index) {
       return index === 0 && this.data.params.page === 1
