@@ -15,6 +15,7 @@
         <slot name="hotMsgs"></slot>
       </section>
     </section>
+    <subscribe-form-with-modal :subject="data.Subject" />
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import PremiumSubjectMeta from '~/components/PremiumSubject/Meta'
 import TrialMsgs from '~/components/TrialMsgs'
 import AsideBoughtMsgs from '~/components/BoughtMsgs/AsideBoughtMsgs'
 import MsgList from '~/components/PremiumSubject/MsgList'
+import SubscribeFormWithModal from '~/components/SubscribeForm/WithModal'
 
 export default {
   components: {
@@ -31,7 +33,8 @@ export default {
     PremiumSubjectMeta,
     MsgList,
     TrialMsgs,
-    AsideBoughtMsgs
+    AsideBoughtMsgs,
+    SubscribeFormWithModal
   },
   computed: {
     data () {
