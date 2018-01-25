@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     msgs () {
-      return this.$store.state.premiumHotMsgs[581]
+      return this.$store.state.premiumHotMsgs[679]
     }
   }
 }

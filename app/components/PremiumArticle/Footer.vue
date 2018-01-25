@@ -82,7 +82,7 @@ export default {
     }
   }
   &-subject-more {
-    flex-basis: 500px;
+    flex-basis: 450px;
     color: #f2564e;
     font-size: 14px;
     margin-left: 24px;

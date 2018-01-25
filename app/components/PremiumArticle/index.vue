@@ -5,8 +5,10 @@
       <template v-else>
         <article-content :html="data.PreviewContent" />
         <div class="unlock-msg">
-          <img src="/img/unlock.png" alt="解锁全文">
-          解锁全文
+          <span @click="unlock">
+            <img src="/img/unlock.png" alt="解锁全文">
+            解锁全文
+          </span>
         </div>
       </template>
     </section>
@@ -31,6 +33,11 @@ export default {
   props: {
     data: Object,
     readable: Boolean
+  },
+  methods: {
+    unlock () {
+      this.$store.dispatch('login/showLogin')
+    }
   }
 }
 </script>
@@ -52,7 +59,10 @@ export default {
   color: #e6394d;
   font-size: 14px;
   margin: 64px 0;
-  cursor: pointer;
+  span {
+    display: inline-block;
+    cursor: pointer;
+  }
   img {
     width: 40px;
     height: 48px;

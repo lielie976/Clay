@@ -1,6 +1,6 @@
 <template>
   <widget-box title="相关股票">
-    <a>
+    <a @click="handleClick">
       <img src="/img/aside-stocks-locked.png">
     </a>
   </widget-box>  
@@ -12,6 +12,11 @@ import WidgetBox from '~/components/WidgetBox'
 export default {
   components: {
     WidgetBox
+  },
+  methods: {
+    handleClick () {
+      this.$store.dispatch('login/showLogin')
+    }
   }
 }
 </script>
