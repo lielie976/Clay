@@ -11,7 +11,7 @@
         </widget-box>
       </section>
       <section class="main-container-right">
-        <aside-bought-msgs :msgs="data.msgs" />
+        <aside-bought-msgs :msgs="boughtMsgs" />
         <slot name="hotMsgs"></slot>
       </section>
     </section>
@@ -39,6 +39,9 @@ export default {
   computed: {
     data () {
       return this.$store.state.premium
+    },
+    boughtMsgs () {
+      return this.$store.state.boughtMsgs.msgs
     }
   },
   props: {

@@ -1,11 +1,11 @@
 <template>
   <section class="main-container">
     <section class="main-container-left">
-      <bought-msgs :msgs="$store.state.tuoshui.Messages" :data="boughtMsgs" />
+      <bought-msgs :msgs="boughtMsgs.msgs" :data="boughtMsgs" />
     </section>
     <section class="main-container-right">
-      <tuo-shui-hot-msgs :msgs="$store.state.tuoshui.Messages" />
-      <zao-zhi-dao-hot-msgs :msgs="$store.state.zaozhidao.Messages" />
+      <tuo-shui-hot-msgs />
+      <zao-zhi-dao-hot-msgs />
     </section>
   </section>
 </template>

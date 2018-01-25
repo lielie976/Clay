@@ -4,7 +4,7 @@
       <ul class="aside-bought-msgs">
         <msg-item  v-for="msg in msgs" :key="msg.id" :msg="msg" />
       </ul>
-      <div class="pagination">
+      <div class="pagination" v-if="data.total > data.params.limit">
         <Page
           :current="data.params.page"
           :total="100"
