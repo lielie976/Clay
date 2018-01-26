@@ -34,7 +34,6 @@
     "vue-multiselect": "^2.0.8"
   },
   "devDependencies": {
-    "@nuxtjs/bulma": "^1.1.0",
     "axios": "^0.17.1",
     "babel-eslint": "^7.2.3",
     "cookies": "^0.7.1",
