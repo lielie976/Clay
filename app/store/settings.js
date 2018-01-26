@@ -33,13 +33,18 @@ export const actions = {
         getZhutiTopStocks({ ids: res.map(i => i.BkjId).join(',') }).then((res) => {
           const tops = res.data.items
           trending = trending.map((t) => {
-            let longtou = tops[t.BkjId].codes.map(c => {
-              const name = tops[t.BkjId].stocks.find(s => s.mdc_code === c).title
-              return {
-                Name: name,
-                Symbol: c
-              }
-            }).slice(0, 2)
+            let longtou
+            if (!tops[t.BkjId]) {
+              longtou = []
+            } else {
+              longtou = tops[t.BkjId].codes.map(c => {
+                const name = tops[t.BkjId].stocks.find(s => s.mdc_code === c).title
+                return {
+                  Name: name,
+                  Symbol: c
+                }
+              }).slice(0, 2)
+            }
             return Object.assign(t, {
               longtou
             })
