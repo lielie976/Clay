@@ -27,7 +27,7 @@ export default {
   height: 100%;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding-top: 70px;
   &-price {
     font-size: 36px;
     line-height: 36px;
