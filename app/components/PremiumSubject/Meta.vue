@@ -4,10 +4,12 @@
     <div class="premium-subject-meta-subscribe">
       <subscribe-status />
     </div>
+    <subscribe-form-with-modal :subject="subject" />
   </div>
 </template>
 
 <script>
+import SubscribeFormWithModal from '~/components/SubscribeForm/WithModal'
 import MetaInfo from './MetaInfo'
 import SubscribeStatus from './SubscribeStatus'
 
@@ -16,6 +18,7 @@ export default {
     subject: Object
   },
   components: {
+    SubscribeFormWithModal,
     MetaInfo,
     SubscribeStatus
   }

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import dataCenter from '~/components/dataCenter/canvas'
+import dataCenter from './canvas'
 import WidgetBox from '../WidgetBox'
 import temperature from './temperature.vue'
 import detail from './detail.vue'

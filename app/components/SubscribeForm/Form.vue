@@ -1,17 +1,10 @@
 <template>
   <div class="subscribe-form">
     <div class="subscribe-form-header">确认订单</div>
-    <i class="iconfont icon-guanbiduihuakuang subscribe-form-close"></i>
+    <i class="iconfont icon-guanbiduihuakuang subscribe-form-close" @click="onClose"></i>
     <form-meta :subject="subject" />
     <div class="subscribe-form-options">
-      <p class="subscribe-form-options-header">购买选项</p>
-      <ul>
-        <li><message-option :selected="true" /></li>
-        <li><subject-option :selected="true" /></li>
-        <li><subject-option /></li>
-        <li><subject-option /></li>
-        <!-- <li><subject-option /></li> -->
-      </ul>
+      <payment />
     </div>
     <div class="subscribe-form-privilege">
       <p class="subscribe-form-privilege-header">订阅特权</p>
@@ -35,22 +28,24 @@
 </template>
 
 <script>
-import SubjectOption from './SubjectOption'
-import MessageOption from './MessageOption'
+import Payment from './Payment'
 import FormMeta from './Meta'
 
 export default {
   components: {
-    SubjectOption,
-    MessageOption,
+    Payment,
     FormMeta
   },
   props: {
-    subject: Object
+    subject: Object,
+    onClose: Function
   },
   computed: {
     isSubject () {
       return !!this.subject
+    },
+    data () {
+      return this.$store.state.subscribe
     }
   }
 }
@@ -81,21 +76,7 @@ export default {
   }
   &-options {
     margin-top: 16px;
-    &-header {
-      color: @subFontColor;
-      font-size: 14px;
-    }
-    ul {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 12px;
-    }
-    li {
-      flex: 1;
-      margin: 0 4px;
-      max-width: 142px;
-      height: 88px;
-    }
+    
   }
   &-privilege {
     margin-top: 24px;

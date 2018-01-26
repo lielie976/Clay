@@ -7,7 +7,6 @@
 <script>
 import PremiumSubject from '~/components/PremiumSubject'
 import HotMsgs from '~/components/HotMsgs/TuoShui'
-import TuoShui from '~/views/tuoshui'
 import texts from '~/utils/texts'
 
 export default {
@@ -17,7 +16,6 @@ export default {
     await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
   },
   components: {
-    TuoShui,
     PremiumSubject,
     HotMsgs
   },

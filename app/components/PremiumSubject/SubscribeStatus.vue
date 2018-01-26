@@ -3,19 +3,24 @@
     <template v-if="1">
       <p class="subscribe-status-price"><small id="rmb">￥</small>432.00 <small>起</small></p>
       <p class="subscribe-status-discount">包年/月/年立省 1843.20</p>
-      <a class="subscribe-status-action" href="javascript: void(0)">我要订阅</a>
+      <a class="subscribe-status-action" @click="toggleModal">我要订阅</a>
     </template>
     <template v-else>
       <p class="subscribe-status-remaindate">只剩<span>3</span>天</p>
       <p class="subscribe-status-validdate">有效期：2018/11/22</p>
-      <a class="subscribe-status-action" href="javascript: void(0)">我要续订</a>
+      <a class="subscribe-status-action" @click="toggleModal">我要续订</a>
     </template>
   </div>
 </template>
 
 <script>
 export default {
-  props: {}
+  props: {},
+  methods: {
+    toggleModal () {
+      this.$store.commit('subscribe/toggleModal')
+    }
+  }
 }
 </script>
 

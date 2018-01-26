@@ -1,0 +1,246 @@
+image: d-hub.wallstcn.com:5000/wallstreetcn/build-base:latest
+stages:
+- build
+- release
+- deployment
+
+variables:
+  DOCKER_DRIVER: overlay
+  SERVICE_NAME: clay
+  SERVICE_PREVIEW_NAME: clay-preview
+  IMAGE_NAME: ccr.ccs.tencentyun.com/dhub.wallstcn.com/clay
+
+build:sit:
+  stage: build
+  image: ccr.ccs.tencentyun.com/dhub.wallstcn.com/clay:base
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$IVANKA_PUBLISH_SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - apt-get install bzip2
+    #- cp -R /usr/src/app/node_modules node_modules/
+    - cnpm install
+    - cnpm run build:sit
+  only:
+    - sit
+  artifacts:
+    paths:
+      - ./
+    expire_in: 1h
+
+build:prod:
+  stage: build
+  image: ccr.ccs.tencentyun.com/dhub.wallstcn.com/clay:base
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$IVANKA_PUBLISH_SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - apt-get install bzip2
+    # - wget https://wdl.wallstreetcn.com/phantomjs-2.1.1-linux-x86_64.tar.bz2
+    # - tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
+    # - mv phantomjs-2.1.1-linux-x86_64 /usr/local/share
+    # - ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64.tar.bz2/bin/phantomjs /usr/local/bin
+    #- cp -R /usr/src/app/node_modules node_modules/
+    - cnpm install
+    - cnpm run build:prod
+  only:
+    - master
+  artifacts:
+    paths:
+      - ./
+    expire_in: 1h
+
+build:stage:
+  stage: build
+  image: ccr.ccs.tencentyun.com/dhub.wallstcn.com/clay:base
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$IVANKA_PUBLISH_SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - apt-get install bzip2
+    # - wget https://wdl.wallstreetcn.com/phantomjs-2.1.1-linux-x86_64.tar.bz2
+    # - tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
+    # - mv phantomjs-2.1.1-linux-x86_64 /usr/local/share
+    # - ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64.tar.bz2/bin/phantomjs /usr/local/bin
+    #- cp -R /usr/src/app/node_modules node_modules/
+    - cnpm install
+    - cnpm run build:sit
+  only:
+    - stage
+  artifacts:
+    paths:
+      - ./
+    expire_in: 1h
+
+build:preview:
+  stage: build
+  image: ccr.ccs.tencentyun.com/dhub.wallstcn.com/clay:base
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$IVANKA_PUBLISH_SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - apt-get install bzip2
+    - cnpm install
+    - cnpm run build:preview
+  only:
+    - sit
+  artifacts:
+    paths:
+      - ./
+    expire_in: 1h
+
+release:sit:
+  stage: release
+  script:
+    - docker login --username=3518936217 ccr.ccs.tencentyun.com -p "$CI_DOCKER_REGISTRY_TOKEN"
+    - docker build --tag="$IMAGE_NAME:sit" .
+    - docker push "$IMAGE_NAME:sit"
+  only:
+    - sit
+  dependencies:
+    - build:sit
+
+release:prod:
+  stage: release
+  script:
+    - REVISION=`git rev-parse --short=8 HEAD || echo unknown`
+    - docker login --username=3518936217 ccr.ccs.tencentyun.com -p "$CI_DOCKER_REGISTRY_TOKEN"
+    - docker build --tag="$IMAGE_NAME:$REVISION" .
+    - docker push "$IMAGE_NAME:$REVISION"
+  only:
+    - master
+  dependencies:
+    - build:prod
+
+release:stage:
+  stage: release
+  script:
+    - REVISION=`git rev-parse --short=8 HEAD || echo unknown`
+    - docker login --username=3518936217 ccr.ccs.tencentyun.com -p "$CI_DOCKER_REGISTRY_TOKEN"
+    - docker build --tag="$IMAGE_NAME:stage" .
+    - docker push "$IMAGE_NAME:stage"
+  only:
+    - stage
+  dependencies:
+    - build:sit
+
+release:preview:
+  stage: release
+  script:
+    - docker login --username=3518936217 ccr.ccs.tencentyun.com -p "$CI_DOCKER_REGISTRY_TOKEN"
+    - docker build --tag="$IMAGE_NAME:preview" .
+    - docker push "$IMAGE_NAME:preview"
+  only:
+    - sit
+  dependencies:
+    - build:preview
+
+deployment:sit:
+  stage: deployment
+  image: kroniak/ssh-client
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$IVANKA_PUBLISH_SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  only:
+    - sit
+  script:
+    - ssh ubuntu@115.159.224.129 "kubectl scale --replicas=0 deployment/$SERVICE_NAME && kubectl scale --replicas=1 deployment/$SERVICE_NAME"
+
+deployment:stage:
+  stage: deployment
+  image: kroniak/ssh-client
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$IVANKA_PUBLISH_SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  only:
+    - stage
+  script:
+    - ssh ubuntu@115.159.108.254 "kubessh grafana restart $SERVICE_NAME"
+    
+deployment:preview:
+  stage: deployment
+  image: kroniak/ssh-client
+  before_script:
+    # Install ssh-agent if not already installed, it is required by Docker.
+    # (change apt-get to yum if you use a CentOS-based image)
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$IVANKA_PUBLISH_SSH_PRIVATE_KEY")
+    # For Docker builds disable host key checking. Be aware that by adding that
+    # you are suspectible to man-in-the-middle attacks.
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  only:
+    - sit
+  script:
+    - ssh ubuntu@115.159.108.254 "kubessh grafana restart $SERVICE_PREVIEW_NAME"
