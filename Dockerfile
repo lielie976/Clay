@@ -1,7 +1,6 @@
 FROM ccr.ccs.tencentyun.com/dhub.wallstcn.com/clay:base
 WORKDIR /usr/src/app/
 ADD . /usr/src/app/
-ADD public/dist  /usr/src/app/dist
 
 # init nginx
 RUN cp -R nginx/* /etc/nginx/
