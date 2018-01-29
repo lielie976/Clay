@@ -63,6 +63,7 @@ export default {
       this.$emit('mutate-intro', item)
     },
     showModal () {
+      console.log(1)
       this.$emit('show-modal')
     }
   },

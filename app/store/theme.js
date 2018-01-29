@@ -1,6 +1,7 @@
 import { fetchTheme, fetchThemeMessage, fetPlateSetInfo, fetchFlow, fetchLongtou } from '~/api/theme'
 import { getStocksReal } from '~/api/wows'
 import { extractFieldsToObj } from '~/utils/helpers'
+import share from '~/utils/share'
 
 export const state = () => ({
   themeInfo: {},
@@ -41,15 +42,11 @@ export const mutations = {
   },
 
   setThemeStockSymbol (state, data) {
-    if (data.AllStocks && data.AllStocks.length) {
-      state.themeStockSymbol = data.AllStocks.map(s => s.Symbol)
-    }
+    state.themeStockSymbol = data.map(s => s.Symbol || s.symbol)
   },
 
   setThemeStockList (state, data) {
-    if (data.AllStocks && data.AllStocks.length) {
-      state.themeStockList = data.AllStocks
-    }
+    state.themeStockList = data
   },
 
   setStockReal (state, data) {
@@ -91,14 +88,26 @@ export const mutations = {
 }
 
 export const actions = {
-  getThemeInfo ({ commit, dispatch }, payload) {
-    return fetchTheme(payload.id, payload.token).then(res => {
-      commit('setThemeInfo', res.Data)
-      commit('setThemeStockSymbol', res.Data)
-      commit('setThemeStockList', res.Data)
-      commit('setAccessMode', res.AccessMode)
-      // await dispatch('getThemeStock')
-    })
+  async getThemeInfo ({ state, commit, dispatch }, payload) {
+    const res = await fetchTheme(payload.id, payload.token)
+    commit('setThemeInfo', res.Data)
+    commit('setAccessMode', res.AccessMode)
+    if (state.excpetionTheme.indexOf(payload.id) === -1) {
+      console.log('default')
+      commit('setThemeStockSymbol', res.Data.AllStocks)
+      commit('setThemeStockList', res.Data.AllStocks)
+      await dispatch('getThemeStock')
+    } else {
+      console.log('special')
+      let list = await share.switchApi(payload.id)
+      if (list) {
+        let stockList = share.dataBeautify(list.data, 'fields', 'items')
+        console.log(stockList)
+        commit('setThemeStockList', stockList)
+        commit('setThemeStockSymbol', stockList)
+        await dispatch('getThemeStock')
+      }
+    }
   },
 
   getThemeMessage ({ commit }, id) {
@@ -113,7 +122,7 @@ export const actions = {
     })
   },
 
-  getThemeStock ({ state, commit }, id) {
+  async getThemeStock ({ state, commit }, id) {
     if (state.themeStockSymbol) {
       let fields = 'prod_name,px_change,last_px,px_change_rate,trade_status,circulation_value,pe_rate,market_value,turnover_ratio';
       return getStocksReal({stocks: state.themeStockSymbol.join(','), fields}).then(res => {

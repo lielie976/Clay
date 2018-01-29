@@ -35,7 +35,7 @@
         </tbody>
 
       </table>
-      <!-- <component :is="specialComponent" v-if="isSpecial" @symbolOver="poolOver" @symbolLeave="poolLeave" @specialSort="startSort" :poolFixed="poolFixed" :sortRule="sortRule" :stockList="filterList" :loading="loading" /> -->
+      <component :is="specialComponent" v-if="isSpecial" @symbolOver="poolOver" @symbolLeave="poolLeave" @specialSort="startSort" :poolFixed="poolFixed" :sortRule="sortRule" :stockList="filterList" :loading="false" />
       <div v-if="poolImageShow" :style="{top:poolImageTop+'px',left:poolImageLeft+'px'}" class="img-div">
         <img :src="poolImageSrc" />
       </div>
@@ -62,9 +62,18 @@
 import sortThead from './sortThead.vue'
 import stockItem from './stockItem.vue'
 import shareMethodMixin from '~/mixins/shareMethodMixin'
+import resumption from './selfUpdateTheme/resumption.vue'
+import st from './selfUpdateTheme/st.vue'
+import secStock from './selfUpdateTheme/secStock.vue'
+import newStock from './selfUpdateTheme/newStock.vue'
+import gaosongzhuanComplete from './selfUpdateTheme/gaosongzhuanComplete.vue'
+import gaosongzhuanPlan from './selfUpdateTheme/gaosongzhuanPlan.vue'
+import stRevoked from './selfUpdateTheme/stRevoked.vue'
+import lowbp from './selfUpdateTheme/lowbp.vue'
+import boardPre from './selfUpdateTheme/boardPre.vue'
 
 export default {
-  props: ['accessMode', 'poolFixed', 'isSpecial', 'filterList', 'sortRule', 'scrollVal', 'showWeakBindPool', 'iconFlag', 'sortTime'],
+  props: ['accessMode', 'poolFixed', 'isSpecial', 'filterList', 'sortRule', 'scrollVal', 'showWeakBindPool', 'iconFlag', 'sortTime', 'themeId'],
   data () {
     return {
       targetImageSymbol: null,
@@ -72,6 +81,11 @@ export default {
       poolImageLeft: 0,
       poolImageSrc: null,
       poolImageShow: false
+    }
+  },
+  computed: {
+    specialComponent () {
+      return this.specialComponentName(this.themeId)
     }
   },
   methods: {
@@ -97,7 +111,16 @@ export default {
   mixins: [shareMethodMixin],
   components: {
     sortThead,
-    stockItem
+    stockItem,
+    resumption,
+    st,
+    secStock,
+    newStock,
+    gaosongzhuanComplete,
+    gaosongzhuanPlan,
+    stRevoked,
+    lowbp,
+    boardPre
   }
 }
 </script>

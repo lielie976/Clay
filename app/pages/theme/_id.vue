@@ -27,14 +27,15 @@ export default {
     console.log(getCookie('token', req.headers.cookie))
     await store.dispatch('theme/getThemeMessage', params.id);
     await store.dispatch('theme/getPlateSetInfo', params.id);
-    await store.dispatch('theme/getThemeStock')
+    // await store.dispatch('theme/getThemeStock')
     await store.dispatch('theme/getBkjInfo')
     await store.dispatch('theme/getStockFlow')
     await store.dispatch('theme/getLongtou', params.id)
     return {
       intro: {},
       modal: false,
-      id: params.id
+      id: params.id,
+      timer: 0
     }
   },
   head () {
@@ -61,7 +62,17 @@ export default {
       })
     },
     refresh () {
+      this.stopInterval()
+      this.startInterval()
+    },
+    startInterval () {
       this.$store.dispatch('theme/getThemeStock')
+      this.timer = setInterval(() => {
+        this.$store.dispatch('theme/getThemeStock')
+      }, 20000)
+    },
+    stopInterval () {
+      clearInterval(this.timer)
     }
   },
   mounted () {
@@ -82,6 +93,7 @@ export default {
       introData = []
     }
     this.intro = introData
+    this.startInterval()
   },
   components: {
     themeTitle,

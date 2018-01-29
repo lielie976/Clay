@@ -1,6 +1,4 @@
-import api from './index';
 import wows from './wows';
-import axios from 'axios'
 
 export const fetchThemeMessage = ({ id, limit = 5, Mark = 0 }) => {
   return api({

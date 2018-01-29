@@ -29,15 +29,16 @@
             </div>
           </div>
         </div>
-        <theme-stock-pool :sortTime="sortTime" @sort-pool="sortPool" :accessMode="accessMode" :poolFixed="poolFixed" :isSpecial="isSpecial" :filterList="filterList" :sortRule="sortRule" :scrollVal="scrollVal" :showWeakBindPool="showWeakBindPool" :iconFlag="iconFlag" />
+        <theme-stock-pool :themeId="themeId" :sortTime="sortTime" @sort-pool="sortPool" :accessMode="accessMode" :poolFixed="poolFixed" :isSpecial="isSpecial" :filterList="filterList" :sortRule="sortRule" :scrollVal="scrollVal" :showWeakBindPool="showWeakBindPool" :iconFlag="iconFlag" />
       </div>
       <div v-if="tabItems[1].checked" class="stocklist-chain">
-        <chain-stock-pool :isLogin="isLogin" :sortTime="sortTime"  :accessMode="accessMode" :anchorFixed="anchorFixed" :scrollVal="scrollVal" :anchorList="anchorList" @sort-chain="sortChain" :poolFixed="poolFixed" :categories="categories" :sort-rule="chainSortRule" />
+        <chain-stock-pool :activeChain="activeChain" :isLogin="isLogin" :sortTime="sortTime"  :accessMode="accessMode" :anchorFixed="anchorFixed" :scrollVal="scrollVal" :anchorList="anchorList" @sort-chain="sortChain" :poolFixed="poolFixed" :categories="categories" :sort-rule="chainSortRule" />
       </div>
     </div>
   </div>
 </template>
 <script>
+/* eslint-disable no-debugger */
 import shareMethodMixin from '~/mixins/shareMethodMixin'
 import themeStockPool from './themeStockPool'
 import chainStockPool from './chainStockPool'
@@ -86,6 +87,7 @@ export default {
       targetImageSymbol: null,
       sortTime: 0,
       anchorFixed: false,
+      activeChain: 0,
       stockDictional: {
       }
     }
@@ -131,13 +133,15 @@ export default {
     themeInfo () {
       return this.$store.state.theme.themeInfo
     },
+    themeId () {
+      return this.$store.state.theme.themeInfo.Id
+    },
     categories () {
       if (this.themeInfo.Ssets && this.themeInfo.Ssets.length === 1 && this.themeInfo.Ssets[0].Categories && this.themeInfo.Ssets[0].Categories.length && this.themeInfo.AllStocks) {
         let c = JSON.parse(JSON.stringify(this.themeInfo)).Ssets[0].Categories.filter(item => {
           return item.Stocks && item.Stocks.length
         })
         let stockReal = this.$store.state.theme.stockReal
-        this.anchorList = []
         c = c.map(cata => {
           if (cata.Stocks && cata.Stocks.length) {
             cata.Stocks = this.sortStockList(cata.Stocks.map(stock => {
@@ -158,12 +162,6 @@ export default {
             }).filter(i => {
               return i != null
             }), this.chainSortRule)
-            this.anchorList.push({
-              name: cata.Name,
-              label: cata.Name,
-              id: 'cata_' + cata.Id,
-              active: false
-            })
             return cata
           }
         })
@@ -176,7 +174,7 @@ export default {
       let stockList = JSON.parse(JSON.stringify(this.$store.state.theme.themeStockList))
       let stockReal = this.$store.state.theme.stockReal
       return stockList.map((item, index) => {
-        if (stockReal[item.Symbol]) {
+        if (stockReal[item.Symbol || item.symbol]) {
           let i = Object.assign({}, item, stockReal[item.Symbol]);
           if (this.stockFlow[item.Symbol]) {
             i.stockFlow = this.calculateStockFlow(this.stockFlow[item.Symbol], item.Symbol)
@@ -266,8 +264,19 @@ export default {
       this.chainSortRule.mode = 'default'
       // clearInterval(this.refreshInterval)
       // this.getStockList(true)
+      if (this.tabItems[1].checked) {
+        this.anchorList = []
+        this.categories.map(cata => {
+          this.anchorList.push({
+            name: cata.Name,
+            label: cata.Name,
+            id: 'cata_' + cata.Id,
+            active: false
+          })
+        })
+      }
       this.$nextTick(() => {
-        if (this.anchorTop === 0 && this.tabItems[1].checked && this.is_login) {
+        if (this.anchorTop === 0 && this.tabItems[1].checked && this.isLogin) {
           this.$nextTick(() => {
             this.anchorTop = this.getElementTop(document.getElementById('stocklist-chain-right'))
             this.anchorList = this.anchorList.map(item => {

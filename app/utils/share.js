@@ -1,5 +1,6 @@
 /* eslint-disable */
 import isWeekend from 'date-fns/is_weekend'
+import {fetchResumption ,fetchST,fetchsecStock ,fetchGaosongzhuanComplete,fetchGaosongzhuanPlan,fetchstRevoked,fetchLowpb,fetchNewstock,fetchBoardPre} from '~/api/theme';
 export default {
   dataBeautify(data, fieldName, itemName) {
     let bData = null
@@ -82,7 +83,78 @@ export default {
   getLS(key) {
     return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : localStorage.getItem(key);
   },
-
+  switchApi (id) {
+    switch (id) {
+      case '24291465':
+        // this.specialComponent = 'resumption'
+        return fetchResumption()
+        break;
+      case '24898553':
+      //  this.specialComponent = 'st'
+        return fetchST()
+        break;
+      case '17864537':
+      //  this.specialComponent = 'secStock'
+        return fetchsecStock()
+        break;
+      case '17136297':
+      //  this.specialComponent = 'gaosongzhuanComplete'
+        return fetchGaosongzhuanComplete()
+        break;
+      case '19322062':
+      //  this.specialComponent = 'gaosongzhuanPlan'
+        return fetchGaosongzhuanPlan()
+        break;
+      case '17290881':
+      //  this.specialComponent = 'stRevoked'
+        return fetchstRevoked()
+        break;
+      case '27912881':
+      //  this.specialComponent = 'lowbp'
+        return fetchLowpb()
+        break;
+      case '27924249':
+      //  this.specialComponent = 'newStock'
+        return fetchNewstock()
+        break;
+      default :
+        return new Promise((resolve, reject) => {
+          resolve('')
+        })
+      break;
+    }
+  },
+  specialComponentName (id) {
+    switch (id) {
+      case '24291465':
+        return 'resumption'
+      case '24898553':
+        return 'st'
+      case '17864537':
+        return 'secStock'
+      case '17136297':
+        return 'gaosongzhuanComplete'
+      case '19322062':
+        return 'gaosongzhuanPlan'
+      case '17290881':
+        return 'stRevoked'
+      case '27912881':
+        return 'lowbp'
+        break;
+      case '27924249':
+       return 'newStock'
+      default :
+        return ''
+      break;
+    }
+  },
+  stockArrToReal (arr) {
+    let real = {}
+    arr.map(item => {
+      real[item.symbol] = item
+    })
+    return real
+  },
   hsCodeToWscn(code) {
     if (!code) return ''
     if (fromHsMap[code]) return fromHsMap[code]

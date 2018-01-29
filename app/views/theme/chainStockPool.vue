@@ -105,7 +105,7 @@ import stockItem from './stockItem.vue'
 import shareMethodMixin from '~/mixins/shareMethodMixin'
 
 export default {
-  props: ['accessMode', 'anchorFixed', 'categories', 'sortRule', 'sortTime', 'isLogin', 'scrollVal', 'poolFixed', 'anchorList'],
+  props: ['accessMode', 'anchorFixed', 'categories', 'sortRule', 'sortTime', 'isLogin', 'scrollVal', 'poolFixed', 'anchorList', 'activeChain'],
   data () {
     return {
       targetImageSymbol: null,

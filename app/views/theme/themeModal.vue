@@ -307,10 +307,12 @@ export default {
   margin: 0 auto;
 }
 #theme-modal{
+  display: block;
   .modal-content{
     width: 1100px;
     overflow: initial;
     position: absolute;
+    display: block;
     left: 50%;
     transform: translateX(-50%);
     top: 50px;
@@ -325,39 +327,6 @@ export default {
     top: 0;
   }
   .modal-close{
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    background-color: hsla(0,0%,4%,.2);
-    border: none;
-    border-radius: 290486px;
-    cursor: pointer;
-    display: inline-block;
-    -ms-flex-positive: 0;
-    flex-grow: 0;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-    font-size: 1rem;
-    height: 20px;
-    max-height: 20px;
-    max-width: 20px;
-    min-height: 20px;
-    min-width: 20px;
-    outline: none;
-    position: relative;
-    vertical-align: top;
-    width: 20px;
-    background: none;
-    height: 40px;
-    position: fixed;
-    right: 20px;
-    top: 20px;
-    width: 40px;
-    background:#fff;
   }
 }
 .theme-detail{
