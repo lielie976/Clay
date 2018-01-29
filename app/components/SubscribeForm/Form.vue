@@ -23,7 +23,7 @@
       <a class="subscribe-form-actions-pay">立即支付</a>
       <a class="subscribe-form-actions-close">取消</a>
     </div>
-    <p class="subscribe-form-agreement">购买即表示同意 <span>《选股宝主题订阅协议》</span></p>
+    <p class="subscribe-form-agreement">购买即表示同意 <a target="_blank" href="/agreement">《选股宝主题订阅协议》</a></p>
   </div>
 </template>
 

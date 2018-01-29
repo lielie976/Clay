@@ -37,8 +37,6 @@ export const actions = {
   async getMsgs ({ commit, state }, id) {
     const res = await getSubjectPremiumMsgs(id, state.params)
     if (res.code === 20000) {
-      console.log(res.data)
-      console.log(refineApi(res.data))
       commit('saveMsgs', refineApi(res.data))
     }
   },
