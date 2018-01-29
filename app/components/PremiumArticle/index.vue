@@ -39,7 +39,11 @@ export default {
   },
   methods: {
     unlock () {
-      this.$store.dispatch('login/showLogin')
+      if (this.$store.state.user.userInfo.isLogged) {
+        this.$store.commit('subscribe/toggleModal')
+      } else {
+        this.$store.dispatch('login/showLogin')
+      }
     }
   }
 }

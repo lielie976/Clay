@@ -4,7 +4,7 @@
     <div class="premium-subject-meta-subscribe">
       <subscribe-status />
     </div>
-    <subscribe-form-with-modal :subject="subject" />
+    <subscribe-form-with-modal />
   </div>
 </template>
 

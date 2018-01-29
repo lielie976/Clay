@@ -1,25 +1,22 @@
 <template>
-  <div :class="['modal', `${isModalOpen ? 'is-active' : ''}`]">
-    <div class="modal-background" @click="toggleModal"></div>
-    <div class="modal-content">
-      <subscribe-form
-        :subject="subject"
-        :onClose="toggleModal"
-      />
-    </div>
-    <!-- <button class="modal-close is-large" aria-label="close" @click="toggleModal"></button> -->
-  </div>
+  <modal
+    :active="isModalOpen"
+    :toggleModal="toggleModal"
+  >
+    <subscribe-form
+      :onClose="toggleModal"
+    />
+  </modal>
 </template>
 
 <script>
+import Modal from './Modal'
 import SubscribeForm from './Form'
 
 export default {
   components: {
+    Modal,
     SubscribeForm
-  },
-  props: {
-    subject: Object
   },
   computed: {
     isModalOpen () {

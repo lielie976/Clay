@@ -2,10 +2,17 @@
   <div class="payment-options">
     <p class="payment-header">购买选项</p>
     <ul>
-      <li><pay-message-option :selected="true" /></li>
-      <li><pay-subject-option :selected="true" /></li>
-      <li><pay-subject-option /></li>
-      <li><pay-subject-option /></li>
+      <li v-if="data.message">
+        <pay-message-option :data="data" :select="selectMsg" />
+      </li>
+      <li v-for="(i, index) in data.subject.SubjSubscribeItems" :key="i.Id">
+        <pay-subject-option 
+          :data="data"
+          :item="i"
+          :index="index"
+          :select="() => selectSubject(index)"
+        />
+      </li>
     </ul>
   </div>
 </template>
@@ -18,6 +25,17 @@ export default {
   components: {
     PaySubjectOption,
     PayMessageOption
+  },
+  props: {
+    data: Object
+  },
+  methods: {
+    selectMsg () {
+      this.$store.commit('subscribe/selectMsg')
+    },
+    selectSubject (index) {
+      this.$store.commit('subscribe/selectSubject', index)
+    }
   }
 }
 </script>
@@ -33,7 +51,7 @@ export default {
   ul {
     display: flex;
     justify-content: space-between;
-    margin-top: 12px;
+    margin: 12px -4px 0;
   }
   li {
     flex: 1;

@@ -9,3 +9,5 @@ export const getSubjectHotMsgs = (id, params, headers) => api.get(`/api/v2/pc/su
 export const getSubjectInfo = (id, headers) => api.get(`/api/v2/pc/subjects/${id}/info`, { headers })
 
 export const getSubjectTrialMsgs = (id) => api.get(`/api/v2/pc/subjects/${id}/messages/trail`)
+
+export const getUserBalance = headers => api.get('/api/v2/user/balance', { headers })

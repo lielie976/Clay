@@ -1,26 +1,54 @@
 <template>
   <div class="subscribe-form-meta">
-    <template v-if="subject">
+    <template v-if="data.selectedItem.type === 'subject'">
       <img class="subscribe-form-meta-image" :src="subject.Image"  />
       <div class="subscribe-form-meta-info">
         <h2>{{subject.Title}}</h2>
-        <div class="subscribe-form-meta-info-time">
-          <span class="subscribe-form-meta-info-time-header">订阅时长： </span>
-          <span class="subscribe-form-meta-info-time-content">2017/11/20-2019/11/20</span>
-        </div>
-        <div class="subscribe-form-meta-info-price">
-          <span class="subscribe-form-meta-info-price-header">总额</span>
-          <span class="subscribe-form-meta-info-price-content">￥3916.80</span>
-        </div>
+        <template v-if="data.selectedItem.type">
+          <div class="subscribe-form-meta-info-time">
+            <span class="subscribe-form-meta-info-time-header">订阅时长： </span>
+            <span class="subscribe-form-meta-info-time-content">{{subscribeDuration}}</span>
+          </div>
+          <div class="subscribe-form-meta-info-price">
+            <span class="subscribe-form-meta-info-price-header">总额</span>
+            <span class="subscribe-form-meta-info-price-content">￥{{selectedSubject.DiscountPrice}}</span>
+          </div>
+        </template>
+      </div>
+    </template>
+    <template v-else-if="data.selectedItem.type === 'message'">
+      <img class="subscribe-form-meta-image" :src="message.Image"  />
+      <div class="subscribe-form-meta-info">
+        <h2>{{message.Title}}</h2>
+        <template v-if="data.selectedItem.type">
+          <div class="subscribe-form-meta-info-price">
+            <span class="subscribe-form-meta-info-price-header">需支付</span>
+            <span class="subscribe-form-meta-info-price-content">￥{{message.Price}}</span>
+          </div>
+        </template>
       </div>
     </template>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
-    subject: Object
+    data: Object
+  },
+  computed: {
+    ...mapGetters({
+      selectedSubject: 'subscribe/selectedSubject',
+      subscribeDuration: 'subscribe/subscribeDuration'
+    }),
+    subject () {
+      return this.data.subject
+    },
+    message () {
+      return this.data.message
+    }
   }
 }
 </script>
@@ -41,12 +69,12 @@ export default {
     h2 {
       font-size: 20px;
       color: @mainFontColor;
-      line-height: 1;
+      line-height: 27px;
       margin-top: 6px;
     }
     &-time {
       line-height: 1;
-      margin: 12px 0 12px;
+      margin: 12px 0 10px;
     }
     &-time-header {
       font-size: 14px;

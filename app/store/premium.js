@@ -50,7 +50,9 @@ export const actions = {
     return new Promise((resolve, reject) => {
       getSubjectInfo(id, rootState.auth.headers).then((res) => {
         if (res.code === 20000) {
-          commit('saveSubjectDetail', refineApi(res.data.subject_info))
+          const data = refineApi(res.data.subject_info)
+          commit('saveSubjectDetail', data)
+          commit('subscribe/saveSubject', data, { root: true })
         }
         resolve()
       }).catch(err => reject(err))

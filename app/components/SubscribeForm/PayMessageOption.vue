@@ -2,16 +2,26 @@
   <div :class="{
     'subscribe-message-option': true,
     'selected': selected
-  }">
+  }"
+    @click="select"
+  >
     <div class="subscribe-message-option-day">单篇</div>
-    <div class="subscribe-message-option-price">￥18</div>
+    <div class="subscribe-message-option-price">￥{{data.message.Price}}</div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    selected: Boolean
+    select: Function,
+    data: Object
+  },
+  computed: {
+    selected () {
+      return (
+        this.data.selectedItem.type === 'message'
+      )
+    }
   }
 }
 </script>
@@ -27,7 +37,7 @@ export default {
   border: solid 1px #efefef;
   padding: 8px 0;
   text-align: center;
-  transition: 0.4s;
+  transition: 0.2s;
   cursor: pointer;
   &:hover {
     box-shadow: 0 0 8px 0 rgba(29, 33, 38, 0.1);

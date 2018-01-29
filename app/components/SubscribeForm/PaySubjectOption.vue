@@ -2,17 +2,30 @@
   <div :class="{
     'subscribe-subject-option': true,
     'selected': selected
-  }">
-    <div class="subscribe-subject-option-day">360天</div>
-    <div class="subscribe-subject-option-price">￥3916.80</div>
-    <div class="subscribe-subject-option-discount">立省<span>1843.20</span></div>
+  }"
+    @click="select"
+  >
+    <div class="subscribe-subject-option-day">{{item.Name}}</div>
+    <div class="subscribe-subject-option-price">￥{{item.DiscountPrice}}</div>
+    <div class="subscribe-subject-option-discount">立省<span>{{(item.OriginPrice - item.DiscountPrice) | toFixed(2)}}</span></div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    selected: Boolean
+    select: Function,
+    item: Object,
+    index: Number,
+    data: Object
+  },
+  computed: {
+    selected () {
+      return (
+        this.data.selectedItem.type === 'subject' &&
+        this.index === this.data.selectedItem.index
+      )
+    }
   }
 }
 </script>
@@ -28,7 +41,7 @@ export default {
   border: solid 1px #efefef;
   padding: 8px 0;
   text-align: center;
-  transition: 0.4s;
+  transition: 0.2s;
   cursor: pointer;
   &:hover {
     box-shadow: 0 0 8px 0 rgba(29, 33, 38, 0.1);

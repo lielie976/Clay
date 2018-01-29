@@ -8,8 +8,9 @@ import texts from '~/utils/texts'
 import PremiumArticle from '~/views/premium-article'
 
 export default {
-  async asyncData ({ params }) {
+  async asyncData ({ params, store }) {
     const data = await getMessage(params.id)
+    store.commit('subscribe/saveMessage', data)
     return { data }
   },
   head () {

@@ -2,13 +2,19 @@
   <div class="subscribe-form">
     <div class="subscribe-form-header">确认订单</div>
     <i class="iconfont icon-guanbiduihuakuang subscribe-form-close" @click="onClose"></i>
-    <form-meta :subject="subject" />
+    <form-meta :data="data" />
     <div class="subscribe-form-options">
-      <payment />
+      <payment :data="data" />
+    </div>
+    <p class="subscribe-form-final">账户余额：0.00，直接支付 {{priceNeededToPay}} 元</p>
+    <div class="subscribe-form-actions">
+      <a class="subscribe-form-actions-pay pay-action-alipay">支付宝支付</a>
+      <a class="subscribe-form-actions-pay pay-action-wechat">微信支付</a>
+      <a class="subscribe-form-actions-pay pay-action-balance">余额支付</a>
     </div>
     <div class="subscribe-form-privilege">
-      <p class="subscribe-form-privilege-header">订阅特权</p>
       <ul>
+        <li>订阅特权</li>
         <li>
           <i class="iconfont icon-quanbu"></i>
           <span>订阅服务期内该主题全部文章免费看</span>
@@ -19,15 +25,12 @@
         </li>
       </ul>
     </div>
-    <div class="subscribe-form-actions">
-      <a class="subscribe-form-actions-pay">立即支付</a>
-      <a class="subscribe-form-actions-close">取消</a>
-    </div>
     <p class="subscribe-form-agreement">购买即表示同意 <a target="_blank" href="/agreement">《选股宝主题订阅协议》</a></p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Payment from './Payment'
 import FormMeta from './Meta'
 
@@ -37,10 +40,12 @@ export default {
     FormMeta
   },
   props: {
-    subject: Object,
     onClose: Function
   },
   computed: {
+    ...mapGetters({
+      priceNeededToPay: 'subscribe/priceNeededToPay'
+    }),
     isSubject () {
       return !!this.subject
     },
@@ -78,28 +83,32 @@ export default {
     margin-top: 16px;
     
   }
+  &-final {
+    margin: 16px 0;
+    color: #e6394d;
+    font-size: 14px;
+  }
   &-privilege {
     margin-top: 24px;
+    font-size: 13px;
     &-header {
       color: @subFontColor;
-      font-size: 14px;
     }
     ul {
       display: inline-block;
     }
     li {
       display: inline-block;
-      margin-right: 50px;
+      margin-right: 20px;
       i {
         display: inline-block;
-        font-size: 36px;
+        font-size: 13px;
         color: #ccc;
       }
       span {
         display: inline-block;
-        color: @subFontColor;
+        color: #999;
         font-size: 12px;
-        width: 105px;
         margin-left: 8px;
       }
     }
@@ -115,18 +124,25 @@ export default {
       text-align: center;
     }
     &-pay {
-      background-image: linear-gradient(to right, #f2564e, #e6394d);
-      color: #fff;
+    color: #fff;
     }
-    &-close {
-      color: #999;
-      border: solid 1px #cccccc;
+    .pay-action-alipay {
+      background-color: #4ea7f2;
+      flex: 1;
+    }
+    .pay-action-wechat {
+      background-color: #1ec370; 
+      flex: 1;
+    }
+    .pay-action-balance {
+      background-color: #e6e6e6;
+      flex: 0 0 142px;
     }
   }
   &-agreement {
     margin-top: 16px;
-    font-size: 14px;
-    color: @subFontColor;
+    font-size: 13px;
+    color: #999;
     span {
       color: @mainFontColor;
     }

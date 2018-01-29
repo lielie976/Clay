@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, addDays } from 'date-fns'
 import Timeago from 'timeago.js'
 
 export function toFixed (value, digit) {
@@ -145,4 +145,8 @@ export function refineApi (obj) {
   } else {
     return obj
   }
+}
+
+export function getDuration (days) {
+  return addDays(new Date(), days)
 }
