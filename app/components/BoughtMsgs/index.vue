@@ -2,7 +2,7 @@
   <widget-box title="已购文章">
     <div>
       <ul class="aside-bought-msgs">
-        <msg-item  v-for="msg in msgs" :key="msg.id" :msg="msg" />
+        <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="msg" />
       </ul>
       <div class="pagination" v-if="data.total > data.params.limit">
         <Page

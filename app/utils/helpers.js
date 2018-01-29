@@ -121,3 +121,28 @@ export function smoothscroll (top = 0) {
     window.scrollTo(top, currentScroll - (currentScroll / 15))
   }
 }
+
+export function turnUnderscoreToUppercase (key) {
+  return key.split('_').map(i => `${i.charAt(0).toUpperCase()}${i.substr(1)}`).join('')
+}
+
+export function refineApi (obj) {
+  if (Array.isArray(obj)) {
+    return obj.map(i => refineApi(i))
+  } else if (Object.prototype.toString(obj) === '[object Object]') {
+    const tmp = {}
+    Object.keys(obj).map((key) => {
+      const newKey = turnUnderscoreToUppercase(key)
+      if (Object.prototype.toString.call(obj[key]) === '[object Object]') {
+        tmp[newKey] = refineApi(obj[key])
+      } else if (Array.isArray(obj[key])) {
+        tmp[newKey] = obj[key].map(i => refineApi(i))
+      } else {
+        tmp[newKey] = obj[key]
+      }
+    })
+    return tmp
+  } else {
+    return obj
+  }
+}

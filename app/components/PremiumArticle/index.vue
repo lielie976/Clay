@@ -16,16 +16,19 @@
       <locked-aside-bkj />
       <locked-aside-stocks />
     </section>
+    <subscribe-form-with-modal />
   </section>
 </template>
 
 <script>
+import SubscribeFormWithModal from '~/components/SubscribeForm/WithModal'
 import LockedAsideStocks from '~/components/LockedAsideStocks'
 import LockedAsideBkj from '~/components/LockedAsideBkj'
 import ArticleContent from '~/components/ArticleContent'
 
 export default {
   components: {
+    SubscribeFormWithModal,
     LockedAsideStocks,
     LockedAsideBkj,
     ArticleContent

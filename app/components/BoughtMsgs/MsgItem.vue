@@ -1,13 +1,13 @@
 <template>
   <li class="bought-msgs-item">
-    <a :href="`/premium-article/${msg.id}`" target="_blank">{{msg.title}}</a>
+    <a :href="`/premium-article/${msg.Id}`" target="_blank">{{msg.Title}}</a>
     <p class="bought-msgs-item-bottom">
       <span class="bought-msgs-item-subj">
         <img src="/img/tuoshui-banner.jpg">
         只做龙头
       </span>
       <span class="bought-msgs-item-time">
-        <time-widget :time="msg.created_at" />
+        <time-widget :time="msg.CreatedAt" />
       </span>
     </p>
   </li>

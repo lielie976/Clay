@@ -1,4 +1,5 @@
 import { getSubjectInfo, getSubjectPremiumMsgs, getSubjectTrialMsgs } from '~/api/premium'
+import { refineApi } from '~/utils/helpers'
 
 export const state = () => ({
   params: {
@@ -18,10 +19,10 @@ export const mutations = {
     state.subjectInfo = data
   },
   saveMsgs (state, data) {
-    state.msgs = data.messages
+    state.msgs = data.Messages
   },
   saveTrialMsgs (state, data) {
-    state.trialMsgs = data.messages
+    state.trialMsgs = data.Messages
   },
   changePage (state, page) {
     state.params.page = page
@@ -36,20 +37,22 @@ export const actions = {
   async getMsgs ({ commit, state }, id) {
     const res = await getSubjectPremiumMsgs(id, state.params)
     if (res.code === 20000) {
-      commit('saveMsgs', res.data)
+      console.log(res.data)
+      console.log(refineApi(res.data))
+      commit('saveMsgs', refineApi(res.data))
     }
   },
   async getTrialMsgs ({ commit }, id) {
     const res = await getSubjectTrialMsgs(id)
     if (res.code === 20000) {
-      commit('saveTrialMsgs', res.data)
+      commit('saveTrialMsgs', refineApi(res.data))
     }
   },
   getInfo ({ commit, state, rootState }, id) {
     return new Promise((resolve, reject) => {
       getSubjectInfo(id, rootState.auth.headers).then((res) => {
         if (res.code === 20000) {
-          commit('saveSubjectDetail', res.data.subject_info)
+          commit('saveSubjectDetail', refineApi(res.data.subject_info))
         }
         resolve()
       }).catch(err => reject(err))

@@ -15,7 +15,11 @@ export default {
   },
   methods: {
     handleClick () {
-      this.$store.dispatch('login/showLogin')
+      if (this.$store.state.user.userInfo.isLogged) {
+        this.$store.commit('subscribe/toggleModal')
+      } else {
+        this.$store.dispatch('login/showLogin')
+      }
     }
   }
 }
