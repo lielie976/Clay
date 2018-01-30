@@ -3,7 +3,7 @@ import format from 'date-fns/format'
 
 const stockState = {
   colorUp: 'rise',
-  colorDown: 'down'
+  colorDown: 'decline'
 }
 
 const tradeState={

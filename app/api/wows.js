@@ -52,3 +52,4 @@ export const getPlateInfos = params => api.get('/v3/aioria/plates/summary/field'
 export const searchBkjByName = params => api.get('/v3/search/plates', { params })
 
 export const getPlateDetail = params => api.get('/v3/aioria/plates/detail', { params })
+export const getChart = () => api.get(`/v3/pandora/snapshot/pcr`)

@@ -1,0 +1,286 @@
+@import '../../../styles/variables.less';
+.table-container{
+  width: 100%;
+  position: relative;
+  .img-div{
+    background: #fff;
+    position: fixed;
+    width: 545px;
+    height: 300px;
+    z-index:10;
+  }
+}
+.hit-pool__table.table {
+  font-size: 12px;
+  color: #666666;
+  // background: transparent;
+  background-color: #fff;
+  background-image: url("/water-mark.png");
+  background-repeat: repeat;
+  // max-width: 1080px;
+  margin: 0 auto;
+  &.fixed{
+    position: fixed;
+    width: 75%;
+    top: 44px;
+    z-index: 100;
+    min-width: 1000px;
+    left:0;
+    // left: 50%;
+    // margin-left: -540px;
+  }
+  .hit-pool__table-head {
+    position: relative;
+    background: #fff;
+  }
+  th {
+    text-align: center;
+    vertical-align: middle;
+    height: 38px;
+    // width: 80px;
+    line-height: 12px;
+    border-bottom: 1px solid #efefef;
+    border-top: 1px solid #efefef;
+    cursor: pointer;
+    padding: 0.5em 0.3em;
+    &.sort_target {
+      background: rgba(230, 57, 77, 0.06);
+      color: #333;
+    }
+    &:hover {
+      color: #333;
+    }
+    abbr {
+      display: inline-block;
+      vertical-align: middle;
+      text-decoration: none;
+    }
+    .icon {
+      height: 12px;
+      width: 12px;
+      position: relative;
+      display: inline-block;
+      top: 2px;
+      left: 3px;
+      .iconfont {
+        font-size: 12px;
+        &:before {
+          content: "\e678";
+          display: block;
+          font-family: "iconfont";
+          height: 12px;
+          width: 12px;
+          position: absolute;
+          top: 0;
+          color: #363c4d;
+        }
+        &.icon-desc {
+          &:after {
+            content: "\e676";
+            display: block;
+            font-family: "iconfont";
+            height: 12px;
+            position: absolute;
+            top: 3px;
+            width: 12px;
+            color: #7683a9;
+          }
+        }
+        &.icon-asc {
+          &:after {
+            content: "\e677";
+            display: block;
+            font-family: "iconfont";
+            height: 12px;
+            width: 12px;
+            position: absolute;
+            top: -3px;
+            color: #7683a9;
+          }
+
+        }
+      }
+    }
+    &.stock-sort__big .icon {
+      position: relative;
+      top: 4px;
+    }
+  }
+  tr {
+    border-bottom: 1px solid #e6e6e6;
+    &:hover {
+      background: rgba(250, 250, 250, 0.5);
+    }
+    td {
+      height: 76px;
+      padding-top: 27px;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+      font-size: 14px;
+      // min-width: 80px;
+      text-align: center;
+      border: none;
+      position: relative;
+      &.sort_target {
+        background: rgba(230, 57, 77, 0.06);
+      }
+      &.img-td {
+        padding-top: 10px;
+        & > img {
+          width: 160px;
+        }
+      }
+      &.stock-index {
+        min-width: 40px;
+      }
+      &.high-light {
+        background: rgba(230, 57, 77, 0.06);
+        color: #333;
+      }
+      .line-clamp {
+        max-height: 37px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.5;
+        padding: 0;
+        font-size: 12px;
+        display: block;
+        position: relative;
+        top: 5px;
+        border: none;
+      }
+    }
+  }
+  .hit-pool__table-body {
+    background: transparent;
+    color: #666666;
+    & > tr {
+      position: relative;
+      .stock-title {
+        width: 200px;
+        padding-top: 18px;
+        position: initial;
+        color: #999;
+        font-size: 14px;
+        margin-top: 1px;
+        &-name {
+          font-size: 14px;
+          color: #333;
+          line-height: 14px;
+        }
+        &.new-stock-title {
+          position: relative;
+          &.open {
+            &:before {
+              content: "";
+              position: absolute;
+              left: 4px;
+              top: 28px;
+              width: 8px;
+              height: 8px;
+              border-radius: 4px;
+              background: #e6394d;
+            }
+          }
+          &.turnover {
+            &:after {
+              content: "";
+              position: absolute;
+              left: 4px;
+              top: 42px;
+              width: 8px;
+              height: 8px;
+              border-radius: 4px;
+              background: #ffaa00;
+            }
+          }
+        }
+      }
+      .stock-reason {
+        width: 200px;
+        text-align: left;
+        padding: 0 10px;
+        vertical-align: middle;
+        cursor: default;
+        &-plate{
+          display: inline;
+          color:#999;
+          &-name{
+            &:hover{
+              color: #e6394d;
+            }
+          }
+        }
+        &.locked {
+          text-align: center;
+          cursor: pointer;
+          .stock-reason-login {
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: 12px;
+          }
+          &:hover {
+            color: #e6394d;
+          }
+        }
+        &:before {
+          content: "";
+          position: absolute;
+          display: block;
+          width: 1px;
+          background: #e6e6e6;
+          left: 0;
+          top: 18px;
+          bottom: 18px;
+        }
+        &:after {
+          content: "";
+          position: absolute;
+          display: block;
+          width: 1px;
+          background: #e6e6e6;
+          right: 0;
+          top: 18px;
+          bottom: 18px;
+        }
+      }
+    }
+  }
+
+  .stock-reason-head {
+    text-align: center;
+    padding-left: 0.5em;
+  }
+}
+// @media screen and (max-width: 1440px) {
+//   .hit-pool__table.table.fixed{
+//     position: fixed;
+//     width: 1080px;
+//     top: 44px;
+//     z-index: 100;
+//     left: 0;
+//   }
+// }
+@media screen and (max-width: 1280px) {
+  .hit-pool__table.table.fixed {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+}
+.simple{
+  .hit-pool__table.table.fixed {
+      left: 50%;
+      margin-left: -600px;
+      width: 1200px;
+    }
+  @media screen and (max-width: 1280px) {
+    .hit-pool__table.table.fixed {
+      left: 50%;
+      margin-left: -500px;
+      width: 1000px;
+    }
+  }
+}

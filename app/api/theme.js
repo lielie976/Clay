@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import api from './index';
 import wows from './wows';
 import axios from 'axios'
@@ -134,5 +135,57 @@ export const fetchBoardPre = () => {
   return wows({
     method: 'GET',
     url: '/v3/saga/pool/board-preday'
+  })
+}
+
+export const fetchThemePcrRank = () => {
+  return wows({
+    method: 'GET',
+    url: '/v3/aioria/plates/pcr/rank'
+  })
+}
+
+export const fetchThemeInfo = (ids, fields = 'plate_id,plate_name,core_pcp,normal_pcp,stocks') => {
+  return wows({
+    method: 'GET',
+    url: '/v3/aioria/plates/summary/field',
+    params: {
+      ids,
+      fields
+    }
+  })
+}
+
+export const fetchStockTrend = (prod_codes, fields = 'timestamp,last_px') => {
+  return wows({
+    method: 'GET',
+    url: '/v3/aphrodite/trend',
+    params: {
+      fields,
+      prod_codes
+    }
+  })
+}
+
+export const fetchRelatedTheme = (code) => {
+  return wows({
+    method: 'GET',
+    url: '/v3/aioria/stock/relateds',
+    params: {
+      code
+    }
+  })
+}
+
+export const fetchEvent = ({head, tail, count = 20, types}) => {
+  return wows({
+    method: 'GET',
+    url: '/v3/fit/event/list',
+    params: {
+      head,
+      tail,
+      count,
+      types
+    }
   })
 }

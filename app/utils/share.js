@@ -1,6 +1,8 @@
 /* eslint-disable */
 import isWeekend from 'date-fns/is_weekend'
 import {fetchResumption ,fetchST,fetchsecStock ,fetchGaosongzhuanComplete,fetchGaosongzhuanPlan,fetchstRevoked,fetchLowpb,fetchNewstock,fetchBoardPre} from '~/api/theme';
+import getISODay from 'date-fns/get_iso_day';
+import format from "date-fns/format";
 export default {
   dataBeautify(data, fieldName, itemName) {
     let bData = null
@@ -17,6 +19,65 @@ export default {
       return bData
     } else {
       return []
+    }
+  },
+  getIosDayCount (d) {
+    return getISODay(d);
+  },
+  extractBkjsDetail (data) {
+    const obj = {}
+    for(var i in data.items) {
+      obj[i] = {}
+      data.fields.forEach((field, idx) => {
+        obj[i][field] = data.items[i][idx]
+      })
+    }
+    return obj
+  },
+  hasClass (el, className) {
+    if (el.classList)
+      return el.classList.contains(className)
+    else
+      return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+  },
+  addClass(el, className) {
+    if (el.classList)
+      el.classList.add(className)
+    else if (!hasClass(el, className)) el.className += " " + className
+  },
+  removeClass(el, className) {
+    if (el.classList)
+      el.classList.remove(className)
+    else if (hasClass(el, className)) {
+      var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
+      el.className=el.className.replace(reg, ' ')
+    }
+  },
+  isoWeekDay(n) {
+    switch (n) {
+      case 1:
+        return "周一";
+        break;
+      case 2:
+        return "周二";
+        break;
+      case 3:
+        return "周三";
+        break;
+      case 4:
+        return "周四";
+        break;
+      case 5:
+        return "周五";
+        break;
+      case 6:
+        return "周六";
+        break;
+      case 7:
+        return "周日";
+        break;
+      default:
+        break;
     }
   },
   dataBeautifySpecial(data) {
@@ -147,6 +208,9 @@ export default {
         return ''
       break;
     }
+  },
+  dateFormatter (d, f) {
+    return format(d, f);
   },
   stockArrToReal (arr) {
     let real = {}
