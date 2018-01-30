@@ -6,11 +6,11 @@
     <div class="subscribe-form-options">
       <payment :data="data" />
     </div>
-    <p class="subscribe-form-final">账户余额：0.00，直接支付 {{priceNeededToPay}} 元</p>
+    <p class="subscribe-form-final">账户余额：{{data.balance}} ，{{priceNeededToPay >= 0 ? `直接支付 ${priceNeededToPay} 元` : '优先使用账户余额支付'}}</p>
     <div class="subscribe-form-actions">
-      <a class="subscribe-form-actions-pay pay-action-alipay">支付宝支付</a>
-      <a class="subscribe-form-actions-pay pay-action-wechat">微信支付</a>
-      <a class="subscribe-form-actions-pay pay-action-balance">余额支付</a>
+      <a class="subscribe-form-actions-pay pay-action-alipay" @click="() => goingToPay(1, 'alipay')">支付宝支付</a>
+      <a class="subscribe-form-actions-pay pay-action-wechat" @click="() => goingToPay(1, 'wechat')">微信支付</a>
+      <a class="subscribe-form-actions-pay pay-action-balance" @click="() => goingToPay(1, 'balance')">余额支付</a>
     </div>
     <div class="subscribe-form-privilege">
       <ul>
@@ -46,11 +46,16 @@ export default {
     ...mapGetters({
       priceNeededToPay: 'subscribe/priceNeededToPay'
     }),
-    isSubject () {
-      return !!this.subject
-    },
     data () {
       return this.$store.state.subscribe
+    }
+  },
+  methods: {
+    goingToPay (status, method) {
+      this.$store.commit('subscribe/changePayStatus', {
+        status,
+        method
+      })
     }
   }
 }
@@ -100,6 +105,8 @@ export default {
     li {
       display: inline-block;
       margin-right: 20px;
+      color: #666;
+      font-size: 12px;
       i {
         display: inline-block;
         font-size: 13px;
@@ -116,6 +123,7 @@ export default {
   &-actions {
     display: flex;
     justify-content: space-between;
+    margin: 0 -4px;
     a {
       flex: 1;
       margin: 0 4px;
