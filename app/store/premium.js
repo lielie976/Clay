@@ -20,6 +20,7 @@ export const mutations = {
   },
   saveMsgs (state, data) {
     state.msgs = data.Messages
+    state.totalMsg = data.Total
   },
   saveTrialMsgs (state, data) {
     state.trialMsgs = data.Messages

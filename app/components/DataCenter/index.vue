@@ -35,6 +35,13 @@ export default {
       })
       return thermometer
     }
+  },
+  mounted () {
+    const thermometer = this.$store.state.market.thermometer
+    dataCenter.init({
+      container: '.datacenter-temperature-canvas',
+      value: thermometer.temperatureCeil
+    })
   }
 }
 </script>

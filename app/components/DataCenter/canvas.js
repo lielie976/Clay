@@ -12,6 +12,7 @@ const dataCenter = {
   },
   draw (value) {
     let canvas = document.querySelector(this.data.container);
+    if (!canvas) return
     if (!canvas.getContext) {
       window.alert('抱歉！浏览器不支持。');
       return;

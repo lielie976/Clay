@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import TuoShuiHotMsgs from '~/components/HotMsgs/TuoShui'
+import TuoShuiHotMsgs from '~/components/HotMsgs/TuoShuiYanBao'
 import ZaoZhiDaoHotMsgs from '~/components/HotMsgs/ZaoZhiDao'
 import BoughtMsgs from '~/components/BoughtMsgs'
 

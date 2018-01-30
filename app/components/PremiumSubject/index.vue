@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="meta-container" :style="{'background-image': `url(${this.data.subjectInfo.image})`}">
+    <div class="meta-container" :style="{'background-image': `url(${this.data.subjectInfo.PcImage})`}">
       <premium-subject-meta :subject="data.subjectInfo" />
     </div>
     <section class="main-container">

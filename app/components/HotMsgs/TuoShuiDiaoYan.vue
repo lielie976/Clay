@@ -1,5 +1,5 @@
 <template>
-  <widget-box title="脱水研报热文">
+  <widget-box title="脱水调研热文" v-if="msgs && msgs.length">
     <premium-subject-hot-msgs :msgs="msgs" />
   </widget-box>
 </template>
@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     msgs () {
-      return this.$store.state.premiumHotMsgs[581]
+      return this.$store.state.premiumHotMsgs[517]
     }
   }
 }

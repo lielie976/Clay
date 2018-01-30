@@ -1,6 +1,6 @@
 <template>
   <widget-box title="已购文章" href="/bought" subTitle="查看全部">
-    <div>
+    <div v-if="msgs && msgs.length">
       <template v-if="0">
         <non-login />
       </template>
@@ -9,6 +9,9 @@
           <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="processMsg(msg)" />
         </ul>
       </template>
+    </div>
+    <div v-else>
+      暂无已购文章
     </div>
   </widget-box>
 </template>

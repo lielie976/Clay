@@ -51,7 +51,7 @@
     <div class="pagination">
       <Page
         :current="data.params.page"
-        :total="100"
+        :total="data.totalMsg"
         show-elevator
         @on-change="changePage"
       />

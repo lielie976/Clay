@@ -6,14 +6,14 @@
 
 <script>
 import PremiumSubject from '~/components/PremiumSubject'
-import HotMsgs from '~/components/HotMsgs/TuoShui'
+import HotMsgs from '~/components/HotMsgs/PanZhongTuFa'
 import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('premium/init', 581)
+    await store.dispatch('premium/init', 779)
     await store.dispatch('boughtMsgs/getBoughtMsgs')
-    await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
+    await store.dispatch('premiumHotMsgs/getHotMsgs', 779)
   },
   components: {
     PremiumSubject,
@@ -21,13 +21,13 @@ export default {
   },
   head () {
     return {
-      title: `脱水研报 | ${texts.slogan}`
+      title: `选股宝盘中突发 | ${texts.slogan}`
     }
   },
   data () {
     return {
       customization: {
-        msgListTitle: '研报更新'
+        msgListTitle: '盘中突发更新'
       }
     }
   }

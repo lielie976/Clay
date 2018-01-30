@@ -1,5 +1,5 @@
 <template>
-  <widget-box title="试读文章">
+  <widget-box title="试读文章" v-if="msgs && msgs.length">
     <ul class="trial-msgs">
       <li
         v-for="msg in msgs"
