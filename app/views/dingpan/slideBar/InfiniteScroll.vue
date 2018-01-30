@@ -40,9 +40,9 @@
       document.getElementById(this.element).addEventListener('scroll', this.onscroll, { passive: true })
     },
 
-    beforeDestroy() {
-      document.getElementById(this.element).removeEventListener('scroll', this.onscroll, { passive: true })
-    },
+    // beforeDestroy() {
+    //   document.getElementById(this.element).removeEventListener('scroll', this.onscroll, { passive: true })
+    // },
 
     methods: {
       reset() {

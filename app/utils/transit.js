@@ -5,13 +5,18 @@ export function transit(fn, duration, e) {
 
     function step(now) {
       if (!start) start = now
-      let t = (now - start) / duration
-      if (t > 1) t = 1
-      fn(e ? e(t) : t)
-      if (t < 1) requestAnimationFrame(step)
-      else resolve()
+      if (duration) {
+        let t = (now - start) / duration
+        if (t > 1) t = 1
+        fn(e ? e(t) : t)
+        if (t < 1) requestAnimationFrame(step)
+        else resolve()
+      } else {
+        let t = now - start
+        fn(t)
+        requestAnimationFrame(step)
+      }
     }
-
     requestAnimationFrame(step)
   })
 }

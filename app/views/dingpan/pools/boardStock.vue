@@ -164,6 +164,7 @@ export default {
     login(){
       //  $('.login-modal').addClass('is-active')
       // $('#register-radio-login').trigger('click')
+      this.$store.dispatch('login/showLogin')
     },
     hoverTitle(item,event){
       if(this.showGif && this.targetItem == item){

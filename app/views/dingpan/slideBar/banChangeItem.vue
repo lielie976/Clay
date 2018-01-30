@@ -51,7 +51,7 @@
         <div :class="{'expand':themelistMore&&!themelistExpand,'hide':themelistMore&&themelistExpand}"  ref="themelist"  v-if="adjustItem.detail && adjustItem.detail.plates && adjustItem.detail.plates.length" class="ban-change-item-detail-stock">
           <a  :class="color(t.pcp_core)" target="_blank" :href="`/theme/`+t.plate_id" :key="t.plate_id" v-for="t in adjustItem.detail.plates" class="ban-change-item-detail-stock-topic">
             <div class="ban-change-item-detail-stock-topic-name">{{t.plate_name}}</div>
-            <div>{{changeRate(t.pcp_core)}}</div>
+            <div class="ban-change-item-detail-stock-topic-rate">{{changeRate(t.pcp_core)}}</div>
           </a>
           <i @click="expandTheme" v-if="themelistMore&&!themelistExpand" class="iconfont expandIcon">&#xe6d4;</i>
         </div>
@@ -153,7 +153,7 @@ export default {
     hoverStockName() {
       this.hovered = true;
       fetchStockTrend(this.item.object_id).then(res => {
-        let d = this.dataBeautifySpecial(res.data.data.trend);
+        let d = this.dataBeautifySpecial(res.data.trend);
         this.stockTrend = d[this.item.object_id];
         this.drawStockTrend();
       });
@@ -413,7 +413,7 @@ export default {
                 // white-space:nowrap !important;
                 cursor: pointer;
               }
-              &.-market-color-flag--red {
+              &.-market-color-flag--rise {
                 p {
                   border: 1px solid @dingRise;
                   &:hover {
@@ -422,7 +422,7 @@ export default {
                   }
                 }
               }
-              &.-market-color-flag--green {
+              &.-market-color-flag--decline {
                 p {
                   border: 1px solid @dingDown;
                   &:hover {
@@ -462,13 +462,13 @@ export default {
                 color: #515566;
                 margin-right: 2px;
               }
-              &.-market-color-flag--red {
+              &.-market-color-flag--rise {
                 color: #999 !important;
                 &:hover {
                   color: @dingRise !important;
                 }
               }
-              &.-market-color-flag--green {
+              &.-market-color-flag--decline {
                 color: #999 !important;
                 &:hover {
                   color: @dingDown !important;
@@ -552,7 +552,11 @@ export default {
               color: #999;
               padding-bottom: 4px;
             }
-            &.-market-color--red {
+            &.-market-color--rise {
+              color:@dingRise;
+              .ban-change-item-detail-stock-topic-rate{
+                color:@dingRise;
+              }
               &:hover {
                 color: #fff !important;
                 background: @dingRise;
@@ -561,9 +565,12 @@ export default {
                 }
               }
             }
-            &.-market-color--green {
+            &.-market-color--decline {
               // border: 1px solid @dingDown;
-
+              color:@dingDown;
+              .ban-change-item-detail-stock-topic-rate{
+                color:@dingDown;
+              }
               &:hover {
                 color: #fff !important;
                 background: @dingDown;

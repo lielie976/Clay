@@ -28,9 +28,9 @@
               <label :for="`filter-${item.label}`">{{item.label}}</label> -->
               <!-- <i v-if="item.checked" class="iconfont iconfont-red" >&#xe6c5;</i>
               <i v-else class="iconfont">&#xe6c6;</i> -->
-              <img src="/ding_checked.png"  class="option-gegu-item-checkbox" v-if="item.checked && gegu" alt="">
+              <img src="/img/ding_checked.png"  class="option-gegu-item-checkbox" v-if="item.checked && gegu" alt="">
               <i v-if="item.checked && !gegu" class="iconfont" >&#xe6c5;</i>
-              <img src="/ding_unchecked.png"  class="option-gegu-item-checkbox" v-if="!item.checked " alt="">
+              <img src="/img/ding_unchecked.png"  class="option-gegu-item-checkbox" v-if="!item.checked " alt="">
               <span class="option-gegu-label" :class="{'selected':item.checked}" >{{item.label}}</span>
             </div>
           </span>
@@ -64,7 +64,7 @@
       </poptip>
     </div>
   </div>
-  <div id="ban-change-main" v-if="stockEvent && stockEvent.length" class="ban-change-main">
+  <div id="ban-change-main" v-show="stockEvent && stockEvent.length" class="ban-change-main">
     <ban-change-item :item="item" :key="item.object_id +item.timestamp+item.type" v-for="item in stockEvent" />
     <infinite-scroll :load="loadmore" :element="`ban-change-main`" />
   </div>
@@ -242,7 +242,7 @@ export default {
     if (this.alertInfo.zhuomian) {
       this.activeNotification();
     }
-    this.audio = new Audio("/alert.mp3");
+    this.audio = new Audio("/ringstone/alert.mp3");
     this.loadData();
   },
   watch: {
@@ -546,6 +546,7 @@ export default {
       // 自定义checkbox样式
       &-checkbox {
         color: #999;
+        margin-right: 2px;
         display: inline-block;
         // & ~ label{
         //   &:before{
@@ -744,6 +745,7 @@ export default {
           }
           &-checkbox {
             position: relative;
+            margin-right: 2px;
             top: 1px;
           }
           .option-gegu-label {

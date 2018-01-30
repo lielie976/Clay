@@ -2,9 +2,9 @@
   <div  :class="pageMode" class="ban dark">
     <div class="ban-main">
       <stock-summary-chart @change-date="dateChange" :selectDate="selectDate" />
-      <ding-table v-if="show" @showGuide="showGuide" :svgWidth="svgWidth" :svgHeight="svgHeight" ref="tab" :selectDate="selectDate" :smallScreen="smallScreen" :yscrollVal="yscrollVal" :pageIndex="pageIndex" @swapTab="swapTab" :topFixed="topFixed" :tabItems="tabItems"/>
+      <ding-table :yidongtixing="yidongtixing" @changeYidong="changeYidong" v-if="show" @showGuide="showGuide" :svgWidth="svgWidth" :svgHeight="svgHeight" ref="tab" :selectDate="selectDate" :smallScreen="smallScreen" :yscrollVal="yscrollVal" :pageIndex="pageIndex" @swapTab="swapTab" :topFixed="topFixed" :tabItems="tabItems"/>
     </div>
-    <div :style="{'width':sideWidth}" v-show="pageMode == 'normal'" class="ban-sidebar fixed">
+    <div v-if="show" :style="{'width':sideWidth}" v-show="pageMode == 'normal'" class="ban-sidebar fixed">
       <ban-news :isDark="true"/>
       <ban-change :isDark="true"/>
     </div>
@@ -22,7 +22,7 @@ export default {
   async asyncData ({ store, params, req }) {
     await store.dispatch('stockSummary/initSummary', '');
     return {
-      pageIndex: params.id,
+      pageIndex: params.id ? params.id : 0,
       pageMode: 'normal',
       sideWidth: '25%',
       selectDate: new Date(),
@@ -116,12 +116,47 @@ export default {
       ]
     }
   },
+  watch: {
+    yidongtixing (v) {
+      setTimeout(() => {
+        if (v) {
+          this.addClass(document.body, 'ban-special')
+          localStorage.setItem('dingSimple', 0);
+        } else {
+          this.removeClass(document.body, 'ban-special')
+          localStorage.setItem('dingSimple', 1);
+        }
+        debugger
+        this.pageMode = v ? 'normal' : 'simple';
+      }, 100);
+    }
+  },
+  beforeDestroy () {
+    debugger
+    this.removeClass(document.body, 'dark');
+    this.removeClass(document.body, 'ban-special');
+  },
   methods: {
     init () {
       // this.tabOffsetTop = this.getElementTop(this.$refs.tab);
+      if (
+        localStorage.getItem('dingSimple') &&
+        localStorage.getItem('dingSimple') != 0
+      ) {
+        this.yidongtixing = false;
+        localStorage.setItem('dingSimple', 1);
+      } else {
+        this.yidongtixing = true;
+        localStorage.setItem('dingSimple', 0);
+      }
+      if (!localStorage.getItem('guideViewed')) {
+        this.guideShow = true;
+        localStorage.setItem('guideViewed', 1);
+      }
       const { dispatch } = this.$store
       dispatch('external/getBaiduTTSToken')
       this.addClass(document.body, 'dark');
+      this.addClass(document.body, 'ban-special');
       let innerWidth =
         document.documentElement.clientWidth ||
         document.body.clientWidth ||
@@ -186,6 +221,9 @@ export default {
         }
       };
     },
+    changeYidong () {
+      this.yidongtixing = !this.yidongtixing
+    },
     dateChange (date) {
       this.selectDate = date;
       this.refresh()
@@ -214,6 +252,7 @@ export default {
         this.dateFormatter(this.selectDate, 'YYYYMMDD') === this.dateFormatter(new Date(), 'YYYYMMDD')
           ? null
           : this.dateFormatter(this.selectDate, 'YYYYMMDD');
+      this.$store.dispatch('stockSummary/initSummary', d);
       this.timer = setInterval(() => {
         this.$store.dispatch('stockSummary/initSummary', d);
       }, 20000)
@@ -268,7 +307,71 @@ export default {
 
 <style lang="less">
 @import '../../styles/variables.less';
-body{
-  background:#292c33;
+.ban{
+  &.normal {
+      .ban-table-tab.fixed {
+        max-width: auto;
+        width: 75%;
+      }
+      .hit-pool__table.table.fixed {
+        max-width: auto;
+        width: 75%;
+      }
+    }
+  &.simple {
+    .ban-chart {
+      width: 1200px;
+      margin: 0 auto;
+    }
+    .ban-chart-out {
+      width: 1200px;
+      margin: 0 auto;
+    }
+    .ban-table-tab {
+      width: 100%;
+      .ban-table-tab-container {
+        width: 1200px;
+        margin: 0 auto;
+        position: relative;
+      }
+    }
+    .hit-pool__table.table.fixed {
+      left: 50%;
+      margin-left: -600px;
+    }
+    .ban-table-main {
+      width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    @media screen and (max-width: 1280px) {
+      min-width: 1000px;
+      .ban-chart {
+        width: 1000px;
+        margin: 0 auto;
+      }
+      .ban-table-tab {
+        width: 100%;
+        .ban-table-tab-container {
+          width: 1000px;
+          margin: 0 auto;
+          position: relative;
+        }
+      }
+      .hit-pool__table.table.fixed {
+        left: 50%;
+        margin-left: -500px;
+      }
+      .ban-table-main {
+        width: 1000px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .ban-chart-out {
+        width: 1000px;
+        margin: 0 auto;
+      }
+    }
+  }
 }
 </style>

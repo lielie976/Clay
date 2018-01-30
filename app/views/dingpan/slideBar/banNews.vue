@@ -10,23 +10,23 @@
         <div class="option-container" slot="content">
           <div class="option-check-title">筛选</div>
           <div @click="newsFilter.gg=!newsFilter.gg"  class="option-check-item">
-            <img src="/ding_checked.png"  class="option-check-item-checkbox" v-if="newsFilter.gg" alt="">
-            <img src="/ding_unchecked.png"  class="option-check-item-checkbox" v-else alt="">
+            <img src="/img/ding_checked.png"  class="option-check-item-checkbox" v-if="newsFilter.gg" alt="">
+            <img src="/img/ding_unchecked.png"  class="option-check-item-checkbox" v-else alt="">
             <span class="option-check-label" :class="{'selected':newsFilter.gg}" >公告</span>
           </div>
           <div @click="newsFilter.dxw=!newsFilter.dxw"  class="option-check-item">
-            <img src="/ding_checked.png"  class="option-check-item-checkbox" v-if="newsFilter.dxw" alt="">
-            <img src="/ding_unchecked.png"  class="option-check-item-checkbox" v-else alt="">
+            <img src="/img/ding_checked.png"  class="option-check-item-checkbox" v-if="newsFilter.dxw" alt="">
+            <img src="/img/ding_unchecked.png"  class="option-check-item-checkbox" v-else alt="">
             <span class="option-check-label" :class="{'selected':newsFilter.dxw}" >大新闻</span>
           </div>
           <div @click="newsFilter.pzyd=!newsFilter.pzyd"  class="option-check-item">
-            <img src="/ding_checked.png"  class="option-check-item-checkbox" v-if="newsFilter.pzyd" alt="">
-            <img src="/ding_unchecked.png"  class="option-check-item-checkbox" v-else alt="">
+            <img src="/img/ding_checked.png"  class="option-check-item-checkbox" v-if="newsFilter.pzyd" alt="">
+            <img src="/img/ding_unchecked.png"  class="option-check-item-checkbox" v-else alt="">
             <span class="option-check-label" :class="{'selected':newsFilter.pzyd}" >盘中异动</span>
           </div>
           <div @click="newsFilter.scjh=!newsFilter.scjh"  class="option-check-item">
-            <img src="/ding_checked.png"  class="option-check-item-checkbox" v-if="newsFilter.scjh" alt="">
-            <img src="/ding_unchecked.png"  class="option-check-item-checkbox" v-else alt="">
+            <img src="/img/ding_checked.png"  class="option-check-item-checkbox" v-if="newsFilter.scjh" alt="">
+            <img src="/img/ding_unchecked.png"  class="option-check-item-checkbox" v-else alt="">
             <span class="option-check-label" :class="{'selected':newsFilter.scjh}" >市场机会</span>
           </div>
           <div class="option-check-title">通知设置</div>
@@ -114,7 +114,7 @@ export default {
     if (this.alertInfo.zhuomian) {
       this.activeNotification();
     }
-    this.audio = new Audio("/alert.mp3");
+    this.audio = new Audio("/ringstone/alert.mp3");
     this.loadData().then(res => {
     this.$nextTick(() => {
         // $(".ban-news-main").on("copy", function(e) {
@@ -447,6 +447,7 @@ export default {
       &-checkbox {
         color: #999;
         display: inline-block;
+
         &:checked ~ label {
           color: #999;
         }
@@ -615,6 +616,7 @@ export default {
           &-checkbox{
             position: relative;
             top: 1px;
+            margin-right: 2px;
           }
           .option-check-label {
             color: #b8b8b8;
