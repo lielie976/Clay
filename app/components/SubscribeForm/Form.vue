@@ -8,19 +8,19 @@
     </div>
     <p class="subscribe-form-final">账户余额：{{data.balance}} ，{{priceNeededToPay >= 0 ? `直接支付 ${priceNeededToPay} 元` : '优先使用账户余额支付'}}</p>
     <div class="subscribe-form-actions">
-      <a class="subscribe-form-actions-pay pay-action-alipay" @click="() => goingToPay(1, 'alipay')">支付宝支付</a>
-      <a class="subscribe-form-actions-pay pay-action-wechat" @click="() => goingToPay(1, 'wechat')">微信支付</a>
-      <a class="subscribe-form-actions-pay pay-action-balance" @click="() => goingToPay(1, 'balance')">余额支付</a>
+      <a class="subscribe-form-actions-pay pay-action-alipay" @click="() => goingToPay(1, 'alipay')"><i class="iconfont icon-zhifubaozhifu"></i>支付宝支付</a>
+      <a class="subscribe-form-actions-pay pay-action-wechat" @click="() => goingToPay(1, 'wechat')"><i class="iconfont icon-weixinzhifu"></i>微信支付</a>
+      <a class="subscribe-form-actions-pay pay-action-balance" @click="payWithBalance">余额支付</a>
     </div>
     <div class="subscribe-form-privilege">
       <ul>
         <li>订阅特权</li>
         <li>
-          <i class="iconfont icon-quanbu"></i>
+          <i class="iconfont icon-dingyuetequandingyuefuwu"></i>
           <span>订阅服务期内该主题全部文章免费看</span>
         </li>
         <li>
-          <i class="iconfont icon-quanbu"></i>
+          <i class="iconfont icon-dingyuetequantongbuchakan"></i>
           <span>APP和PC可同步查看已购买内容</span>
         </li>
       </ul>
@@ -56,6 +56,9 @@ export default {
         status,
         method
       })
+    },
+    payWithBalance () {
+      this.$store.dispatch('subscribe/payWithBalance')
     }
   }
 }
@@ -130,6 +133,13 @@ export default {
       height: 48px;
       line-height: 48px;
       text-align: center;
+    }
+    i {
+      display: inline-block;
+      margin-top: -2px;
+      vertical-align: middle;
+      font-size: 20px;
+      margin-right: 6px;
     }
     &-pay {
     color: #fff;

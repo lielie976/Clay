@@ -1,6 +1,10 @@
 <template>
   <sub-form :data="data" :hasHeader="false">
     <div class="subscribe-fail">
+      <p class="subscribe-fail-icon">
+        <i class="iconfont icon-dingyueshibai"></i>
+        <span>支付失败</span>
+      </p>
       <a class="subscribe-fail-redo" @click="redo">重新支付</a>
     </div>
   </sub-form>
@@ -29,6 +33,17 @@ export default {
 
 .subscribe-fail {
   text-align: center;
+  &-icon {
+    margin-top: 56px;
+    line-height: 1;
+    color: #d8d8d8;
+    i {
+      display: block;
+      font-size: 64px;
+      color: #d8d8d8;
+      margin-bottom: 16px;
+    }
+  }
   &-redo {
     display: block;
     color: #fff;

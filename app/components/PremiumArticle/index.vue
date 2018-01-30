@@ -13,8 +13,14 @@
       </template>
     </section>
     <section class="main-container-right">
-      <locked-aside-bkj />
-      <locked-aside-stocks />
+      <template v-if="!readable">
+        <locked-aside-bkj />
+        <locked-aside-stocks />
+      </template>
+      <template v-else>
+        <bkj-aside-list :data="data.BkjInfos" v-if="data.BkjInfos" />
+        <stocks-aside-list :stocks="data.Stocks" v-if="data.Stocks" />
+      </template>
     </section>
     <subscribe-form-with-modal />
   </section>
@@ -25,13 +31,17 @@ import SubscribeFormWithModal from '~/components/SubscribeForm/WithModal'
 import LockedAsideStocks from '~/components/LockedAsideStocks'
 import LockedAsideBkj from '~/components/LockedAsideBkj'
 import ArticleContent from '~/components/ArticleContent'
+import BkjAsideList from '~/components/BkjAsideList'
+import StocksAsideList from '~/components/StocksAsideList'
 
 export default {
   components: {
     SubscribeFormWithModal,
     LockedAsideStocks,
     LockedAsideBkj,
-    ArticleContent
+    ArticleContent,
+    BkjAsideList,
+    StocksAsideList
   },
   props: {
     data: Object,

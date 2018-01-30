@@ -9,7 +9,7 @@ import PremiumArticle from '~/views/premium-article'
 
 export default {
   async asyncData ({ params, store }) {
-    const data = await getMessage(params.id)
+    const data = await getMessage(params.id, store.state.auth.headers)
     store.commit('subscribe/saveMessage', data)
     return { data }
   },

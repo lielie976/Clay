@@ -1,4 +1,4 @@
-import { getUserBalance } from '~/api/premium'
+import { getUserBalance, buyMsgByBaodi } from '~/api/premium'
 import { getDuration, formatDate } from '~/utils/helpers'
 
 export const state = () => ({
@@ -46,11 +46,18 @@ export const mutations = {
     state.payStatus = 0
   },
   saveMessage (state, data) {
-    state.message = data
-    state.subject = data.FromSubject
-    // 新老接口 SubjSubscribeItems || SubscribeItems 字段名不一样
-    state.selectedSubject.items = data.FromSubject.SubjSubscribeItems
-    state.selectedType = 'message'
+    if (data && data.IsPremium && data.Price > 0 && !data.IsPaid) {
+      state.message = data
+      state.selectedType = 'message'
+    } else {
+      state.selectedType = 'subject'
+      state.subject = data.FromSubject
+      // 新老接口 SubjSubscribeItems || SubscribeItems 字段名不一样
+      state.selectedSubject = {
+        items: data.FromSubject.SubjSubscribeItems,
+        index: data.FromSubject.SubjSubscribeItems && (data.FromSubject.SubjSubscribeItems.length - 1)
+      }
+    }
   },
   saveSubject (state, data) {
     state.subject = data
@@ -82,5 +89,23 @@ export const actions = {
     await getUserBalance(rootState.auth.headers).then((res) => {
       commit('saveBalance', res.data.balance)
     })
+  },
+  async payWithBalance ({ state, rootState, commit }) {
+    if (state.selectedType === 'message') {
+      const data = {
+        MessageId: state.message.Id,
+        SubjectId: state.message.FromSubject.Id,
+        PayClientType: 2
+      }
+      try {
+        await buyMsgByBaodi(data, rootState.auth.headers)
+        commit('changePayStatus', { status: 2 })
+      } catch (err) {
+        console.log(err)
+        commit('changePayStatus', { status: 3 })
+      }
+    } else if (state.selectedType === 'subject') {
+
+    }
   }
 }

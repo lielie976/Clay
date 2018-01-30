@@ -3,7 +3,7 @@
     <div class="inner">
       <section class="main-container">
         <section class="main-container-left">
-          <p class="article-meta-title">{{data.Title}}</p>
+          <p class="article-meta-title" ref="title">{{data.Title}}</p>
         </section>
       </section>
     </div>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import shave from 'shave'
+
 export default {
   props: {
     data: Object
@@ -19,6 +21,9 @@ export default {
     isStock () {
       return this.data.Title.indexOf('脱水个股') > -1 && '脱水个股'
     }
+  },
+  mounted () {
+    shave(this.$refs.title, 80)
   }
 }
 </script>
@@ -54,7 +59,9 @@ export default {
   }
   &-title {
     font-size: 28px;
-    line-height: 1.43;
+    line-height: 40px;
+    max-height: 80px;
+    overflow: hidden;
   }
 }
 </style>

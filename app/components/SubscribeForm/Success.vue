@@ -1,10 +1,13 @@
 <template>
   <sub-form :data="data" :hasHeader="false" :hasFooter="false">
     <div class="subscribe-success">
+      <p class="subscribe-success-icon">
+        <i class="iconfont icon-dingyuechenggong"></i>
+      </p>
       <p class="subscribe-success-text">恭喜！订阅成功</p>
       <p class="subscribe-success-timer">3s 后返回主题主页</p>
       <a class="subscribe-success-check" @click="refresh">立即查看</a>
-      <p class="subscribe-success-balance">账户余额：0.00</p>
+      <p class="subscribe-success-balance">账户余额：{{data.balance | toFixed(2)}}</p>
     </div>
   </sub-form>
 </template>
@@ -30,6 +33,14 @@ export default {
 
 .subscribe-success {
   text-align: center;
+  &-icon {
+    margin-top: 56px;
+    line-height: 1;
+    i {
+      font-size: 64px;
+      color: @strongFontColor;
+    }
+  }
   &-text {
     font-size: 18px;
     color: @subFontColor;
