@@ -22,8 +22,8 @@ export default {
   computed: {
     selected () {
       return (
-        this.data.selectedItem.type === 'subject' &&
-        this.index === this.data.selectedItem.index
+        this.data.selectedType === 'subject' &&
+        this.index === this.data.selectedSubject.index
       )
     }
   }

@@ -8,7 +8,7 @@
       </div>
       </div>
       <div class="ban-table-tab-toolbar">
-        <!-- <toolbar  @filterChange="filterChange" v-if="pageIndex!=0 && tableData && tableData.length" :index="pageIndex" :stock-list="tableData"/> -->
+        <toolbar  @filterChange="filterChange" v-if="pageIndex!=0 && tableData && tableData.length" :index="pageIndex" :stock-list="tableData"/>
       </div>
       <a href="http://biaoge.wallstreetcn.com/f/O88l5G" target="_blank" class="ban-table-tab-advice">
         <i class="iconfont">&#xe64b;</i><span class="ban-table-tab-advice-btn">用户反馈</span>
@@ -46,6 +46,7 @@ import boomStock from './pools/boomStock.vue'
 import newStock from './pools/newStock.vue'
 import secStock from './pools/secStock.vue'
 import multiStock from './pools/multiStock.vue'
+import toolbar from './toolbar.vue'
 import boardPreday from './pools/boardPreday.vue'
 import dingChart from './dingChart.vue'
 import boardDownStock from './pools/boardDownStock.vue'
@@ -191,6 +192,11 @@ export default {
           return Promise.resolve(1);
         }
       }
+    },
+    filterChange (v) {
+      this.filterNewstock = v;
+      this.stopInterval();
+      this.startInterval();
     },
     sortData () {
       if (this.pageIndex == 3) {
@@ -347,7 +353,8 @@ export default {
     multiStock,
     boardDownStock,
     boardPreday,
-    dingChart
+    dingChart,
+    toolbar
   },
   mixins: [shareMethodMixin]
 }
@@ -871,7 +878,7 @@ footer.common-footer {
   overflow: visible;
   position: relative;
   &:before {
-    content: url(/drag.png);
+    content: url(/img/drag.png);
     position: absolute;
     line-height: 10px;
     top: 0;

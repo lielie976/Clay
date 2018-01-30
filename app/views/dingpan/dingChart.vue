@@ -86,25 +86,25 @@
       </template>
       <template v-if="points">
         <template  v-for="(item,key) in points">
-          <g :key="key" v-if="Math.abs(item.pcr)<1.5 &&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
+          <g  v-if="Math.abs(item.pcr)<1.5 &&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
             <circle  class="stock-circle" :key="'circle'+item.code.split('.')[0]" :cx="item.x" :cy="item.y" :r="item.size/svgScale*svgCircleScale" :fill="stockFillColor(item)" :fill-opacity="item.hovered?1:item.opacity" />
             <text class="stock-text" v-if="!stockTextVisible(item)?false:(!hoverTheme  && !hoverRelatedThemeInfo.symbol)?(item.pcrIndex <20||item.size*svgCircleScale>150):stockTextVisible(item) " text-anchor="middle"  :key="'text'+item.code.split('.')[0]" fill="#fff" :x="item.x" :y="item.y+item.size/svgScale*svgCircleScale/6" :font-size="item.size*svgCircleScale>150?(item.size-5)/2/svgScale*svgCircleScale:100000/vWidth/svgScale">{{item.prod_name}}</text>
           </g>
         </template>
         <template  v-for="(item,key) in points">
-          <g :key="key" v-if="Math.abs(item.pcr)<2 &&Math.abs(item.pcr)>=1.5 &&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
+          <g  v-if="Math.abs(item.pcr)<2 &&Math.abs(item.pcr)>=1.5 &&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
             <circle  class="stock-circle" :key="'circle'+item.code.split('.')[0]" :cx="item.x" :cy="item.y" :r="item.size/svgScale*svgCircleScale" :fill="stockFillColor(item)" :fill-opacity="item.hovered?1:item.opacity" />
             <text class="stock-text" v-if="!stockTextVisible(item)?false:(!hoverTheme  && !hoverRelatedThemeInfo.symbol)?(item.pcrIndex <20||item.size*svgCircleScale>150):stockTextVisible(item)" text-anchor="middle"  :key="'text'+item.code.split('.')[0]" fill="#fff" :x="item.x" :y="item.y+item.size/svgScale*svgCircleScale/6" :font-size="item.size*svgCircleScale>150?(item.size-5)/2/svgScale*svgCircleScale:100000/vWidth/svgScale">{{item.prod_name}}</text>
           </g>
         </template>
         <template  v-for="(item,key) in points">
-          <g :key="key" v-if="Math.abs(item.pcr)>=2 &&Math.abs(item.pcr)<3 &&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
+          <g  v-if="Math.abs(item.pcr)>=2 &&Math.abs(item.pcr)<3 &&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
             <circle  class="stock-circle" :key="'circle'+item.code.split('.')[0]" :cx="item.x" :cy="item.y" :r="item.size/svgScale*svgCircleScale" :fill="stockFillColor(item)" :fill-opacity="item.hovered?1:item.opacity" />
             <text class="stock-text"  text-anchor="middle"  :key="'text'+item.code.split('.')[0]" fill="#fff" :x="item.x" v-if="stockTextVisible(item)" :y="item.y+item.size/svgScale*svgCircleScale /6" :font-size="item.fontsize/svgScale*svgCircleScale">{{item.prod_name}}</text>
           </g>
         </template>
         <template  v-for="(item,key) in points">
-          <g :key="key" v-if="Math.abs(item.pcr)>=3&&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
+          <g  v-if="Math.abs(item.pcr)>=3&&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
             <circle  class="stock-circle" :key="'circle'+item.code.split('.')[0]" :cx="item.x" :cy="item.y" :r="item.size/svgScale*svgCircleScale" :fill="stockFillColor(item)" :fill-opacity="item.hovered?1:item.opacity" />
             <text class="stock-text" v-if="stockTextVisible(item) &&  item.size>200" text-anchor="middle"  :key="'text'+item.code.split('.')[0]" fill="#fff"  :x="item.x" :y="item.y+item.size/svgScale*svgCircleScale/6" :font-size="item.fontsize/svgScale*svgCircleScale">{{item.prod_name}}</text>
           </g>
@@ -187,10 +187,10 @@
         <div  class="chart-theme-item-stocks-container" v-if="item && item.stocks && item.stocks.length">
           <div :class="color(stock.pcr)" :key="stock.code" v-for="stock in item.stocks.slice(0,2)" class="chart-theme-item-stocks">
             <p class="chart-theme-item-stocks-name" v-if="stock">{{stock.symbol}}</p><p class="chart-theme-item-stocks-rate">{{changeRate(stock.pcr)}}</p>
-            <img class="chart-theme-item-stocks-img" src="/rise.png" v-if="stock.pcr>0 && (!hoverTheme ||hoverTheme.plate_id!=item.plate_id)"/>
-            <img class="chart-theme-item-stocks-img" src="/down.png" v-if="stock.pcr<0 && (!hoverTheme || hoverTheme.plate_id!=item.plate_id)"/>
-            <img class="chart-theme-item-stocks-img" src="/rise_hover.png" v-if="stock.pcr>0 && hoverTheme && hoverTheme.plate_id==item.plate_id"/>
-            <img class="chart-theme-item-stocks-img" src="/down_hover.png" v-if="stock.pcr<0 && hoverTheme && hoverTheme.plate_id==item.plate_id"/>
+            <img class="chart-theme-item-stocks-img" src="/img/rise.png" v-if="stock.pcr>0 && (!hoverTheme ||hoverTheme.plate_id!=item.plate_id)"/>
+            <img class="chart-theme-item-stocks-img" src="/img/down.png" v-if="stock.pcr<0 && (!hoverTheme || hoverTheme.plate_id!=item.plate_id)"/>
+            <img class="chart-theme-item-stocks-img" src="/img/rise_hover.png" v-if="stock.pcr>0 && hoverTheme && hoverTheme.plate_id==item.plate_id"/>
+            <img class="chart-theme-item-stocks-img" src="/img/down_hover.png" v-if="stock.pcr<0 && hoverTheme && hoverTheme.plate_id==item.plate_id"/>
           </div>
         </div>
 
@@ -203,10 +203,10 @@
         <div class="chart-theme-item-stocks-container" v-if="item && item.stocks && item.stocks.length">
           <div :class="color(stock.pcr)" :key="stock.code" v-for="stock in item.stocks.slice(0,2)" class="chart-theme-item-stocks">
             <p class="chart-theme-item-stocks-name" v-if="stock">{{stock.symbol}}</p><p class="chart-theme-item-stocks-rate">{{changeRate(stock.pcr)}}</p>
-            <img class="chart-theme-item-stocks-img" src="/rise.png" v-if="stock.pcr>0 && (!hoverTheme ||hoverTheme.plate_id!=item.plate_id)"/>
-            <img class="chart-theme-item-stocks-img" src="/down.png" v-if="stock.pcr<0 && (!hoverTheme || hoverTheme.plate_id!=item.plate_id)"/>
-            <img class="chart-theme-item-stocks-img" src="/rise_hover.png" v-if="stock.pcr>0 && hoverTheme && hoverTheme.plate_id==item.plate_id"/>
-            <img class="chart-theme-item-stocks-img" src="/down_hover.png" v-if="stock.pcr<0 && hoverTheme && hoverTheme.plate_id==item.plate_id"/>
+            <img class="chart-theme-item-stocks-img" src="/img/rise.png" v-if="stock.pcr>0 && (!hoverTheme ||hoverTheme.plate_id!=item.plate_id)"/>
+            <img class="chart-theme-item-stocks-img" src="/img/down.png" v-if="stock.pcr<0 && (!hoverTheme || hoverTheme.plate_id!=item.plate_id)"/>
+            <img class="chart-theme-item-stocks-img" src="/img/rise_hover.png" v-if="stock.pcr>0 && hoverTheme && hoverTheme.plate_id==item.plate_id"/>
+            <img class="chart-theme-item-stocks-img" src="/img/down_hover.png" v-if="stock.pcr<0 && hoverTheme && hoverTheme.plate_id==item.plate_id"/>
           </div>
         </div>
       </div>

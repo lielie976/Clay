@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import * as Cookies from 'js-cookie'
 import texts from '~/utils/texts'
 import NavBarPremium from './NavBarPremium'
 
@@ -41,28 +40,13 @@ export default {
     NavBarPremium
   },
   computed: {
-    texts: () => texts
+    texts: () => texts,
+    userInfo () {
+      return this.$store.state.user.userInfo
+    }
   },
   data () {
     return {
-      userInfo: {
-        isLogged: false,
-        Token: '',
-        nickname: ''
-      }
-    }
-  },
-  mounted () {
-    if (Cookies.get('token') && Cookies.get('nickname')) {
-      this.userInfo = {
-        isLogged: false,
-        Token: Cookies.get('token'),
-        nickname: Cookies.get('nickname')
-      }
-      this.$store.dispatch('user/checkLogin', {
-        Token: Cookies.get('token'),
-        nickname: Cookies.get('nickname')
-      })
     }
   },
   methods: {
@@ -71,11 +55,6 @@ export default {
     },
     logOut () {
       this.$store.dispatch('user/logOut')
-      this.userInfo = {
-        isLogged: false,
-        Token: '',
-        nickname: ''
-      }
     }
   }
 }

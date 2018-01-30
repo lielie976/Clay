@@ -8,6 +8,18 @@
       <ban-news :isDark="true"/>
       <ban-change :isDark="true"/>
     </div>
+    <div v-if="guideShow" class="guide">
+      <div class="guide-container">
+        <img class="guide-container-logo" src="/img/logo_ding.png"/>
+        <p class="guide-container-desc">“智能盯盘”是选股宝在业内最先推出的，基于个股行情变化和选股宝独家主题库数据，运用最先进的大数据+神经网络算法，实时监测盘面的板块异动，将看盘带入人工智能时代。</p>
+        <p class="guide-container-desc">选股宝四维智能行情监控开创了A股“傻瓜式盯盘”时代的到来，给投资者带来全新的盯盘体验。</p>
+        <p class="guide-container-desc">选股宝智能盯盘特色功能包括：</p>
+        <img src="http://image.bao.wallstreetcn.com/ding/ding-guide.png"/>
+      </div>
+      <div class="guide-start">
+        <div @click="closeGuide" class="guide-start-btn">立即使用</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -126,13 +138,11 @@ export default {
           this.removeClass(document.body, 'ban-special')
           localStorage.setItem('dingSimple', 1);
         }
-        debugger
         this.pageMode = v ? 'normal' : 'simple';
       }, 100);
     }
   },
   beforeDestroy () {
-    debugger
     this.removeClass(document.body, 'dark');
     this.removeClass(document.body, 'ban-special');
   },
@@ -262,6 +272,9 @@ export default {
     },
     showGuide () {
       this.guideShow = true;
+    },
+    closeGuide () {
+      this.guideShow = false;
     }
   },
   mounted () {
@@ -371,6 +384,56 @@ export default {
         width: 1000px;
         margin: 0 auto;
       }
+    }
+  }
+}
+.guide {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: @dingDarkThird;
+  overflow: scroll;
+  &-container {
+    width: 900px;
+    margin: 0 auto;
+    padding: 60px 0 0 0;
+    // overflow: scroll;
+    &-logo {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    &-desc {
+      font-size: 16px;
+      color: #ffffff;
+      letter-spacing: 0;
+      line-height: 24px;
+      margin-top: 20px;
+    }
+  }
+  &-start {
+    bottom: 0;
+    height: 100px;
+    position: fixed;
+    left: 0;
+    background: @dingDarkThird;
+    right: 0;
+    padding-top: 20px;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.15);
+    &-btn {
+      opacity: 0.8;
+      background: #e6394d;
+      box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3);
+      color: #fff;
+      font-size: 16px;
+      line-height: 48px;
+      text-align: center;
+      margin: 0 auto;
+      cursor: pointer;
+      width: 240px;
+      height: 48px;
     }
   }
 }

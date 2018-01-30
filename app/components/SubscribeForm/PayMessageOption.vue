@@ -19,7 +19,7 @@ export default {
   computed: {
     selected () {
       return (
-        this.data.selectedItem.type === 'message'
+        this.data.selectedType === 'message'
       )
     }
   }

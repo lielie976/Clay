@@ -1,28 +1,38 @@
 <template>
   <div class="subscribe-form-meta">
-    <template v-if="data.selectedItem.type === 'subject'">
-      <img class="subscribe-form-meta-image" :src="subject.Image"  />
+    <template v-if="data.selectedType === 'subject'">
+      <img class="subscribe-form-meta-image" :src="subject.Image" v-if="subject.Image"  />
       <div class="subscribe-form-meta-info">
         <h2>{{subject.Title}}</h2>
-        <template v-if="data.selectedItem.type">
+        <template v-if="data.selectedType">
           <div class="subscribe-form-meta-info-time">
             <span class="subscribe-form-meta-info-time-header">订阅时长： </span>
             <span class="subscribe-form-meta-info-time-content">{{subscribeDuration}}</span>
           </div>
           <div class="subscribe-form-meta-info-price">
-            <span class="subscribe-form-meta-info-price-header">总额</span>
+            <template v-if="data.payStatus === 0">
+              <span class="subscribe-form-meta-info-price-header">总额</span>
+            </template>
+            <template v-if="data.payStatus === 1">
+              <span class="subscribe-form-meta-info-price-header">剩余支付</span>
+            </template>
             <span class="subscribe-form-meta-info-price-content">￥{{selectedSubject.DiscountPrice}}</span>
           </div>
         </template>
       </div>
     </template>
-    <template v-else-if="data.selectedItem.type === 'message'">
-      <img class="subscribe-form-meta-image" :src="message.Image"  />
+    <template v-else-if="data.selectedType === 'message'">
+      <img class="subscribe-form-meta-image" :src="message.Image" v-if="message.Image" />
       <div class="subscribe-form-meta-info">
         <h2>{{message.Title}}</h2>
-        <template v-if="data.selectedItem.type">
+        <template v-if="data.selectedType">
           <div class="subscribe-form-meta-info-price">
-            <span class="subscribe-form-meta-info-price-header">需支付</span>
+            <template v-if="data.payStatus === 0">
+              <span class="subscribe-form-meta-info-price-header">需支付</span>
+            </template>
+            <template v-if="data.payStatus === 1">
+              <span class="subscribe-form-meta-info-price-header">剩余支付</span>
+            </template>
             <span class="subscribe-form-meta-info-price-content">￥{{message.Price}}</span>
           </div>
         </template>

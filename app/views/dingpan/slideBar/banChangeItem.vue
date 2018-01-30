@@ -79,8 +79,8 @@
            <i v-if="index == 0" class="iconfont">&#xe640;</i><i v-if="index == 1" class="iconfont">&#xe641;</i><i  v-if="index == 2" class="iconfont">&#xe63f;</i> {{stock.symbol}}</span>
 
           <span :class="color(stock.pcr)"  class="ban-change-item-detail-theme-item-pcr" v-if="stock.pcr"><span class="normal">涨速</span>{{changeRate(stock.pcr)}}
-          <img class="ban-change-item-detail-theme-item-pcr-img" src="/rise.png" v-if="stock.pcr>0"/>
-            <img class="cban-change-item-detail-theme-item-pcr-img" src="/down.png" v-if="stock.pcr<0"/></span>
+          <img class="ban-change-item-detail-theme-item-pcr-img" src="/img/rise.png" v-if="stock.pcr>0"/>
+            <img class="cban-change-item-detail-theme-item-pcr-img" src="/img/down.png" v-if="stock.pcr<0"/></span>
           <span :class="color(stock.pcp)"  class="ban-change-item-detail-theme-item-pcp" v-if="stock.pcp || 0==stock.pcp">{{changeRate(stock.pcp)}}</span>
           </a>
         </div>
