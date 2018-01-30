@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="home-news-container">
+    <ul class="home-news-container" @copy="handleCopy">
       <msg
         v-for="msg in msgs"
         :key="msg.Id"
@@ -54,6 +54,20 @@ export default {
   methods: {
     loadMore () {
       this.$store.dispatch('homeMsgs/loadMore')
+    },
+    handleCopy () {
+      const selection = window.getSelection()
+      const appendText = `<br>(选股宝7×24直播 不止是快) <a href="https://xuangubao.cn">https://xuangubao.cn</a>`
+      const text = selection + appendText
+      const newDiv = document.createElement('div')
+      document.body.appendChild(newDiv)
+      newDiv.style.position = 'absolute'
+      newDiv.style.left = '-99999px'
+      newDiv.innerHTML = text
+      selection.selectAllChildren(newDiv)
+      setTimeout(function () {
+        document.body.removeChild(newDiv)
+      }, 100)
     }
   },
   mounted () {

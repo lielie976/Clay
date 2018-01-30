@@ -1,37 +1,33 @@
 <template>
-  <!-- <tuo-shui /> -->
-  <premium-subject
-    :customization="customization"
-  >
+  <premium-subject :customization="customization">
     <HotMsgs slot="hotMsgs" />
   </premium-subject>
 </template>
 
 <script>
 import PremiumSubject from '~/components/PremiumSubject'
-import HotMsgs from '~/components/HotMsgs/TuoShui'
-import TuoShui from '~/views/tuoshui'
+import HotMsgs from '~/components/HotMsgs/PanZhongTuFa'
 import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('premium/getInfo', 581)
-    await store.dispatch('premium/getSubjectDetail', 581)
+    await store.dispatch('premium/init', 779)
+    await store.dispatch('boughtMsgs/getBoughtMsgs')
+    await store.dispatch('premiumHotMsgs/getHotMsgs', 779)
   },
   components: {
-    TuoShui,
     PremiumSubject,
     HotMsgs
   },
   head () {
     return {
-      title: `脱水研报 | ${texts.slogan}`
+      title: `选股宝盘中突发 | ${texts.slogan}`
     }
   },
   data () {
     return {
       customization: {
-        msgListTitle: '研报更新'
+        msgListTitle: '盘中突发更新'
       }
     }
   }

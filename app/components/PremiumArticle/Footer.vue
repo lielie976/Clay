@@ -20,7 +20,7 @@
           <span class="discount">1843.20</span>
         </p>
       </div>
-      <a class="premium-article-footer-subject-subscribe-action">
+      <a class="premium-article-footer-subject-subscribe-action" @click="toggleModal">
         我要订阅
       </a>
     </section>
@@ -43,7 +43,14 @@ export default {
     }
   },
   methods: {
-    getCNPriceNum
+    getCNPriceNum,
+    toggleModal () {
+      if (this.$store.state.user.userInfo.isLogged) {
+        this.$store.commit('subscribe/toggleModal')
+      } else {
+        this.$store.dispatch('login/showLogin')
+      }
+    }
   }
 }
 </script>
@@ -82,7 +89,7 @@ export default {
     }
   }
   &-subject-more {
-    flex-basis: 500px;
+    flex-basis: 450px;
     color: #f2564e;
     font-size: 14px;
     margin-left: 24px;

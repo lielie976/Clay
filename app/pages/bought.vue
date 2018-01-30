@@ -1,17 +1,17 @@
 <template>
   <section class="main-container">
     <section class="main-container-left">
-      <bought-msgs :msgs="$store.state.tuoshui.Messages" :data="boughtMsgs" />
+      <bought-msgs :msgs="boughtMsgs.msgs" :data="boughtMsgs" />
     </section>
     <section class="main-container-right">
-      <tuo-shui-hot-msgs :msgs="$store.state.tuoshui.Messages" />
-      <zao-zhi-dao-hot-msgs :msgs="$store.state.zaozhidao.Messages" />
+      <tuo-shui-hot-msgs />
+      <zao-zhi-dao-hot-msgs />
     </section>
   </section>
 </template>
 
 <script>
-import TuoShuiHotMsgs from '~/components/HotMsgs/TuoShui'
+import TuoShuiHotMsgs from '~/components/HotMsgs/TuoShuiYanBao'
 import ZaoZhiDaoHotMsgs from '~/components/HotMsgs/ZaoZhiDao'
 import BoughtMsgs from '~/components/BoughtMsgs'
 
@@ -23,8 +23,8 @@ export default {
   },
   async asyncData ({ store }) {
     await store.dispatch('boughtMsgs/getBoughtMsgs')
-    await store.dispatch('tuoshui/getInfo')
-    await store.dispatch('zaozhidao/getInfo')
+    await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
+    await store.dispatch('premiumHotMsgs/getHotMsgs', 679)
   },
   computed: {
     boughtMsgs () {

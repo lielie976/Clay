@@ -1,5 +1,5 @@
 <template>
-  <widget-box title="早知道热文" v-if="msgs && msgs.length">
+  <widget-box title="盘中突发热文" v-if="msgs && msgs.length">
     <premium-subject-hot-msgs :msgs="msgs" />
   </widget-box>
 </template>
@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     msgs () {
-      return this.$store.state.premiumHotMsgs[679]
+      return this.$store.state.premiumHotMsgs[779]
     }
   }
 }

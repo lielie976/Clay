@@ -2,10 +2,20 @@
   <div class="non-login">
     <i class="iconfont icon-weidenglu"></i>
     <p class="non-login-title">登录账号后，可同步查看选股宝APP上购买过的文章和订阅话题</p>
-    <button>登录</button>
+    <button @click="showLogin">登录</button>
     <p class="non-login-warning">注：请保证网页端账号与选股宝APP账号保持一致</p>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    showLogin () {
+      this.$store.dispatch('login/showLogin')
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 @import '../styles/variables.less';

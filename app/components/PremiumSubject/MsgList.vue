@@ -51,7 +51,7 @@
     <div class="pagination">
       <Page
         :current="data.params.page"
-        :total="100"
+        :total="data.totalMsg"
         show-elevator
         @on-change="changePage"
       />
@@ -95,7 +95,7 @@ export default {
     changePage (page) {
       const top = document.querySelector('.premium-subject-list').offsetTop - 100
       smoothscroll(top)
-      this.$store.commit('premium/changePage', page)
+      this.$store.dispatch('premium/changePage', page)
     },
     checkNewest (index) {
       return index === 0 && this.data.params.page === 1

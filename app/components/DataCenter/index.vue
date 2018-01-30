@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import dataCenter from '~/components/dataCenter/canvas'
+import dataCenter from './canvas'
 import WidgetBox from '../WidgetBox'
 import temperature from './temperature.vue'
 import detail from './detail.vue'
@@ -35,6 +35,13 @@ export default {
       })
       return thermometer
     }
+  },
+  mounted () {
+    const thermometer = this.$store.state.market.thermometer
+    dataCenter.init({
+      container: '.datacenter-temperature-canvas',
+      value: thermometer.temperatureCeil
+    })
   }
 }
 </script>

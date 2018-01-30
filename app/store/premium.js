@@ -1,27 +1,29 @@
-import { getSubject } from '~/api/subject'
-import { getSubjectDetail } from '~/api/premium'
+import { getSubjectInfo, getSubjectPremiumMsgs, getSubjectTrialMsgs } from '~/api/premium'
+import { refineApi } from '~/utils/helpers'
 
 export const state = () => ({
   params: {
     page: 1,
     limit: 10
   },
-  Messages: [],
-  Subject: {},
-  NextMark: null,
-  hotMsgs: [],
+  msgs: [],
+  subjectInfo: {},
   trialMsgs: []
 })
 
 export const mutations = {
-  saveInfo (state, data) {
-    state.Subject = data.Subject
-    state.Messages = data.Messages
-    state.NextMark = data.NextMark
-    state.trialMsgs = data.Messages.slice(0, 3)
+  saveId (state, id) {
+    state.id = id
   },
   saveSubjectDetail (state, data) {
-    state.subjectDetail = data
+    state.subjectInfo = data
+  },
+  saveMsgs (state, data) {
+    state.msgs = data.Messages
+    state.totalMsg = data.Total
+  },
+  saveTrialMsgs (state, data) {
+    state.trialMsgs = data.Messages
   },
   changePage (state, page) {
     state.params.page = page
@@ -29,20 +31,38 @@ export const mutations = {
 }
 
 export const actions = {
-  getInfo ({ commit, state }, id) {
+  changePage ({ commit, state, dispatch }, page) {
+    commit('changePage', page)
+    dispatch('getMsgs', state.id)
+  },
+  async getMsgs ({ commit, state }, id) {
+    const res = await getSubjectPremiumMsgs(id, state.params)
+    if (res.code === 20000) {
+      commit('saveMsgs', refineApi(res.data))
+    }
+  },
+  async getTrialMsgs ({ commit }, id) {
+    const res = await getSubjectTrialMsgs(id)
+    if (res.code === 20000) {
+      commit('saveTrialMsgs', refineApi(res.data))
+    }
+  },
+  getInfo ({ commit, state, rootState }, id) {
     return new Promise((resolve, reject) => {
-      getSubject(id, state.params).then((res) => {
-        commit('saveInfo', res)
+      getSubjectInfo(id, rootState.auth.headers).then((res) => {
+        if (res.code === 20000) {
+          const data = refineApi(res.data.subject_info)
+          commit('saveSubjectDetail', data)
+          commit('subscribe/saveSubject', data, { root: true })
+        }
         resolve()
       }).catch(err => reject(err))
     })
   },
-  getSubjectDetail ({ commit, state, rootState }, id) {
-    return new Promise((resolve, reject) => {
-      getSubjectDetail(id, state.params, rootState.auth.headers).then((res) => {
-        commit('saveSubjectDetail', res)
-        resolve()
-      }).catch(err => reject(err))
-    })
+  async init ({ commit, dispatch }, id) {
+    commit('saveId', id)
+    await dispatch('getInfo', id)
+    await dispatch('getMsgs', id)
+    await dispatch('getTrialMsgs', id)
   }
 }

@@ -1,0 +1,15 @@
+FROM d-hub.wallstcn.com:5000/wallstreetcn/node-base:7
+
+USER root
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+RUN mkdir -p /root/.ssh/
+ADD id_rsa /root/.ssh/
+RUN touch /root/.ssh/known_hosts
+RUN apt-get install -y ssh
+RUN ssh-keyscan gitlab.wallstcn.com >> /root/.ssh/known_hosts
+RUN chmod 0600 /root/.ssh/id_rsa
+RUN ssh -T git@gitlab.wallstcn.com
+ADD . /usr/src/app
+RUN chmod +x ./entrypoint.sh
+RUN npm install --registry=https://registry.npm.taobao.org

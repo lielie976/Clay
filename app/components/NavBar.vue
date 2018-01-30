@@ -19,12 +19,7 @@
         <nuxt-link to="/yuanchuang" exact class="nav-item" target="_blank">
           原创
         </nuxt-link>
-        <nuxt-link to="/tuoshui" exact class="nav-item" target="_blank">
-          脱水研报
-        </nuxt-link>
-        <nuxt-link to="/zaozhidao" exact class="nav-item" target="_blank">
-          早知道
-        </nuxt-link>
+        <nav-bar-premium />
       </div>
       <div class="nav-right">
         <span v-if="!userInfo.Token" @click="login" class="go-login nav-item" data-type="login">登录</span>
@@ -37,9 +32,14 @@
 </template>
 
 <script>
-import texts from '~/utils/texts'
 import * as Cookies from 'js-cookie'
+import texts from '~/utils/texts'
+import NavBarPremium from './NavBarPremium'
+
 export default {
+  components: {
+    NavBarPremium
+  },
   computed: {
     texts: () => texts
   },
@@ -91,7 +91,6 @@ export default {
   .container {
     width: 1300px;
     margin: 0 auto;
-    overflow: hidden;
   }
   .nav-left {
     float: left;
@@ -108,10 +107,12 @@ export default {
     }
   }
   .nav-item {
+    position: relative;
     color: #d8d8d8;
     height: 56px;
     line-height: 56px;
     margin-right: 40px;
+    transition: 0.3s;
     &:hover {
       color: #fff;
     }

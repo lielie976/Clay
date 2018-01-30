@@ -54,7 +54,9 @@ export default {
 
 .article-content {
   a {
-    color: @mainColorRed;
+    // color: @mainColorRed;
+    border-bottom: 1px solid @mainColorRed;
+    padding-bottom: 3px;
   }
   a * {
     color: @mainColorRed !important;
