@@ -19,7 +19,7 @@ export const actions = {
     return commit('saveUserInfo', {
       isLogged: true,
       Token: payload.Token,
-      nickname: payload.nickname
+      nickname: decodeURIComponent(payload.nickname)
     })
   },
   logOut ({ state, commit }) {
