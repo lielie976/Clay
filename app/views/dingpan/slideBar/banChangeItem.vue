@@ -563,6 +563,9 @@ export default {
                 .ban-change-item-detail-stock-topic-name {
                   color: #fff !important;
                 }
+                .ban-change-item-detail-stock-topic-rate{
+                  color:#fff !important;
+                }
               }
             }
             &.-market-color--decline {
@@ -576,6 +579,9 @@ export default {
                 background: @dingDown;
                 .ban-change-item-detail-stock-topic-name {
                   color: #fff !important;
+                }
+                .ban-change-item-detail-stock-topic-rate{
+                  color:#fff !important;
                 }
               }
             }

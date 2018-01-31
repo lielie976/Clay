@@ -104,7 +104,7 @@
           </g>
         </template>
         <template  v-for="(item,key) in points">
-          <g  v-if="Math.abs(item.pcr)>=3&&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
+          <g logo v-if="Math.abs(item.pcr)>=3&&(!hoverStockList || !hoverStockList.length || hoverStockList.indexOf(key)==-1)" :id="item.code" class="stock-item" @mouseenter="enterCircle(item)" @mouseleave="leaveCircle(item)"  >
             <circle  class="stock-circle" :key="'circle'+item.code.split('.')[0]" :cx="item.x" :cy="item.y" :r="item.size/svgScale*svgCircleScale" :fill="stockFillColor(item)" :fill-opacity="item.hovered?1:item.opacity" />
             <text class="stock-text" v-if="stockTextVisible(item) &&  item.size>200" text-anchor="middle"  :key="'text'+item.code.split('.')[0]" fill="#fff"  :x="item.x" :y="item.y+item.size/svgScale*svgCircleScale/6" :font-size="item.fontsize/svgScale*svgCircleScale">{{item.prod_name}}</text>
           </g>
@@ -1840,12 +1840,13 @@ export default {
           min-height: 40px;
           font-size: 12px;
           padding-top: 7px;
-          &.-market-color--green {
+          &.-market-color--decline
+           {
             .chart-theme-item-stocks {
               color: @dingDown;
             }
           }
-          &.-market-color--red {
+          &.-market-color--rise {
             .chart-theme-item-stocks {
               color: @dingRise;
             }
@@ -1870,7 +1871,7 @@ export default {
           top: 3px;
         }
       }
-      &.-market-color--green {
+      &.-market-color--decline {
         &:hover {
           background: @dingDown;
           .chart-theme-item-stocks {
@@ -1896,7 +1897,7 @@ export default {
           }
         }
       }
-      &.-market-color--red {
+      &.-market-color--rise {
         &:hover {
           background: @dingRise;
           .chart-theme-item-stocks {
