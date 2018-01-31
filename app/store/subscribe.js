@@ -47,17 +47,15 @@ export const mutations = {
     state.payStatus = 0
   },
   saveMessage (state, data) {
-    state.message = data
-    if (data && data.IsPremium && data.Price > 0 && !data.IsPaid) {
-      state.selectedType = 'message'
-    } else {
+    state.selectedSubject.items = data.FromSubject.SubjSubscribeItems
+    if (data.FromSubject.RemainingDays > 0) {
       state.selectedType = 'subject'
       state.subject = data.FromSubject
       // 新老接口 SubjSubscribeItems || SubscribeItems 字段名不一样
-      state.selectedSubject = {
-        items: data.FromSubject.SubjSubscribeItems,
-        index: data.FromSubject.SubjSubscribeItems && (data.FromSubject.SubjSubscribeItems.length - 1)
-      }
+      state.selectedSubject.index = data.FromSubject.SubjSubscribeItems && (data.FromSubject.SubjSubscribeItems.length - 1)
+    } else if (data && data.IsPremium && data.Price > 0 && !data.IsPaid) {
+      state.message = data
+      state.selectedType = 'message'
     }
   },
   saveSubject (state, data) {

@@ -1,7 +1,7 @@
 <template>
   <div class="subscribe-paying">
     <form-meta :data="data" />
-    <p v-if="hasHeader" class="subscribe-paying-warning">请在 <span>1</span> 小时内完成支付，否则订单将被取消</p>
+    <p v-if="hasHeader" class="subscribe-paying-warning">请在 <span>3</span> 分钟内完成支付，否则订单将被取消</p>
     <slot></slot>
     <p v-if="hasFooter" class="subscribe-paying-service">如有问题，请联系客服 021-xxxxxx</p>
   </div>
