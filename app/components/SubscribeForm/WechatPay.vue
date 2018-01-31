@@ -6,15 +6,33 @@
 
 <script>
 export default {
+  props: {
+    data: Object
+  },
   methods: {
-    generateQrcode () {
+    generateQrcode (url) {
       if (!this.$refs.qrcode) return
       const qrcode = new window.QRCode(this.$refs.qrcode)
-      qrcode.makeCode('https://baidu.com')
+      qrcode.makeCode(url)
     }
   },
   mounted () {
-    this.generateQrcode()
+    // this.generateQrcode()
+    this.$store.dispatch('subscribe/createPayOrder', { type: 5 }).then((res) => {
+      const url = this.data.order.pay_url
+      const orderNo = this.data.order.order_no
+      if (!url || !orderNo) {
+        this.$store.commit('subscribe/changePayStatus', { status: 3 })
+        return
+      }
+      this.generateQrcode(url)
+      this.timer = setInterval(() => {
+        this.$store.dispatch('subscribe/checkOrderStatus', { order_no: orderNo })
+      }, 1000)
+    })
+  },
+  destroyed () {
+    clearInterval(this.timer)
   }
 }
 </script>

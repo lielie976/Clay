@@ -21,7 +21,7 @@ export default {
   methods: {
     redo () {
       this.$store.commit('subscribe/changePayStatus', {
-        status: 1
+        status: 0
       })
     }
   }

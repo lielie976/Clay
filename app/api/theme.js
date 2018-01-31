@@ -14,13 +14,11 @@ export const fetchThemeMessage = ({ id, limit = 5, Mark = 0 }) => {
   })
 }
 
-export const fetchTheme = (id, token) => {
+export const fetchTheme = (id, headers) => {
   return api({
     method: 'GET',
     url: `/api/pc/bankuaiji/` + id,
-    headers: {
-      'X-Appgo-Token': token
-    }
+    headers
   })
 }
 

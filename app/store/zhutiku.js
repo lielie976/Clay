@@ -23,6 +23,7 @@ export const actions = {
   getZhutikuRankAsc ({ commit }) {
     return new Promise((resolve, reject) => {
       getZhutikuRank({ count: 9, is_asc: true, rank_type: 'core_pcp_rank' }).then((res) => {
+        if (res.code !== 20000) return
         commit('saveZhutikuAsc', extractFieldsToArray(res.data))
         resolve()
       }).catch(err => reject(err))
@@ -31,6 +32,7 @@ export const actions = {
   getZhutikuRankDesc ({ commit }) {
     return new Promise((resolve, reject) => {
       getZhutikuRank({ count: 9, is_asc: false, rank_type: 'core_pcp_rank' }).then((res) => {
+        if (res.code !== 20000) return
         commit('saveZhutikuDesc', extractFieldsToArray(res.data))
         resolve()
       }).catch(err => reject(err))

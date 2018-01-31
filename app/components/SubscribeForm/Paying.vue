@@ -1,7 +1,7 @@
 <template>
   <sub-form :data="data">
-    <alipay v-if="data.payMethod === 'alipay'" />
-    <wechat-pay v-if="data.payMethod === 'wechat'" />
+    <alipay :data="data" v-if="data.payMethod === 'alipay'" />
+    <wechat-pay :data="data" v-if="data.payMethod === 'wechat'" />
   </sub-form>
 </template>
 

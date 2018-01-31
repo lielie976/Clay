@@ -14,6 +14,8 @@ const nuxt = new Nuxt(config)
 if (config.dev) {
   const builder = new Builder(nuxt)
   builder.build()
+} else {
+  //  production
 }
 
 // Give nuxt middleware to express
