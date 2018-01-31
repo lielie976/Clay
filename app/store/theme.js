@@ -88,8 +88,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async getThemeInfo ({ state, commit, dispatch }, payload) {
-    const res = await fetchTheme(payload.id, payload.token)
+  async getThemeInfo ({ state, rootState, commit, dispatch }, payload) {
+    const res = await fetchTheme(payload.id, rootState.auth.headers)
     commit('setThemeInfo', res.Data)
     commit('setAccessMode', res.AccessMode)
     if (state.excpetionTheme.indexOf(payload.id) === -1) {

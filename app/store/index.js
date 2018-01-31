@@ -9,10 +9,6 @@ export const actions = {
     const cookies = new Cookies(req, res)
     const token = cookies.get('token')
     // const user = JSON.parse(decodeURIComponent(cookies.get('_user')))
-    console.log({
-      Token: cookies.get('token'),
-      nickname: cookies.get('nickname')
-    })
     dispatch('user/saveAuth', {
       Token: cookies.get('token'),
       nickname: cookies.get('nickname')
