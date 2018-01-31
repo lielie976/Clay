@@ -47,8 +47,8 @@ export const mutations = {
     state.payStatus = 0
   },
   saveMessage (state, data) {
+    state.message = data
     if (data && data.IsPremium && data.Price > 0 && !data.IsPaid) {
-      state.message = data
       state.selectedType = 'message'
     } else {
       state.selectedType = 'subject'
