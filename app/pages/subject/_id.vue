@@ -13,7 +13,8 @@ import { getSubject } from '~/api/subject'
 import texts from '~/utils/texts'
 
 export default {
-  async asyncData ({ params }) {
+  async asyncData ({ params, redirect }) {
+    redirect(redirectToPremium(params.id))
     const data = await getSubject(params.id, { limit: 20 })
     return {
       data,
@@ -49,7 +50,6 @@ export default {
       try {
         stocks = this.data.Subject.SubjSsetInfo.SsetStocks
       } catch (err) {
-        console.log(err)
         stocks = []
       }
       return stocks
@@ -72,5 +72,15 @@ export default {
       })
     }
   }
+}
+
+function redirectToPremium (id) {
+  const urls = {
+    679: '/zaozhidao',
+    779: '/panzhongtufa',
+    517: '/tuoshuidiaoyan',
+    581: '/tuoshuiyanbao'
+  }
+  return urls[id]
 }
 </script>
