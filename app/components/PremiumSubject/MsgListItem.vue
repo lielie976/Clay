@@ -1,58 +1,74 @@
 <template>
-  <div>
-    <ul class="premium-subject-list">
-      <msg-item
-        v-for="(msg, index) in processedMsgs"
-        :key="msg.Id"
-        :data="data"
-        :msg="msg"
-        :index="index"
-      />
-    </ul>
-    <div class="pagination">
-      <Page
-        :current="data.params.page"
-        :total="data.totalMsg"
-        show-elevator
-        @on-change="changePage"
-      />
+  <li
+    :class="{
+      'premium-subject-list-item': true,
+      'is-newest': checkNewest(index)
+    }"
+  >
+    <div class="premium-subject-list-item-headertime" v-if="msg.divideDay">
+      <span>{{formatDate(msg.CreatedAt * 1000, 'MM月DD日')}}</span>
+      <span>{{getDateDay(msg.CreatedAt * 1000, true)}}</span>
     </div>
-  </div>
+    <div class="premium-subject-list-item-inner">
+      <div class="premium-subject-list-item-meta">
+        <!-- <div :class="{
+          'premium-subject-list-item-meta-categ': true,
+          'is-stock': isStock(msg)
+        }">
+          <p>{{formatDate(msg.CreatedAt * 1000, 'MM月DD日')}}</p>
+          <p>{{isStock(msg) || '脱水研报'}}</p>
+        </div> -->
+        <!-- <img src="/img/tuo-shui-ge-gu-msg.png" :alt="msg.Title"> -->
+        <img  src="/img/tuo-shui-yan-bao-msg.png">
+      </div>
+      <div class="premium-subject-list-item-content">
+        <h3 class="premium-subject-list-item-title">
+          <a
+            :href="`/premium-article/${msg.Id}`"
+            target="_blank"
+            ref="title"
+          >
+            {{msg.Title}}
+          </a>
+        </h3>
+        <div class="premium-subject-list-item-summary">
+          <pre ref="pre" class="normal-pre-text">{{msg.Summary}}</pre>
+        </div>
+        <p>
+          <time-widget :time="msg.CreatedAt"  />
+        </p>
+      </div>
+    </div>
+  </li>
 </template>
 
 <script>
-import { smoothscroll } from '~/utils/helpers'
-import MsgItem from './MsgListItem'
+import shave from 'shave'
+import { formatDate, getDateDay } from '~/utils/helpers'
+import TimeWidget from '~/components/TimeWidget'
 
 export default {
-  props: {
-    msgs: Array,
-    data: Object
-  },
   components: {
-    MsgItem
+    TimeWidget
   },
-  computed: {
-    processedMsgs () {
-      const tmp = {}
-      const msgs = this.msgs.map((i) => {
-        const date = new Date(i.CreatedAt * 1000).getDate()
-        const msg = tmp[date] ? i : {
-          ...i,
-          divideDay: true
-        }
-        tmp[date] = true
-        return msg
-      })
-      return msgs
-    }
+  props: {
+    data: Object,
+    msg: Object,
+    index: Number
   },
   methods: {
-    changePage (page) {
-      const top = document.querySelector('.premium-subject-list').offsetTop - 100
-      smoothscroll(top)
-      this.$store.dispatch('premium/changePage', page)
+    formatDate,
+    getDateDay,
+    isStock (msg) {
+      return msg.Title.indexOf('脱水个股') > -1 && '脱水个股'
+    },
+    checkNewest (index) {
+      return index === 0 && this.data.params.page === 1
     }
+  },
+  mounted () {
+    shave(this.$refs.title, 54)
+    shave(this.$refs.pre, 64)
   }
 }
 </script>
@@ -60,10 +76,6 @@ export default {
 <style lang="less" scoped>
 @import '../../styles/variables.less';
 
-.premium-subject-list {
-  padding: 16px 0 24px;
-  background-color: #fff;
-}
 .premium-subject-list-item {
   position: relative;
   margin: 0 0 24px 0;
