@@ -94,6 +94,7 @@ export const actions = {
     commit('setAccessMode', res.AccessMode)
     if (state.excpetionTheme.indexOf(payload.id) === -1) {
       console.log('default')
+      if (!res.Data.AllStocks) return
       commit('setThemeStockSymbol', res.Data.AllStocks)
       commit('setThemeStockList', res.Data.AllStocks)
       await dispatch('getThemeStock')
