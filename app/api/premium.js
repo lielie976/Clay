@@ -26,3 +26,19 @@ export const buySubjectByBaodi = (data, headers) => api({
   data,
   headers
 })
+
+//  amount, pay_way, platform, product_type, product_id, return_url
+export const createPayOrder = (data, headers) => baoerApi({
+  method: 'post',
+  url: '/api/v2/xgbpay/pay',
+  headers,
+  data
+})
+
+//  order_no
+export const checkOrderStatus = (params, headers) => baoerApi({
+  method: 'get',
+  url: '/api/v2/xgbpay/query/result',
+  headers,
+  params
+})

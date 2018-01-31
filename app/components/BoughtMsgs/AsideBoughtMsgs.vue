@@ -6,7 +6,7 @@
       </template>
       <template v-else>
         <ul class="aside-bought-msgs">
-          <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="processMsg(msg)" />
+          <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="msg" />
         </ul>
       </template>
     </div>
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { truncate } from '~/utils/helpers'
 import NonLogin from '~/components/NonLogin'
 import WidgetBox from '~/components/WidgetBox'
 import MsgItem from './AsideMsgItem'
@@ -30,14 +29,6 @@ export default {
   },
   props: {
     msgs: Array
-  },
-  methods: {
-    processMsg (msg) {
-      return {
-        ...msg,
-        Title: truncate(msg.Title, 35, '...')
-      }
-    }
   }
 }
 </script>

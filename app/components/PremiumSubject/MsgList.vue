@@ -23,23 +23,20 @@
               <p>{{isStock(msg) || '脱水研报'}}</p>
             </div> -->
             <!-- <img src="/img/tuo-shui-ge-gu-msg.png" :alt="msg.Title"> -->
-            <img  src="/img/tuo-shui-yan-bao-msg.png" :alt="msg.Title">
+            <img  src="/img/tuo-shui-yan-bao-msg.png">
           </div>
           <div class="premium-subject-list-item-content">
             <h3 class="premium-subject-list-item-title">
               <a
                 :href="`/premium-article/${msg.Id}`"
                 target="_blank"
-                :class="{
-                  'hint--top': msg.Title.length > 64
-                }"
-                :aria-label="msg.Title"
+                ref="title"
               >
-                {{msg.Title | truncate(64, '...')}}
+                {{msg.Title}}
               </a>
             </h3>
             <div class="premium-subject-list-item-summary">
-              <pre class="normal-pre-text">{{msg.Summary}}</pre>
+              <pre ref="pre" class="normal-pre-text">{{msg.Summary}}</pre>
             </div>
             <p>
               <time-widget :time="msg.CreatedAt"  />
@@ -60,6 +57,7 @@
 </template>
 
 <script>
+import shave from 'shave'
 import { formatDate, getDateDay, smoothscroll } from '~/utils/helpers'
 import TimeWidget from '~/components/TimeWidget'
 
@@ -100,6 +98,10 @@ export default {
     checkNewest (index) {
       return index === 0 && this.data.params.page === 1
     }
+  },
+  mounted () {
+    shave(this.$refs.title, 54)
+    shave(this.$refs.pre, 64)
   }
 }
 </script>
@@ -185,7 +187,7 @@ export default {
   }
   &-title {
     font-size: 18px;
-    line-height: 1.5;
+    line-height: 27px;
     color: #333;
     margin-bottom: 6px;
   }
