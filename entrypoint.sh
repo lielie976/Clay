@@ -2,4 +2,5 @@
 set -e
 
 nginx
-npm start
+# npm start
+pm2 start pm2.json
