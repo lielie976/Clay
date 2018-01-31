@@ -56,6 +56,7 @@ export default {
       dispatch('zhutiku/getZhutikuRankDesc')
       dispatch('settings/getSettings')
     }, 30 * 1000)
+    console.log('new zhutiku!')
   },
   destroyed () {
     clearInterval(this.timer)

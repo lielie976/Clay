@@ -19,3 +19,10 @@ export const buyMsgByBaodi = (data, headers) => api({
   data,
   headers
 })
+
+export const buySubjectByBaodi = (data, headers) => api({
+  method: 'post',
+  url: '/api/premium/subscribeSubject',
+  data,
+  headers
+})

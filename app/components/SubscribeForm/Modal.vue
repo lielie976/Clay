@@ -4,7 +4,7 @@
     <div class="modal-content">
       <slot />
     </div>
-    <button class="modal-close is-large" aria-label="close" @click="toggleModal"></button>
+    <!-- <button class="modal-close is-large" aria-label="close" @click="toggleModal"></button> -->
   </div>
 </template>
 

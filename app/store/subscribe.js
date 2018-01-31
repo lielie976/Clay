@@ -1,4 +1,4 @@
-import { getUserBalance, buyMsgByBaodi } from '~/api/premium'
+import { getUserBalance, buyMsgByBaodi, buySubjectByBaodi } from '~/api/premium'
 import { getDuration, formatDate } from '~/utils/helpers'
 
 export const state = () => ({
@@ -105,7 +105,21 @@ export const actions = {
         commit('changePayStatus', { status: 3 })
       }
     } else if (state.selectedType === 'subject') {
-
+      const item = state.selectedSubject.items[state.selectedSubject.index]
+      const data = {
+        ItemId: String(item.Id),
+        SubjectId: String(state.subject.Id),
+        Days: item.Days,
+        Amount: Math.floor(item.DiscountPrice * 100),
+        PayClientType: 2
+      }
+      try {
+        await buySubjectByBaodi(data, rootState.auth.headers)
+        commit('changePayStatus', { status: 2 })
+      } catch (err) {
+        console.log(err)
+        commit('changePayStatus', { status: 3 })
+      }
     }
   }
 }

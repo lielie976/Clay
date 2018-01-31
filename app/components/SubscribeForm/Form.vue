@@ -86,6 +86,10 @@ export default {
     right: 8px;
     color: #d8d8d8;
     cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+      color: #999;
+    }
   }
   &-options {
     margin-top: 16px;
