@@ -64,7 +64,7 @@ module.exports = {
     ENV: process.env.ENV
   },
   srcDir: 'app/',
-  modules: ['~modules/typescript.js'],
+  // modules: ['~modules/typescript.js'],
   router: {
     linkActiveClass: 'is-active-route'
   }
