@@ -50,7 +50,6 @@ export default {
   }
   ul {
     display: flex;
-    justify-content: space-between;
     margin: 12px -4px 0;
   }
   li {

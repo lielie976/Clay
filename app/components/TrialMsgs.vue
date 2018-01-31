@@ -9,7 +9,7 @@
         <a :href="`/premium-article/${msg.Id}`" target="_blank">
           <img :src="`${msg.Image || '/img/tuo-shui-yan-bao-msg.png'}`" alt="试读文章配图" class="trial-msg-img">
           <div class="trial-msg-title">
-            {{ msg.Title | truncate(20, '...') }}
+            <span ref="title">{{ msg.Title }}</span>
             <div class="trial-msg-flag">试读</div>
           </div>
         </a>
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import shave from 'shave'
 import WidgetBox from '~/components/WidgetBox'
 
 export default {
@@ -27,6 +28,9 @@ export default {
   },
   components: {
     WidgetBox
+  },
+  mounted () {
+    shave(this.$refs.title, 44)
   }
 }
 </script>
@@ -57,6 +61,11 @@ export default {
     letter-spacing: 0;
     line-height: 22px;
     padding-left: 8px;
+    span {
+      display: inline-block;
+      max-height: 44px;
+      overflow: hidden;
+    }
   }
   &-flag {
     position: absolute;

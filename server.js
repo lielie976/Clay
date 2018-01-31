@@ -1,5 +1,7 @@
+const fs = require('fs')
 const app = require('express')()
 const { Nuxt, Builder } = require('nuxt')
+const logger = require('morgan')
 
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
@@ -14,6 +16,11 @@ const nuxt = new Nuxt(config)
 if (config.dev) {
   const builder = new Builder(nuxt)
   builder.build()
+} else {
+  //  production
+  app.use(logger('combined', {
+    stream: fs.createWriteStream('web.log', { flags: 'a' })
+  }))
 }
 
 // Give nuxt middleware to express

@@ -7,7 +7,7 @@
       <payment :data="data" />
     </div>
     <p class="subscribe-form-final">账户余额：{{data.balance}} ，{{priceNeededToPay >= 0 ? `直接支付 ${priceNeededToPay} 元` : '优先使用账户余额支付'}}</p>
-    <div class="subscribe-form-actions">
+    <div :class="['subscribe-form-actions', `${priceNeededToPay <= 0 && 'only-balance'}`]">
       <a class="subscribe-form-actions-pay pay-action-alipay" @click="() => goingToPay(1, 'alipay')"><i class="iconfont icon-zhifubaozhifu"></i>支付宝支付</a>
       <a class="subscribe-form-actions-pay pay-action-wechat" @click="() => goingToPay(1, 'wechat')"><i class="iconfont icon-weixinzhifu"></i>微信支付</a>
       <a class="subscribe-form-actions-pay pay-action-balance" @click="payWithBalance">余额支付</a>
@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     goingToPay (status, method) {
+      if (this.priceNeededToPay <= 0) return
       this.$store.commit('subscribe/changePayStatus', {
         status,
         method
@@ -86,6 +87,10 @@ export default {
     right: 8px;
     color: #d8d8d8;
     cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+      color: #999;
+    }
   }
   &-options {
     margin-top: 16px;
@@ -155,6 +160,17 @@ export default {
     .pay-action-balance {
       background-color: #e6e6e6;
       flex: 0 0 142px;
+    }
+    &.only-balance {
+      .pay-action-alipay {
+        background-color: #e6e6e6;
+      }
+      .pay-action-wechat {
+        background-color: #e6e6e6; 
+      }
+      .pay-action-balance {
+        background-color: @strongFontColor;
+      }
     }
   }
   &-agreement {

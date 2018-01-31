@@ -15,16 +15,9 @@ import themeStock from '~/views/theme/themeStock'
 
 export default {
   async asyncData ({ store, params, req }) {
-    function getCookie (cookieName, stringCookie) {
-      let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
-      return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
-    }
-    let token = getCookie('token', req.headers.cookie)
     await store.dispatch('theme/getThemeInfo', {
-      id: params.id,
-      token: token
+      id: params.id
     });
-    console.log(getCookie('token', req.headers.cookie))
     await store.dispatch('theme/getThemeMessage', params.id);
     await store.dispatch('theme/getPlateSetInfo', params.id);
     // await store.dispatch('theme/getThemeStock')

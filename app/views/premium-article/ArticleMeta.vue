@@ -1,5 +1,5 @@
 <template>
-  <div class="article-meta" :style="{'background-image': `url(${data.FromSubject.Image})`}">
+  <div class="article-meta" :style="{'background-image': `url(${data.FromSubject.PcImage})`}">
     <div class="inner">
       <section class="main-container">
         <section class="main-container-left">
