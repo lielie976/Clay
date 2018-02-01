@@ -56,7 +56,7 @@ export const actions = {
             ...data.SubjectInfo,
             SubscribeItems: data.SubjectInfo.SubscribeItems || data.SubscribeItems
           }
-          commit('saveSubjectDetail', fixedData)
+          // commit('saveSubjectDetail', fixedData)
           commit('subscribe/saveSubject', fixedData, { root: true })
         }
         resolve()

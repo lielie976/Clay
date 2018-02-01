@@ -2,10 +2,10 @@
   <li class="purchased-msgs-item">
     <a :href="`/premium-article/${msg.Id}`" target="_blank">{{msg.Title}}</a>
     <p class="purchased-msgs-item-bottom">
-      <span class="purchased-msgs-item-subj">
-        <img src="/img/tuoshui-banner.jpg">
-        只做龙头
-      </span>
+      <a class="purchased-msgs-item-subj" :href="`/subject/${msg.Subjects.Id}`" target="_blank" v-if="msg.Subjects">
+        <!-- <img src="/img/tuoshui-banner.jpg"> -->
+        {{msg.Subjects.Title}}
+      </a>
       <span class="purchased-msgs-item-time">
         <time-widget :time="msg.CreatedAt" />
       </span>

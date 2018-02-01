@@ -1,12 +1,11 @@
 <template>
-  <sub-form :data="data">
+  <sub-form :data="data" :onClose="onClose">
     <alipay :data="data" v-if="data.payMethod === 'alipay'" />
     <wechat-pay :data="data" v-if="data.payMethod === 'wechat'" />
   </sub-form>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import SubForm from './SubForm'
 import Payment from './Payment'
 import Alipay from './Alipay'
@@ -22,22 +21,6 @@ export default {
   props: {
     onClose: Function,
     data: Object
-  },
-  computed: {
-    ...mapGetters({
-      priceNeededToPay: 'subscribe/priceNeededToPay'
-    })
-  },
-  methods: {
-    goingToPay (status, method) {
-      this.$store.commit('subscribe/changePayStatus', {
-        status,
-        method
-      })
-    }
-  },
-  mounted () {
-    // window.open('https://baidu.com')
   }
 }
 </script>

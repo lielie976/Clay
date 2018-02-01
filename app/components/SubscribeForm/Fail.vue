@@ -1,9 +1,10 @@
 <template>
-  <sub-form :data="data" :hasHeader="false">
+  <sub-form :data="data" :hasHeader="false" :onClose="onClose">
     <div class="subscribe-fail">
       <p class="subscribe-fail-icon">
         <i class="iconfont icon-dingyueshibai"></i>
         <span>支付失败</span>
+        <span>{{data.errmsg}}</span>
       </p>
       <a class="subscribe-fail-redo" @click="redo">重新支付</a>
     </div>
@@ -16,7 +17,8 @@ import SubForm from './SubForm'
 export default {
   components: { SubForm },
   props: {
-    data: Object
+    data: Object,
+    onClose: Function
   },
   methods: {
     redo () {
