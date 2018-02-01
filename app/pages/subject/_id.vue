@@ -11,6 +11,7 @@
 import Subject from '~/views/subject'
 import { getSubject } from '~/api/subject'
 import texts from '~/utils/texts'
+import { redirectPremiumSubject } from '~/utils/constants'
 
 export default {
   async asyncData ({ params, redirect }) {
@@ -75,12 +76,6 @@ export default {
 }
 
 function redirectToPremium (id) {
-  const urls = {
-    679: '/zaozhidao',
-    779: '/panzhongtufa',
-    517: '/tuoshuidiaoyan',
-    581: '/tuoshuiyanbao'
-  }
-  return urls[id]
+  return redirectPremiumSubject[id]
 }
 </script>

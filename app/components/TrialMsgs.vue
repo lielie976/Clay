@@ -6,7 +6,7 @@
         :key="msg.Id"
         class="trial-msg"
       >
-        <a :href="`/premium-article/${msg.Id}`" target="_blank">
+        <a :href="`/article/${msg.Id}`" target="_blank">
           <img :src="`${msg.Image || '/img/tuo-shui-yan-bao-msg.png'}`" alt="试读文章配图" class="trial-msg-img">
           <div class="trial-msg-title">
             <span ref="title">{{ msg.Title }}</span>
