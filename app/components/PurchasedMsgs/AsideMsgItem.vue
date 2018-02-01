@@ -1,12 +1,12 @@
 <template>
-  <li class="bought-msgs-item">
+  <li class="purchased-msgs-item">
     <a :href="`/premium-article/${msg.Id}`" target="_blank" ref="title">{{msg.Title}}</a>
-    <p class="bought-msgs-item-bottom">
-      <span class="bought-msgs-item-subj">
+    <p class="purchased-msgs-item-bottom">
+      <span class="purchased-msgs-item-subj">
         <img src="/img/tuoshui-banner.jpg">
         只做龙头
       </span>
-      <span class="bought-msgs-item-time">
+      <span class="purchased-msgs-item-time">
         <time-widget :time="msg.CreatedAt" />
       </span>
     </p>
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.bought-msgs-item {
+.purchased-msgs-item {
   padding: 16px 24px 16px 0;
   &:not(:last-child) {
     border-bottom: 1px solid #efefef;

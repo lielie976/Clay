@@ -1,4 +1,4 @@
-import { getBoughtMsgs } from '~/api/premium'
+import { getPurchasedMsgs } from '~/api/premium'
 import { refineApi } from '~/utils/helpers'
 
 export const state = () => ({
@@ -10,7 +10,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  saveBoughtMsgs (state, data) {
+  savePurchasedMsgs (state, data) {
     state.msgs = data.Messages
     state.total = data.Total
   },
@@ -20,9 +20,9 @@ export const mutations = {
 }
 
 export const actions = {
-  getBoughtMsgs ({ commit, rootState, state }) {
-    return getBoughtMsgs(state.params, rootState.auth.headers).then((res) => {
-      commit('saveBoughtMsgs', refineApi(res.data))
+  getPurchasedMsgs ({ commit, rootState, state }) {
+    return getPurchasedMsgs(state.params, rootState.auth.headers).then((res) => {
+      commit('savePurchasedMsgs', refineApi(res.data))
     })
   }
 }
