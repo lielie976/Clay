@@ -52,15 +52,19 @@ export const mutations = {
     state.payStatus = 0
   },
   saveMessage (state, data) {
+    const isSubscribable = data.FromSubject.IsSubscribable
     state.subjectItems.items = data.FromSubject.SubjSubscribeItems
-    if (data.FromSubject.RemainingDays > 0) {
+    if (isSubscribable) {
       state.selectedType = 'subject'
       state.subject = data.FromSubject
-      // 新老接口 SubjSubscribeItems || SubscribeItems 字段名不一样
       state.subjectItems.index = data.FromSubject.SubjSubscribeItems && (data.FromSubject.SubjSubscribeItems.length - 1)
-    } else if (data && data.IsPremium && data.Price > 0 && !data.IsPaid) {
+    } else if (data.IsPremium && !data.IsPaid) {
       state.message = data
       state.selectedType = 'message'
+    } else if (!data.IsPremium) {
+      state.selectedType = 'subject'
+      state.subject = data.FromSubject
+      state.subjectItems.index = data.FromSubject.SubjSubscribeItems && (data.FromSubject.SubjSubscribeItems.length - 1)
     }
   },
   saveSubject (state, data) {
