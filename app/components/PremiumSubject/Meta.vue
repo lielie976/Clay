@@ -31,6 +31,7 @@ export default {
   width: 1440px;
   margin: 0 auto;
   color: #fff;
+  min-height: 296px;
   
   &-subscribe {
     position: relative;

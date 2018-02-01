@@ -11,6 +11,7 @@ module.exports = {
       { name: 'referrer', content: 'always' },
       { name: 'renderer', content: 'webkit' },
       { name: 'force-rendering', content: 'webkit' },
+      { name: 'baidu-site-verification', content: 'GFgkG2X61Y' },
       { 'http-equiv': 'X-UA-Compatible', content: 'IE=Edge,chrome=1' },
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -23,7 +24,8 @@ module.exports = {
       { rel: 'stylesheet', type: 'text/css', href: '//cdn.bootcss.com/minireset.css/0.0.2/minireset.min.css' }
     ],
     script: [
-      { src: '/js/qrcode.js' }
+      { src: '/js/qrcode.js' },
+      { src: 'https://polyfillservice.wallstreetcn.com/v2/polyfill.min.js?features=default,es6,es7,fetch&unknown=polyfill&flags=gated' }
     ]
   },
   /*
@@ -53,7 +55,8 @@ module.exports = {
         })
       )
     },
-    vendor: ['axios']
+    vendor: ['axios'],
+    extractCSS: true
   },
   plugins: [
     '~/plugins/filters',
@@ -67,5 +70,8 @@ module.exports = {
   // modules: ['~modules/typescript.js'],
   router: {
     linkActiveClass: 'is-active-route'
+  },
+  render: {
+    gzip: { threshold: 1 }
   }
 }

@@ -57,6 +57,7 @@ export default {
   background-size: cover;
   background-position: center center;
   overflow: hidden;
+  min-height: 296px;
 }
 </style>
 
