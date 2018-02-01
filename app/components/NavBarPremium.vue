@@ -6,6 +6,7 @@
       <li><a href="/tuoshuidiaoyan" target="_blank">脱水调研</a></li>
       <li><a href="/zaozhidao" target="_blank">选股宝早知道</a></li>
       <li><a href="/panzhongtufa" target="_blank">选股宝盘中突发</a></li>
+      <li><a href="/zhangjiazaozhidao" target="_blank">涨价早知道</a></li>
     </ul>
   </div>
 </template>
