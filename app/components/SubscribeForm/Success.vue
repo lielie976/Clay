@@ -1,5 +1,5 @@
 <template>
-  <sub-form :data="data" :hasHeader="false" :hasFooter="false">
+  <sub-form :data="data" :hasHeader="false" :hasFooter="false" :onClose="onClose">
     <div class="subscribe-success">
       <p class="subscribe-success-icon">
         <i class="iconfont icon-dingyuechenggong"></i>
@@ -18,7 +18,8 @@ import SubForm from './SubForm'
 export default {
   components: { SubForm },
   props: {
-    data: Object
+    data: Object,
+    onClose: Function
   },
   data () {
     return {

@@ -23,7 +23,7 @@ export default {
     selected () {
       return (
         this.data.selectedType === 'subject' &&
-        this.index === this.data.selectedSubject.index
+        this.index === this.data.subjectItems.index
       )
     }
   }

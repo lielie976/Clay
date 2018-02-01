@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="meta-container" :style="{'background-image': `url(${this.data.subjectInfo.PcImage})`}">
-      <premium-subject-meta :subject="data.subjectInfo" />
+    <div class="meta-container" :style="{'background-image': `url(${this.subscribeStore.subject.PcImage})`}">
+      <premium-subject-meta :subject="subscribeStore.subject" />
     </div>
     <section class="main-container">
       <section class="main-container-left">
@@ -37,6 +37,9 @@ export default {
   computed: {
     data () {
       return this.$store.state.premium
+    },
+    subscribeStore () {
+      return this.$store.state.subscribe
     },
     purchasedMsgs () {
       return this.$store.state.purchasedMsgs.msgs

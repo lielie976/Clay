@@ -45,11 +45,7 @@ export default {
   methods: {
     getCNPriceNum,
     toggleModal () {
-      if (this.$store.state.user.userInfo.isLogged) {
-        this.$store.commit('subscribe/toggleModal')
-      } else {
-        this.$store.dispatch('login/showLogin')
-      }
+      this.$store.dispatch('subscribe/toggleModal')
     }
   }
 }
