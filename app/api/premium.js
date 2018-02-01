@@ -1,7 +1,7 @@
 import api from './index'
 import baoerApi from './baoer'
 
-export const getBoughtMsgs = (params, headers) => baoerApi.get('/api/v2/pc/messages/paidList', { params, headers })
+export const getPurchasedMsgs = (params, headers) => baoerApi.get('/api/v2/pc/messages/paidList', { params, headers })
 
 export const getSubjectPremiumMsgs = (id, params) => baoerApi.get(`/api/v2/pc/subjects/${id}/messages`, { params })
 

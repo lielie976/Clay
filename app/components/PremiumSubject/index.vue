@@ -11,7 +11,7 @@
         </widget-box>
       </section>
       <section class="main-container-right">
-        <aside-bought-msgs :msgs="boughtMsgs" />
+        <aside-purchased-msgs :msgs="purchasedMsgs" />
         <slot name="hotMsgs"></slot>
       </section>
     </section>
@@ -23,7 +23,7 @@
 import WidgetBox from '~/components/WidgetBox'
 import PremiumSubjectMeta from '~/components/PremiumSubject/Meta'
 import TrialMsgs from '~/components/TrialMsgs'
-import AsideBoughtMsgs from '~/components/BoughtMsgs/AsideBoughtMsgs'
+import AsidePurchasedMsgs from '~/components/PurchasedMsgs/AsidePurchasedMsgs'
 import MsgList from '~/components/PremiumSubject/MsgList'
 
 export default {
@@ -32,14 +32,14 @@ export default {
     PremiumSubjectMeta,
     MsgList,
     TrialMsgs,
-    AsideBoughtMsgs
+    AsidePurchasedMsgs
   },
   computed: {
     data () {
       return this.$store.state.premium
     },
-    boughtMsgs () {
-      return this.$store.state.boughtMsgs.msgs
+    purchasedMsgs () {
+      return this.$store.state.purchasedMsgs.msgs
     }
   },
   props: {
