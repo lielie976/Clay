@@ -11,17 +11,16 @@
 import Subject from '~/views/subject'
 import { getSubject } from '~/api/subject'
 import texts from '~/utils/texts'
-import { redirectPremiumSubject } from '~/utils/constants'
 
 export default {
-  async asyncData ({ params, redirect }) {
-    redirect(redirectToPremium(params.id))
+  async asyncData ({ params }) {
     const data = await getSubject(params.id, { limit: 20 })
     return {
       data,
       id: params.id
     }
   },
+  middleware: ['premiumSubject'],
   head () {
     return {
       title: `${this.data.Subject.Title} | ${texts.slogan}`
@@ -73,9 +72,5 @@ export default {
       })
     }
   }
-}
-
-function redirectToPremium (id) {
-  return redirectPremiumSubject[id]
 }
 </script>
