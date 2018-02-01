@@ -138,11 +138,11 @@ export const actions = {
     })
   },
   async payWithBalance ({ state, rootState, commit, getters }) {
-    if (state.balance < getters.priceNeededToPay) {
-      commit('outputErr', '余额不足！')
-      commit('changePayStatus', { status: 3 })
-      return
-    }
+    // if (state.balance < getters.priceNeededToPay) {
+    //   commit('outputErr', '余额不足！')
+    //   commit('changePayStatus', { status: 3 })
+    //   return
+    // }
     if (state.selectedType === 'message') {
       const data = {
         MessageId: state.message.Id,
@@ -153,7 +153,9 @@ export const actions = {
         await buyMsgByBaodi(data, rootState.auth.headers)
         commit('changePayStatus', { status: 2 })
       } catch (err) {
-        console.log(err)
+        if (err.data.errcode === 40001) {
+          commit('outputErr', '余额不足！')
+        }
         commit('changePayStatus', { status: 3 })
       }
     } else if (state.selectedType === 'subject') {
@@ -169,7 +171,9 @@ export const actions = {
         await buySubjectByBaodi(data, rootState.auth.headers)
         commit('changePayStatus', { status: 2 })
       } catch (err) {
-        console.log(err)
+        if (err.data.errcode === 40001) {
+          commit('outputErr', '余额不足！')
+        }
         commit('changePayStatus', { status: 3 })
       }
     }
