@@ -1,10 +1,10 @@
 <template>
   <footer class="premium-article-footer" v-if="show">
     <section class="main-container">
-      <h2 class="premium-article-footer-subject-title">{{subject.Title}}</h2>
+      <h2 class="premium-article-footer-subject-title">{{data.FromSubject.Title}}</h2>
       <div class="premium-article-footer-subject-subscribecount">
         <i class="iconfont icon-tarengoumai"></i>
-        <span>{{getCNPriceNum(subject.SubscribeCount, true)}}</span>
+        <span>{{getCNPriceNum(data.FromSubject.SubscribeCount, true)}}</span>
         <span>订阅</span>
       </div>
       <div class="premium-article-footer-subject-more">
@@ -35,11 +35,12 @@ import { getCNPriceNum } from '~/utils/helpers'
 
 export default {
   props: {
-    subject: Object
+    data: Object
   },
   data () {
     return {
-      show: true
+      //  如果可订阅或者说付费但没有购买才显示
+      show: this.data.FromSubject.IsSubscribable || (this.data.IsPremium && !this.data.IsPaid)
     }
   },
   methods: {
