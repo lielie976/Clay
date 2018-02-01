@@ -24,7 +24,7 @@
       <div class="premium-subject-list-item-content">
         <h3 class="premium-subject-list-item-title">
           <a
-            :href="`/premium-article/${msg.Id}`"
+            :href="`/article/${msg.Id}`"
             target="_blank"
             ref="title"
           >

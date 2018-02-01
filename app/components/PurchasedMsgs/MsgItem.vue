@@ -1,6 +1,6 @@
 <template>
   <li class="purchased-msgs-item">
-    <a :href="`/premium-article/${msg.Id}`" target="_blank">{{msg.Title}}</a>
+    <a :href="`/article/${msg.Id}`" target="_blank">{{msg.Title}}</a>
     <p class="purchased-msgs-item-bottom">
       <a class="purchased-msgs-item-subj" :href="`/subject/${msg.Subjects.Id}`" target="_blank" v-if="msg.Subjects">
         <!-- <img src="/img/tuoshui-banner.jpg"> -->

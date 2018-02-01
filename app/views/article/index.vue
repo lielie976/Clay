@@ -24,7 +24,7 @@
       <pre v-if="data.Summary && !data.ExplainedInfos" class="article-summary normal-pre-text">{{data.Summary}}</pre>
       <article class="article-container">
         <template v-if="data.IsPremium">
-          <p>本文为收费内容，请在 <span style="color: #E6394D">微信</span> 中扫描二维码后购买阅读</p>
+          <p class="premium-hint">本文为收费内容，请在 <span style="color: #E6394D">微信</span> 中扫描二维码后购买阅读</p>
           <div ref="qrcode"></div>
         </template>
         <template v-else>
@@ -139,6 +139,10 @@ export default {
 }
 
 .article-container {
+  margin: 20px 0;
+}
+
+.premium-hint {
   margin: 20px 0;
 }
 
