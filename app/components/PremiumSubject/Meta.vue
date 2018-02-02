@@ -32,7 +32,6 @@ export default {
   margin: 0 auto;
   color: #fff;
   min-height: 296px;
-  
   &-subscribe {
     position: relative;
     flex: 0 0 464px;
@@ -45,6 +44,15 @@ export default {
       height: 100%;
       width: 1000px;
       background: rgba( 53, 58, 71, 0.95);
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .premium-subject-meta {
+    width: 1200px;
+    &-subscribe {
+      flex: 1;
     }
   }
 }

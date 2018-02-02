@@ -52,6 +52,9 @@ export default {
   flex: 0 0 976px;
   background: rgba( 53, 58, 71, 0.8);
   padding: 56px 72px 24px 160px;
+  @media screen and (max-width: 1440px) {
+    flex: 1;
+  }
   &::after {
     content: '';
     position: absolute;

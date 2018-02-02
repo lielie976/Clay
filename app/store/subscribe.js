@@ -77,7 +77,8 @@ export const mutations = {
     }
   },
   saveSubject (state, data) {
-    const items = getPath(data, 'FromSubject.SubjSubscribeItems')
+    const items = getPath(data, 'SubscribeItems')
+    console.log(items)
     if (!items || !items.length) return
     state.subject = data
     state.selectedType = 'subject'

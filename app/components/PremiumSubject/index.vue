@@ -61,6 +61,7 @@ export default {
   background-position: center center;
   overflow: hidden;
   min-height: 296px;
+  min-width: 1200px;
 }
 </style>
 
