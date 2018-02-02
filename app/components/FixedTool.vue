@@ -1,5 +1,10 @@
 <template>
   <div class="xgb-tools">
+    <div class="tools-box tools-appQrcode">
+      <img src="/img/logo_dark.png">
+      <img class="tools-appQrcode-image" src="/img/xgb-app.png" alt="App下载二维码">
+      <span class="hint-text">App下载</span>
+    </div>
     <div class="tools-box tools-wechatQrcode">
       <i class="iconfont icon-weixin1"></i>
       <img class="tools-wechatQrcode-image" src="/img/xgb-wechat.jpeg" alt="微信公众号二维码">
@@ -19,22 +24,9 @@
 </template>
 
 <script>
-// import { debounce } from 'underscore'
 import { smoothscroll } from '~/utils/helpers'
 
 export default {
-  // mounted () {
-  //   window.onscroll = debounce(function (e) {
-  //     let top = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop
-  //     if (top > 300) {
-  //       document.querySelector('.xgb-tools').style.bottom = '60px'
-  //       document.querySelector('.tools-wechatQrcode-image').style.bottom = '50px'
-  //     } else {
-  //       document.querySelector('.xgb-tools').style.bottom = '-40px'
-  //       document.querySelector('.tools-wechatQrcode-image').style.bottom = '10px'
-  //     }
-  //   }, 300)
-  // },
   methods: {
     scrollToTop () {
       smoothscroll()
@@ -47,8 +39,7 @@ export default {
 .xgb-tools {
   position: fixed;
   right: 40px;
-  // bottom: -40px;
-  bottom: 60px;
+  bottom: 0px;
   cursor: pointer;
   transition: .3s;
 }
@@ -73,6 +64,15 @@ export default {
   }
 }
 
+.tools-appQrcode-image {
+  visibility: hidden;
+  position: fixed;
+  bottom: 120px;
+  right: 80px;
+  width: 100px;
+  height: 100px;
+}
+
 .tools-wechatQrcode-image {
   visibility: hidden;
   position: fixed;
@@ -80,11 +80,13 @@ export default {
   right: 80px;
   width: 100px;
   height: 100px;
-  transition: .3s;
 }
 
 .tools-box:hover {
   .tools-wechatQrcode-image {
+    visibility: visible;
+  }
+  .tools-appQrcode-image {
     visibility: visible;
   }
   .hint-text {

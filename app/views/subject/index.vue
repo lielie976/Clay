@@ -21,7 +21,7 @@
       <aside class="article-list-aside">
         <bkj-aside-list :data="bkj" title="相应板块" v-if="bkj" />
 
-        <stocks-aside-list :stocks="stocks" v-if="stocks" />
+        <stocks-aside-list :stocks="stocks" v-if="stocks && stocks.length" />
       </aside>
     </section>
   </div>

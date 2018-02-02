@@ -1,23 +1,27 @@
 <template>
   <modal
-    :active="isModalOpen"
+    :active="subscribeStore.isModalOpen"
     :toggleModal="toggleModal"
   >
     <subscribe-form
       v-if="isOpen(0)"
       :onClose="toggleModal"
+      :data="subscribeStore"
     />
     <paying
       v-if="isOpen(1)"
-      :data="data"
+      :onClose="toggleModal"
+      :data="subscribeStore"
     />
     <success
       v-if="isOpen(2)"
-      :data="data"
+      :onClose="toggleModal"
+      :data="subscribeStore"
     />
     <fail
       v-if="isOpen(3)"
-      :data="data"
+      :onClose="toggleModal"
+      :data="subscribeStore"
     />
   </modal>
 </template>
@@ -38,24 +42,16 @@ export default {
     Fail
   },
   computed: {
-    isModalOpen () {
-      return this.$store.state.subscribe.isModalOpen
-    },
-    data () {
+    subscribeStore () {
       return this.$store.state.subscribe
     }
   },
   methods: {
     toggleModal () {
-      if (this.$store.state.user.userInfo.isLogged) {
-        this.$store.commit('subscribe/toggleModal')
-      } else {
-        this.$store.dispatch('login/showLogin')
-      }
+      this.$store.dispatch('subscribe/toggleModal')
     },
     isOpen (status) {
-      const subscribeStore = this.$store.state.subscribe
-      return subscribeStore.isModalOpen && subscribeStore.payStatus === status
+      return this.subscribeStore.isModalOpen && this.subscribeStore.payStatus === status
     }
   }
 }

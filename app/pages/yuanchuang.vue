@@ -57,7 +57,7 @@
               </span>
               <i :class="['iconfont-index', 'iconfont', `icon-0${index + 1}`]"></i>
               <a :href="`/article/${msg.Id}`" target="_blank">
-                {{ msg.Title | truncate(35, '...')}}
+                {{ msg.Title }}
               </a>
             </li>
           </ul>
@@ -78,7 +78,7 @@
               </span>
               <i :class="['iconfont-index', 'iconfont', `icon-0${index + 1}`]"></i>
               <a :href="`/article/${msg.Id}`" target="_blank">
-                {{ msg.Title | truncate(35, '...')}}
+                {{ msg.Title }}
               </a>
             </li>
           </ul>
@@ -282,8 +282,7 @@ export default {
   }
   &-item {
     position: relative;
-    height: 88px;
-    padding: 20px 20px 0 16px;
+    padding: 20px 20px 20px 16px;
     background: #fff;
     .original-own {
       padding: 0px 4px;

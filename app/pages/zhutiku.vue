@@ -49,12 +49,18 @@ export default {
     JinRiJiHui,
     ZhongChangXianJiHui
   },
-  mounted () {
-    const { dispatch } = this.$store
-    this.timer = setInterval(() => {
+  methods: {
+    roll () {
+      const { dispatch } = this.$store
       dispatch('zhutiku/getZhutikuRankAsc')
       dispatch('zhutiku/getZhutikuRankDesc')
       dispatch('settings/getSettings')
+    }
+  },
+  mounted () {
+    this.roll()
+    this.timer = setInterval(() => {
+      this.roll()
     }, 30 * 1000)
   },
   destroyed () {

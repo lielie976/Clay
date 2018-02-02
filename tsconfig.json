@@ -16,17 +16,17 @@
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "baseUrl": ".",
-    // "paths": {
-    //   "~/*" : ["./*"],
-    //   "~assets/*": ["./assets/*"],
-    //   "~components/*": ["./components/*"],
-    //   "~middleware/*": ["./middleware/*"],
-    //   "~modules/*": ["./modules/*"],
-    //   "~pages/*": ["./pages/*"],
-    //   "~plugins/*": ["./plugins/*"],
-    //   "~static/*": ["./static/*"],
-    //   "~store": ["./.nuxt/store"],
-    //   "~router": ["./.nuxt/router"]
-    // }
+    "paths": {
+      "~/*" : ["./*"],
+      "~assets/*": ["./assets/*"],
+      "~components/*": ["./components/*"],
+      "~middleware/*": ["./middleware/*"],
+      "~modules/*": ["./modules/*"],
+      "~pages/*": ["./pages/*"],
+      "~plugins/*": ["./plugins/*"],
+      "~static/*": ["./static/*"],
+      "~store": ["./.nuxt/store"],
+      "~router": ["./.nuxt/router"]
+    }
   }
 }

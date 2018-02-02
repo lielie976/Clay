@@ -11,7 +11,7 @@
     </section>
     <section class="premium-subject-meta-info-detail"  v-if="showAll">
       <h3>能力圈</h3>
-      <div><pre class="normal-pre-text">{{subject.Specialty}}</pre></div>
+      <div><pre class="normal-pre-text">{{specialty}}</pre></div>
     </section>
     <section class="premium-subject-meta-info-detail"  v-if="showAll">
       <h3>更新频率</h3>
@@ -31,14 +31,11 @@
 <script>
 export default {
   props: {
-    data: Object
+    subject: Object
   },
   computed: {
-    subject () {
-      return {
-        ...this.data,
-        Specialty: this.data.Specialty ? this.data.Specialty.replace(/\n/g, '\n\n') : this.data.Specialty
-      }
+    specialty () {
+      return this.subject.Specialty ? this.subject.Specialty.replace(/\n/g, '\n\n') : this.subject.Specialty
     }
   },
   data () {
@@ -55,6 +52,9 @@ export default {
   flex: 0 0 976px;
   background: rgba( 53, 58, 71, 0.8);
   padding: 56px 72px 24px 160px;
+  @media screen and (max-width: 1440px) {
+    flex: 1;
+  }
   &::after {
     content: '';
     position: absolute;

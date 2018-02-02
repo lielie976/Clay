@@ -2,7 +2,7 @@
   <div>
     <article-meta :data="data" />
     <premium-article :data="data" :readable="readable" /> 
-    <premium-article-footer :subject="data.FromSubject" />
+    <premium-article-footer :data="data" />
   </div>
 </template>
 

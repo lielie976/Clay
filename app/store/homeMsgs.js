@@ -108,7 +108,7 @@ export const mutations = {
     let { msgs } = state
     const { NewMsgs, DeletedMsgs, UpdatedMsgs, HeadMark } = data
     if (NewMsgs && NewMsgs.length) {
-      msgs = [...NewMsgs.reverse(), ...msgs]
+      msgs = [...NewMsgs, ...msgs]
     }
     if (DeletedMsgs && DeletedMsgs.length) {
       const deletedMsgIds = DeletedMsgs.map(i => i.Id)

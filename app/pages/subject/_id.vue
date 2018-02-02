@@ -20,6 +20,7 @@ export default {
       id: params.id
     }
   },
+  middleware: ['premiumSubject'],
   head () {
     return {
       title: `${this.data.Subject.Title} | ${texts.slogan}`
@@ -49,7 +50,6 @@ export default {
       try {
         stocks = this.data.Subject.SubjSsetInfo.SsetStocks
       } catch (err) {
-        console.log(err)
         stocks = []
       }
       return stocks

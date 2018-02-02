@@ -12,7 +12,7 @@ import texts from '~/utils/texts'
 export default {
   async asyncData ({ store }) {
     await store.dispatch('premium/init', 581)
-    await store.dispatch('boughtMsgs/getBoughtMsgs')
+    await store.dispatch('purchasedMsgs/getPurchasedMsgs')
     await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
   },
   components: {

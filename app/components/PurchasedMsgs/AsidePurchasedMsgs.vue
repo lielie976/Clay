@@ -1,23 +1,22 @@
 <template>
-  <widget-box title="已购文章" href="/bought" subTitle="查看全部">
-    <div v-if="msgs && msgs.length">
-      <template v-if="0">
+  <widget-box title="已购精选" href="/purchased-message" subTitle="查看全部">
+    <div>
+      <template v-if="!hasLoggined">
         <non-login />
       </template>
       <template v-else>
-        <ul class="aside-bought-msgs">
-          <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="processMsg(msg)" />
+        <ul class="aside-purchased-msgs"  v-if="msgs && msgs.length">
+          <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="msg" />
         </ul>
+        <div v-else>
+          暂无已购精选
+        </div>
       </template>
-    </div>
-    <div v-else>
-      暂无已购文章
     </div>
   </widget-box>
 </template>
 
 <script>
-import { truncate } from '~/utils/helpers'
 import NonLogin from '~/components/NonLogin'
 import WidgetBox from '~/components/WidgetBox'
 import MsgItem from './AsideMsgItem'
@@ -31,19 +30,16 @@ export default {
   props: {
     msgs: Array
   },
-  methods: {
-    processMsg (msg) {
-      return {
-        ...msg,
-        Title: truncate(msg.Title, 35, '...')
-      }
+  computed: {
+    hasLoggined () {
+      return this.$store.state.user.userInfo.isLogged
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.aside-bought-msgs {
+.aside-purchased-msgs {
   background: #fff;
   padding-left: 16px;
 }
