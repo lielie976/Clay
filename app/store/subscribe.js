@@ -1,5 +1,6 @@
 import { getUserBalance, buyMsgByBaodi, buySubjectByBaodi, createPayOrder, checkOrderStatus } from '~/api/premium'
 import { getDuration, formatDate } from '~/utils/helpers'
+import { getPath } from 'underscore-contrib'
 
 export const state = () => ({
   isModalOpen: false,
@@ -18,16 +19,20 @@ export const state = () => ({
 
 export const getters = {
   selectedSubjectItem (state) {
+    const items = getPath(state, 'subjectItems.items')
+    const index = getPath(state, 'subjectItems.index')
     if (state.selectedType !== 'subject') return {}
-    if (!state.subjectItems.items.length) return {}
-    return state.subjectItems.items[state.subjectItems.index] || {}
+    if (!items.length) return {}
+    return items[index] || {}
   },
   priceNeededToPay (state) {
+    const items = getPath(state, 'subjectItems.items')
+    const index = getPath(state, 'subjectItems.index')
     if (state.selectedType === 'message') {
       return state.message.Price - state.balance
-    } else if (state.selectedType === 'subject' && state.subjectItems.items.length) {
-      if (state.subjectItems.items) {
-        const price = state.subjectItems.items[state.subjectItems.index].DiscountPrice - state.balance
+    } else if (state.selectedType === 'subject' && items.length) {
+      if (items) {
+        const price = items[index].DiscountPrice - state.balance
         return parseFloat((price).toFixed(2))
       } else {
         return null
@@ -37,11 +42,14 @@ export const getters = {
     }
   },
   subscribeDuration (state) {
+    const items = getPath(state, 'subjectItems.items')
+    const index = getPath(state, 'subjectItems.index')
+    const remainingDays = getPath(state, 'subject.RemainingDays')
     if (state.selectedType === 'message') return
-    if (!state.subjectItems.items.length) return
-    const endDay = state.subject.RemainingDays + state.subjectItems.items[state.subjectItems.index].Days
+    if (!items.length) return
+    const endDay = remainingDays + items[index].Days
     //  当前订阅结束时间 - 选择的订阅项目到期时间
-    return `${formatDate(getDuration(state.subject.RemainingDays), 'YYYY/MM/DD')}-${formatDate(getDuration(endDay), 'YYYY/MM/DD')}`
+    return `${formatDate(getDuration(remainingDays), 'YYYY/MM/DD')}-${formatDate(getDuration(endDay), 'YYYY/MM/DD')}`
   }
 }
 
@@ -52,27 +60,30 @@ export const mutations = {
     state.payStatus = 0
   },
   saveMessage (state, data) {
-    const isSubscribable = data.FromSubject.IsSubscribable
-    state.subjectItems.items = data.FromSubject.SubjSubscribeItems
-    if (isSubscribable) {
+    const isSubscribable = getPath(data, 'FromSubject.IsSubscribable')
+    const items = getPath(data, 'FromSubject.SubjSubscribeItems')
+    state.subjectItems.items = items || []
+    if (isSubscribable && items && items.length) {
+      if (data.IsPremium && !data.IsPaid) {
+        state.message = data
+        state.selectedType = 'message'
+      }
       state.selectedType = 'subject'
       state.subject = data.FromSubject
-      state.subjectItems.index = data.FromSubject.SubjSubscribeItems && (data.FromSubject.SubjSubscribeItems.length - 1)
+      state.subjectItems.index = items && (items.length - 1)
     } else if (data.IsPremium && !data.IsPaid) {
       state.message = data
       state.selectedType = 'message'
-    } else if (!data.IsPremium) {
-      state.selectedType = 'subject'
-      state.subject = data.FromSubject
-      state.subjectItems.index = data.FromSubject.SubjSubscribeItems && (data.FromSubject.SubjSubscribeItems.length - 1)
     }
   },
   saveSubject (state, data) {
+    const items = getPath(data, 'FromSubject.SubjSubscribeItems')
+    if (!items || !items.length) return
     state.subject = data
     state.selectedType = 'subject'
     state.subjectItems = {
-      index: data.SubscribeItems && (data.SubscribeItems.length - 1),
-      items: data.SubscribeItems
+      index: items && (items.length - 1),
+      items: items
     }
   },
   selectMsg (state) {

@@ -8,7 +8,7 @@
         <span>订阅</span>
       </div>
       <div class="premium-article-footer-subject-more">
-        了解更多<i class="iconfont icon-xiangyou"></i>
+        <a :href="`/subject/${data.FromSubject.Id}`">了解更多</a><i class="iconfont icon-xiangyou"></i>
       </div>
       <div class="premium-article-footer-subject-subscribe">
         <p>
@@ -21,7 +21,7 @@
         </p>
       </div>
       <a class="premium-article-footer-subject-subscribe-action" @click="toggleModal">
-        我要订阅
+        我要{{data.FromSubject.RemainingDays > 0 ? '续订' : '订阅'}}
       </a>
     </section>
     <div class="premium-article-footer-close" @click="show = false">
@@ -87,9 +87,15 @@ export default {
   }
   &-subject-more {
     flex-basis: 450px;
-    color: #f2564e;
     font-size: 14px;
+    color: #f2564e;
     margin-left: 24px;
+    a {
+      color: #f2564e;
+    }
+    i {
+      font-size: 14px;
+    }
   }
   &-subject-subscribe {
     font-size: 14px;

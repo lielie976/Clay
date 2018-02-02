@@ -32,9 +32,10 @@ export default {
           const transformStockField = ['web/stocks', '/stock']
           const transformSubjectField = ['web/subjects', '/subject']
           const transformArticleField = ['web/articles', 'web/messages', 'web/3rdparty', '/article', '/message']
+          const transformThemeField = ['/theme/']
           transformStockField.forEach((field) => {
             if (pathname.indexOf(field) > -1) {
-              links[i].href = `/stock/${segment[segment.length - 1]}`
+              links[i].href = `/stock/${segment[segment.length - 2]}`
             }
           })
           transformSubjectField.forEach((field) => {
@@ -45,6 +46,11 @@ export default {
           transformArticleField.forEach((field) => {
             if (pathname.indexOf(field) > -1) {
               links[i].href = `/article/${segment[segment.length - 1]}`
+            }
+          })
+          transformThemeField.forEach((field) => {
+            if (pathname.indexOf(field) > -1) {
+              links[i].href = `/theme/${segment[segment.length - 1]}`
             }
           })
         }
@@ -75,6 +81,8 @@ export default {
   }
   img {
     cursor: zoom-in;
+    padding: 20px;
+    width: 100%;
   }
   blockquote {
     border-left: 5px solid #eee !important;

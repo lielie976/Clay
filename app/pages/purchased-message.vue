@@ -14,6 +14,7 @@
 import TuoShuiHotMsgs from '~/components/HotMsgs/TuoShuiYanBao'
 import ZaoZhiDaoHotMsgs from '~/components/HotMsgs/ZaoZhiDao'
 import PurchasedMsgs from '~/components/PurchasedMsgs'
+import texts from '~/utils/texts'
 
 export default {
   components: {
@@ -25,6 +26,11 @@ export default {
     await store.dispatch('purchasedMsgs/getPurchasedMsgs')
     await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
     await store.dispatch('premiumHotMsgs/getHotMsgs', 679)
+  },
+  head () {
+    return {
+      title: `已购精选文章 | ${texts.slogan}`
+    }
   },
   computed: {
     purchasedMsgs () {

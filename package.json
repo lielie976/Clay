@@ -34,6 +34,7 @@
     "swiper": "^3.4.2",
     "timeago.js": "^3.0.2",
     "underscore": "^1.8.3",
+    "underscore-contrib": "^0.3.0",
     "urijs": "^1.19.0",
     "vue-multiselect": "^2.0.8"
   },
