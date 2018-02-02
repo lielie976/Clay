@@ -178,7 +178,7 @@
 
 <script>
 /* eslint-disable no-debugger, eqeqeq */
-import modal from './modal'
+import Modal from './Modal'
 import { userLogin, fetchVcodeImage, fetchMobileCode, verifyMobileCode, registerUser, fetchForgetMobileCode, verifyForgetMobileCode } from '~/api/login'
 import * as Cookies from 'js-cookie'
 import shareMethodMixin from '~/mixins/shareMethodMixin'
@@ -765,7 +765,7 @@ export default {
     }
   },
   components: {
-    modal
+    Modal
   },
   mixins: [shareMethodMixin]
 }
