@@ -161,7 +161,8 @@ export const actions = {
         PayClientType: 2
       }
       try {
-        await buyMsgByBaodi(data, rootState.auth.headers)
+        const res = await buyMsgByBaodi(data, rootState.auth.headers)
+        commit('saveBalance', res.Balance)
         commit('changePayStatus', { status: 2 })
       } catch (err) {
         if (err.data.errcode === 40001) {
@@ -179,7 +180,8 @@ export const actions = {
         PayClientType: 2
       }
       try {
-        await buySubjectByBaodi(data, rootState.auth.headers)
+        const res = await buySubjectByBaodi(data, rootState.auth.headers)
+        commit('saveBalance', res.Balance)
         commit('changePayStatus', { status: 2 })
       } catch (err) {
         if (err.data.errcode === 40001) {
