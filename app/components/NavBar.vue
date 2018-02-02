@@ -62,6 +62,7 @@ export default {
 
 <style lang="less" scoped>
 .nav {
+  min-width: 1200px;
   height: 56px;
   line-height: 56px;
   box-shadow: 0 2px 3px hsla(0,0%,4%,.1);
