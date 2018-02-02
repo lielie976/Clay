@@ -69,6 +69,7 @@ export default {
           color: {x: '#f0f0f0', y: '#f0f0f0'},
           span: {x: 120, y: 30}
         },
+        line_color_list: ['#fff', '#FFAE00', '#C291F2', '#4CA5FF', '#3DCFEE'],
         axis: {
           x_axis_pos: 1, // 1 means on bottom, -1 means on top
           y_axis_pos: 1, // 1 means on right, -1 means on left

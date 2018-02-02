@@ -32,7 +32,6 @@ import banChange from '~/views/dingpan/slideBar/banChange'
 import shareMethodMixin from '~/mixins/shareMethodMixin'
 export default {
   async asyncData ({ store, params, req }) {
-    await store.dispatch('stockSummary/initSummary', '');
     return {
       pageIndex: params.id ? params.id : 0,
       pageMode: 'normal',
@@ -147,7 +146,11 @@ export default {
     this.removeClass(document.body, 'ban-special');
   },
   methods: {
-    init () {
+    async init () {
+      try {
+        await this.$store.dispatch('stockSummary/initSummary', '').then()
+      } catch (error) {
+      }
       // this.tabOffsetTop = this.getElementTop(this.$refs.tab);
       if (
         localStorage.getItem('dingSimple') &&

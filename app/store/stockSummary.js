@@ -60,5 +60,6 @@ export const actions = {
     commit('setRI', riseic.data.datas)
     commit('setTemperature', Math.ceil(temperature.data.temperature))
     commit('setFd', fd.data)
+    return initData
   }
 }

@@ -121,7 +121,9 @@
         </div>
         <!-- {{> relatedSubject/relatedSubject data=subjectList}} -->
       </div>
-      <div class="stock-main-slidebar"></div>
+      <div class="stock-main-slidebar">
+
+      </div>
     </div>
   </div>
 
