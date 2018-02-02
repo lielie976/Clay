@@ -27,4 +27,7 @@
   }
 }
 </style>
+<<<<<<< HEAD
 
+=======
+>>>>>>> feature/premium
