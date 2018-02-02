@@ -1,5 +1,5 @@
 <template>
-  <widget-box title="已购文章" href="/purchased-message" subTitle="查看全部">
+  <widget-box title="已购精选" href="/purchased-message" subTitle="查看全部">
     <div>
       <template v-if="!hasLoggined">
         <non-login />
@@ -9,7 +9,7 @@
           <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="msg" />
         </ul>
         <div v-else>
-          暂无已购文章
+          暂无已购精选
         </div>
       </template>
     </div>

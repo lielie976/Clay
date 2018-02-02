@@ -112,14 +112,8 @@ export default {
     &-time {
       line-height: 1;
       margin: 12px 0 10px;
-    }
-    &-time-header {
+      color: @strongFontColor;
       font-size: 14px;
-      color: @subFontColor;
-    }
-    &-time-content {
-      font-size: 12px;
-      color: #999;
     }
     &-price-header {
       display: inline-block;
@@ -133,7 +127,7 @@ export default {
       display: inline-block;
       font-size: 25px;
       font-weight: bold;
-      color: #e6394d;
+      color: @strongFontColor;
       line-height: 1;
       vertical-align: middle;
     }

@@ -125,7 +125,7 @@ export default {
 }
 
 .article-summary {
-  background-color: #fafafa;
+  background-color: #f5f5f5;
   color: @subFontColor;
   margin-top: 24px;
   padding: 15px;
@@ -148,5 +148,9 @@ export default {
 
 p.article-content-download {
   margin-top: 50px;
+}
+
+.not-article-content {
+  color: @strongFontColor;
 }
 </style>
