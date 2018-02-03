@@ -39,7 +39,7 @@
               <span class="subscribe-form-meta-info-price-header">需支付</span>
               <span class="subscribe-form-meta-info-price-content">￥{{message.Price}}</span>
             </template>
-            <template v-if="data.payStatus === 1">
+            <template v-else-if="data.payStatus === 1">
               <span class="subscribe-form-meta-info-price-header">剩余支付</span>
               <span class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
             </template>

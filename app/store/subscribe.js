@@ -68,8 +68,9 @@ export const mutations = {
       if (data.IsPremium && !data.IsPaid && remainingDays === 0) {
         state.message = data
         state.selectedType = 'message'
+      } else {
+        state.selectedType = 'subject'
       }
-      state.selectedType = 'subject'
       state.subject = data.FromSubject
       state.subjectItems.index = items && (items.length - 1)
     } else if (data.IsPremium && !data.IsPaid) {
