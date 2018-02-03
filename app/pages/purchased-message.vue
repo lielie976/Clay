@@ -4,28 +4,24 @@
       <purchased-msgs :msgs="purchasedMsgs.msgs" :data="purchasedMsgs" />
     </section>
     <section class="main-container-right">
-      <tuo-shui-hot-msgs />
-      <zao-zhi-dao-hot-msgs />
+      <hot-msgs />
     </section>
   </section>
 </template>
 
 <script>
-import TuoShuiHotMsgs from '~/components/HotMsgs/TuoShuiYanBao'
-import ZaoZhiDaoHotMsgs from '~/components/HotMsgs/ZaoZhiDao'
+import HotMsgs from '~/components/PremiumSubject/HotMsgs'
 import PurchasedMsgs from '~/components/PurchasedMsgs'
 import texts from '~/utils/texts'
 
 export default {
   components: {
-    TuoShuiHotMsgs,
-    ZaoZhiDaoHotMsgs,
+    HotMsgs,
     PurchasedMsgs
   },
   async asyncData ({ store }) {
     await store.dispatch('purchasedMsgs/getPurchasedMsgs')
-    await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
-    await store.dispatch('premiumHotMsgs/getHotMsgs', 679)
+    await store.dispatch('premium/getHotMsgs', '581,679')
   },
   head () {
     return {
