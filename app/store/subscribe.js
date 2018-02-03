@@ -62,9 +62,10 @@ export const mutations = {
   saveMessage (state, data) {
     const isSubscribable = getPath(data, 'FromSubject.IsSubscribable')
     const items = getPath(data, 'FromSubject.SubjSubscribeItems')
+    const remainingDays = getPath(data, 'FromSubject.RemainingDays')
     state.subjectItems.items = items || []
     if (isSubscribable && items && items.length) {
-      if (data.IsPremium && !data.IsPaid) {
+      if (data.IsPremium && !data.IsPaid && remainingDays === 0) {
         state.message = data
         state.selectedType = 'message'
       }
