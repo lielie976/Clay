@@ -18,12 +18,27 @@ export default {
     await store.dispatch('theme/getThemeInfo', {
       id: params.id
     });
-    await store.dispatch('theme/getThemeMessage', params.id);
-    await store.dispatch('theme/getPlateSetInfo', params.id);
-    // await store.dispatch('theme/getThemeStock')
-    await store.dispatch('theme/getBkjInfo')
-    await store.dispatch('theme/getStockFlow')
-    await store.dispatch('theme/getLongtou', params.id)
+    try {
+      await store.dispatch('theme/getThemeMessage', params.id);
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getPlateSetInfo', params.id);
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getBkjInfo')
+    } catch (error) {
+    }
+
+    try {
+      await store.dispatch('theme/getStockFlow')
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getLongtou', params.id)
+    } catch (error) {
+    }
     return {
       intro: {},
       modal: false,
