@@ -164,7 +164,7 @@ export const actions = {
       }
       try {
         const res = await buyMsgByBaodi(data, rootState.auth.headers)
-        commit('saveBalance', res.Balance)
+        commit('saveBalance', res.result.Balance)
         commit('changePayStatus', { status: 2 })
       } catch (err) {
         if (err.data.errcode === 40001) {

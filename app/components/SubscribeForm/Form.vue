@@ -37,7 +37,7 @@ export default {
 .subscribe-form {
   position: relative;
   width: 640px;
-  height: 500px;
+  min-height: 500px;
   background-color: #fff;
   box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.3);
   border: solid 1px #efefef;
