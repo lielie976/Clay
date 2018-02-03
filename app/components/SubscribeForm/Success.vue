@@ -34,7 +34,7 @@ export default {
   mounted () {
     setInterval(() => {
       if (this.time < 1) {
-        // location.reload()
+        location.reload()
       } else {
         this.time -= 1
       }
