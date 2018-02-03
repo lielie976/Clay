@@ -7,7 +7,7 @@
       <div class="pagination" v-if="data.total > data.params.limit">
         <Page
           :current="data.params.page"
-          :total="100"
+          :total="data.total"
           show-elevator
           @on-change="changePage"
         />
@@ -33,7 +33,7 @@ export default {
   methods: {
     changePage (page) {
       smoothscroll()
-      this.$store.commit('purchasedMsgs/changePage', page)
+      this.$store.dispatch('purchasedMsgs/changePage', page)
     }
   }
 }

@@ -3,7 +3,7 @@ import { refineApi } from '~/utils/helpers'
 
 export const state = () => ({
   params: {
-    limit: 20,
+    limit: 10,
     page: 1
   },
   msgs: []
@@ -20,9 +20,12 @@ export const mutations = {
 }
 
 export const actions = {
-  getPurchasedMsgs ({ commit, rootState, state }) {
-    return getPurchasedMsgs(state.params, rootState.auth.headers).then((res) => {
-      commit('savePurchasedMsgs', refineApi(res.data))
-    })
+  async getPurchasedMsgs ({ commit, rootState, state }) {
+    const res = await getPurchasedMsgs(state.params, rootState.auth.headers)
+    commit('savePurchasedMsgs', refineApi(res.data))
+  },
+  async changePage ({ commit, dispatch }, page) {
+    commit('changePage', page)
+    await dispatch('getPurchasedMsgs')
   }
 }

@@ -2,7 +2,7 @@
   <widget-box title="精选热文" v-if="msgs && msgs.length">
     <ul class="premium-subject-hot-list">
       <li v-for="(msg, index) in msgs" :key="msg.Id" :class="['premium-subject-hot-list-item', `${index < 3 && 'main'}`]">
-        <a :href="`/article/${msg.Id}`" target="_blank"  class="premium-subject-hot-list-item-title">
+        <a :href="`/article/${msg.Id}`" target="_blank" ref="title" class="premium-subject-hot-list-item-title">
           <i :class="{iconfont: true, [`icon-0${index + 1}`]: true}"></i>
           {{msg.Title}}
         </a>
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import shave from 'shave'
 import WidgetBox from '~/components/WidgetBox'
 import TimeWidget from '~/components/TimeWidget'
 
@@ -27,6 +28,9 @@ export default {
     msgs () {
       return this.$store.state.premium.hotMsgs
     }
+  },
+  mounted () {
+    shave(this.$refs.title, 54)
   }
 }
 </script>
@@ -54,7 +58,9 @@ export default {
     &-title {
       display: block;
       font-size: 16px;
-      line-height: 1.5;
+      line-height: 24px;
+      max-height: 48px;
+      overflow: hidden;
       color: #333333;
     }
     &-time {
