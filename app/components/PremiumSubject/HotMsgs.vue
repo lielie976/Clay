@@ -1,15 +1,17 @@
 <template>
-  <ul class="premium-subject-hot-list">
-    <li v-for="(msg, index) in msgs" :key="msg.Id" :class="['premium-subject-hot-list-item', `${index < 3 && 'main'}`]">
-      <a :href="`/article/${msg.Id}`" target="_blank"  class="premium-subject-hot-list-item-title">
-        <i :class="{iconfont: true, [`icon-0${index + 1}`]: true}"></i>
-        {{msg.Title}}
-      </a>
-      <p class="premium-subject-hot-list-item-time">
-        <time-widget :time="msg.CreatedAt" />
-      </p>
-    </li>
-  </ul>
+  <widget-box title="精选热文" v-if="msgs && msgs.length">
+    <ul class="premium-subject-hot-list">
+      <li v-for="(msg, index) in msgs" :key="msg.Id" :class="['premium-subject-hot-list-item', `${index < 3 && 'main'}`]">
+        <a :href="`/article/${msg.Id}`" target="_blank"  class="premium-subject-hot-list-item-title">
+          <i :class="{iconfont: true, [`icon-0${index + 1}`]: true}"></i>
+          {{msg.Title}}
+        </a>
+        <p class="premium-subject-hot-list-item-time">
+          <time-widget :time="msg.CreatedAt" />
+        </p>
+      </li>
+    </ul>
+  </widget-box>
 </template>
 
 <script>
@@ -17,12 +19,14 @@ import WidgetBox from '~/components/WidgetBox'
 import TimeWidget from '~/components/TimeWidget'
 
 export default {
-  props: {
-    msgs: Array
-  },
   components: {
     WidgetBox,
     TimeWidget
+  },
+  computed: {
+    msgs () {
+      return this.$store.state.premium.hotMsgs
+    }
   }
 }
 </script>

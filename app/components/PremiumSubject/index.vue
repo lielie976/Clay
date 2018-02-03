@@ -12,19 +12,20 @@
       </section>
       <section class="main-container-right">
         <aside-purchased-msgs :msgs="purchasedMsgs" />
-        <slot name="hotMsgs"></slot>
+        <hot-msgs />
       </section>
     </section>
-    
+
   </div>
 </template>
 
 <script>
 import WidgetBox from '~/components/WidgetBox'
-import PremiumSubjectMeta from '~/components/PremiumSubject/Meta'
 import TrialMsgs from '~/components/TrialMsgs'
 import AsidePurchasedMsgs from '~/components/PurchasedMsgs/AsidePurchasedMsgs'
-import MsgList from '~/components/PremiumSubject/MsgList'
+import PremiumSubjectMeta from './Meta'
+import MsgList from './MsgList'
+import HotMsgs from './HotMsgs'
 
 export default {
   components: {
@@ -32,7 +33,8 @@ export default {
     PremiumSubjectMeta,
     MsgList,
     TrialMsgs,
-    AsidePurchasedMsgs
+    AsidePurchasedMsgs,
+    HotMsgs
   },
   computed: {
     data () {
