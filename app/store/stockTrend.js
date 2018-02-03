@@ -49,5 +49,6 @@ export const actions = {
     let codeArr = code.split(',')
     commit('saveTrend', {data: res.data.trend.items, codes: codeArr})
     commit('savePre', {data: res.data.real.items, codes: codeArr})
+    return {success: 1}
   }
 }

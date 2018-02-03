@@ -72,7 +72,24 @@ export const LinearIndicatorTypeFuncs = {
       ctx.lineWidth = params.line_width || 1;
 
       self.data_source.filtered_data_buckets.forEach(function(bucket, index){
+
           bucket.forEach(function(item, b_index){
+            console.log(item)
+
+
+              // // draw x label text
+              // Util.Draw.Text(self.ia_ctx, function(ctx){
+              //   var block_left = self.style.crosshair.pos_offset.horizontal.x + (vertical_pos - label_horiz_width / 2);
+              //   var block_width = self.style.crosshair.pos_offset.horizontal.width || label_horiz_width;
+
+              //   ctx.fillText(Util.Coord.getDateStr(self.state.events.mouse_x_val),
+              //                 block_left < 0 ? self.style.crosshair.label_horiz_padding : (block_left + block_width > self.origin_width ? self.origin_width - block_width : block_left) + self.style.crosshair.label_horiz_padding,
+              //                 self.style.crosshair.pos_offset.horizontal.y + (self.style.axis.x_axis_pos > 0 ?
+              //                   self.style.padding.bottom_pos + self.style.font.size + 2
+              //                 :
+              //                   self.style.padding.top - self.style.crosshair.label_height + self.style.font.size + 2));
+              // }, self.style.crosshair.label_color);
+            }
             if (!b_index)
               ctx.moveTo(Util.Coord.linearActual2Display(item[params.t], self.coords[index].x),
                          Util.Coord.linearActual2Display(item[params.val_index], self.coord.y));

@@ -20,15 +20,9 @@ export default {
     div_el.appendChild(canvas_mid);
     div_el.appendChild(canvas_ia);
     return [canvas_main, canvas_ia, canvas_mid]
-    // pattern.data_source.data = JSON.parse(JSON.stringify(pattern.data_source.data));
-    // CHART.Util.Safe.dataCheck(pattern.data_source);
-
-    // var chart = new CHART(canvas_main, canvas_ia, canvas_mid, pattern);
-
-    // if (!no_render)
-    //   chart.rerender();
-
-    // return chart;
+  },
+  removeCanvas (div_el) {
+    div_el.innerHTML = '';
   },
   DEFAULTS(){
     return {
