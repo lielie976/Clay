@@ -30,9 +30,10 @@ import dingTable from '~/views/dingpan/dingTable'
 import banNews from '~/views/dingpan/slideBar/banNews'
 import banChange from '~/views/dingpan/slideBar/banChange'
 import shareMethodMixin from '~/mixins/shareMethodMixin'
+import texts from '~/utils/texts'
+
 export default {
   async asyncData ({ store, params, req }) {
-    await store.dispatch('stockSummary/initSummary', '');
     return {
       pageIndex: params.id ? params.id : 0,
       pageMode: 'normal',
@@ -118,14 +119,7 @@ export default {
   },
   head () {
     return {
-      title: ``,
-      meta: [
-        {
-          hid: `description`,
-          name: 'description',
-          content: ``
-        }
-      ]
+      title: `${texts.slogan}`
     }
   },
   watch: {
@@ -147,8 +141,12 @@ export default {
     this.removeClass(document.body, 'ban-special');
   },
   methods: {
-    init () {
+    async init () {
       // this.tabOffsetTop = this.getElementTop(this.$refs.tab);
+      try {
+        await this.$store.dispatch('stockSummary/initSummary', '').then()
+      } catch (error) {
+      }
       if (
         localStorage.getItem('dingSimple') &&
         localStorage.getItem('dingSimple') != 0

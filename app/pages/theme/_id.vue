@@ -12,35 +12,45 @@ import themeTitle from '~/views/theme/themeTitle'
 import themeIntro from '~/views/theme/themeIntro'
 import themeModal from '~/views/theme/themeModal'
 import themeStock from '~/views/theme/themeStock'
+import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store, params, req }) {
-    await store.dispatch('theme/getThemeInfo', {
+    let info = await store.dispatch('theme/getThemeInfo', {
       id: params.id
     });
-    await store.dispatch('theme/getThemeMessage', params.id);
-    await store.dispatch('theme/getPlateSetInfo', params.id);
-    // await store.dispatch('theme/getThemeStock')
-    await store.dispatch('theme/getBkjInfo')
-    await store.dispatch('theme/getStockFlow')
-    await store.dispatch('theme/getLongtou', params.id)
+    try {
+      await store.dispatch('theme/getThemeMessage', params.id);
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getPlateSetInfo', params.id);
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getBkjInfo')
+    } catch (error) {
+    }
+
+    try {
+      await store.dispatch('theme/getStockFlow')
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getLongtou', params.id)
+    } catch (error) {
+    }
     return {
       intro: {},
       modal: false,
       id: params.id,
-      timer: 0
+      timer: 0,
+      info: info
     }
   },
   head () {
     return {
-      title: ``,
-      meta: [
-        {
-          hid: `description`,
-          name: 'description',
-          content: ``
-        }
-      ]
+      title: `${this.info.Name} | ${texts.slogan}`
     }
   },
   methods: {

@@ -13,3 +13,4 @@ web.log
 dist
 
 .DS_Store
+package-lock.json

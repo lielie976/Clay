@@ -24,33 +24,39 @@ export const actions = {
   },
   logOut ({ state, commit }) {
     if (process.env.ENV === 'production') {
-      Cookies.set('token', '', {
+      Cookies.remove('token', {
         domain: '.xuangubao.cn',
-        path: '/',
-        expires: 365
+        path: '/'
       });
-      Cookies.set('nickname', '', {
+      Cookies.remove('nickname', {
         domain: '.xuangubao.cn',
-        path: '/',
-        expires: 365
+        path: '/'
       });
-      Cookies.set('portrait', '', {
+      Cookies.remove('portrait', {
         domain: '.xuangubao.cn',
-        path: '/',
-        expires: 365
+        path: '/'
       });
     } else {
-      Cookies.set('token', '', {
-        path: '/',
-        expires: 365
+      Cookies.remove('token', {
+        domain: '.xuangubao.cn',
+        path: '/'
       });
-      Cookies.set('nickname', '', {
-        path: '/',
-        expires: 365
+      Cookies.remove('nickname', {
+        domain: '.xuangubao.cn',
+        path: '/'
       });
-      Cookies.set('portrait', '', {
-        path: '/',
-        expires: 365
+      Cookies.remove('portrait', {
+        domain: '.xuangubao.cn',
+        path: '/'
+      });
+      Cookies.remove('token', '', {
+        path: '/'
+      });
+      Cookies.remove('nickname', '', {
+        path: '/'
+      });
+      Cookies.remove('portrait', '', {
+        path: '/'
       });
     }
     return commit('saveUserInfo', {
