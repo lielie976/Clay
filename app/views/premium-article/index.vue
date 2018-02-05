@@ -2,7 +2,7 @@
   <div>
     <article-meta :data="data" />
     <premium-article :data="data" :readable="readable" /> 
-    <premium-article-footer :subject="data.FromSubject" v-if="data.FromSubject.RemainingDays <= 0" />
+    <premium-article-footer :data="data" />
   </div>
 </template>
 

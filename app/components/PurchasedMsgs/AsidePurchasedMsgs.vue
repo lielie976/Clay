@@ -1,15 +1,15 @@
 <template>
-  <widget-box title="已购文章" href="/bought" subTitle="查看全部">
+  <widget-box title="已购精选" href="/purchased-message" subTitle="查看全部">
     <div>
       <template v-if="!hasLoggined">
         <non-login />
       </template>
       <template v-else>
-        <ul class="aside-bought-msgs"  v-if="msgs && msgs.length">
+        <ul class="aside-purchased-msgs"  v-if="msgs && msgs.length">
           <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="msg" />
         </ul>
         <div v-else>
-          暂无已购文章
+          暂无已购精选
         </div>
       </template>
     </div>
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.aside-bought-msgs {
+.aside-purchased-msgs {
   background: #fff;
   padding-left: 16px;
 }

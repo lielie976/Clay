@@ -11,9 +11,9 @@ import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
-    await store.dispatch('premium/init', 517)
+    await store.dispatch('premium/init', 781)
     await store.dispatch('purchasedMsgs/getPurchasedMsgs')
-    await store.dispatch('premiumHotMsgs/getHotMsgs', 517)
+    await store.dispatch('premiumHotMsgs/getHotMsgs', 781)
   },
   components: {
     PremiumSubject,
@@ -21,13 +21,13 @@ export default {
   },
   head () {
     return {
-      title: `脱水调研 | ${texts.slogan}`
+      title: `涨价早知道 | ${texts.slogan}`
     }
   },
   data () {
     return {
       customization: {
-        msgListTitle: '脱水调研更新'
+        msgListTitle: '涨价早知道更新'
       }
     }
   }

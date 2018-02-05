@@ -1,14 +1,14 @@
 <template>
   <footer class="premium-article-footer" v-if="show">
     <section class="main-container">
-      <h2 class="premium-article-footer-subject-title">{{subject.Title}}</h2>
+      <h2 class="premium-article-footer-subject-title">{{data.FromSubject.Title}}</h2>
       <div class="premium-article-footer-subject-subscribecount">
         <i class="iconfont icon-tarengoumai"></i>
-        <span>{{getCNPriceNum(subject.SubscribeCount, true)}}</span>
+        <span>{{getCNPriceNum(data.FromSubject.SubscribeCount, true)}}</span>
         <span>订阅</span>
       </div>
       <div class="premium-article-footer-subject-more">
-        了解更多<i class="iconfont icon-xiangyou"></i>
+        <a :href="`/subject/${data.FromSubject.Id}`">了解更多</a><i class="iconfont icon-xiangyou"></i>
       </div>
       <div class="premium-article-footer-subject-subscribe">
         <p>
@@ -21,7 +21,7 @@
         </p>
       </div>
       <a class="premium-article-footer-subject-subscribe-action" @click="toggleModal">
-        我要订阅
+        我要{{data.FromSubject.RemainingDays > 0 ? '续订' : '订阅'}}
       </a>
     </section>
     <div class="premium-article-footer-close" @click="show = false">
@@ -35,21 +35,18 @@ import { getCNPriceNum } from '~/utils/helpers'
 
 export default {
   props: {
-    subject: Object
+    data: Object
   },
   data () {
     return {
-      show: true
+      //  如果可订阅或者说付费但没有购买才显示
+      show: this.data.FromSubject.IsSubscribable || (this.data.IsPremium && !this.data.IsPaid)
     }
   },
   methods: {
     getCNPriceNum,
     toggleModal () {
-      if (this.$store.state.user.userInfo.isLogged) {
-        this.$store.commit('subscribe/toggleModal')
-      } else {
-        this.$store.dispatch('login/showLogin')
-      }
+      this.$store.dispatch('subscribe/toggleModal')
     }
   }
 }
@@ -90,9 +87,15 @@ export default {
   }
   &-subject-more {
     flex-basis: 450px;
-    color: #f2564e;
     font-size: 14px;
+    color: #f2564e;
     margin-left: 24px;
+    a {
+      color: #f2564e;
+    }
+    i {
+      font-size: 14px;
+    }
   }
   &-subject-subscribe {
     font-size: 14px;

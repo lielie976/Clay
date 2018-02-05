@@ -23,21 +23,36 @@ export default {
       if (!selector) return
       const links = selector.querySelectorAll('a')
       for (var i = 0; i < links.length; i++) {
-        const pathname = URI(links[i].href).pathname()
-        const segment = URI(links[i].href).segment()
-        if (pathname) {
+        const currentLink = URI(links[i].href)
+        const host = currentLink.host()
+        const pathname = currentLink.pathname()
+        const segment = currentLink.segment()
+        if (pathname && host.indexOf('xuangubao.cn') > -1) {
           links[i].setAttribute('target', '_blank')
-          if (pathname.indexOf('web/stocks') > -1) {
-            links[i].href = `/stock/${segment[2]}`
-          } else if (pathname.indexOf('web/subjects') > -1) {
-            links[i].href = `/subject/${segment[2]}`
-          } else if (
-            pathname.indexOf('web/articles') > -1 ||
-            pathname.indexOf('web/messages') > -1 ||
-            pathname.indexOf('web/3rdparty') > -1
-          ) {
-            links[i].href = `/article/${segment[segment.length - 1]}`
-          }
+          const transformStockField = ['web/stocks', '/stock']
+          const transformSubjectField = ['web/subjects', '/subject']
+          const transformArticleField = ['web/articles', 'web/messages', 'web/3rdparty', '/article', '/message']
+          const transformThemeField = ['/theme/']
+          transformStockField.forEach((field) => {
+            if (pathname.indexOf(field) > -1) {
+              links[i].href = `/stock/${segment[segment.length - 2]}`
+            }
+          })
+          transformSubjectField.forEach((field) => {
+            if (pathname.indexOf(field) > -1) {
+              links[i].href = `/subject/${segment[segment.length - 1]}`
+            }
+          })
+          transformArticleField.forEach((field) => {
+            if (pathname.indexOf(field) > -1) {
+              links[i].href = `/article/${segment[segment.length - 1]}`
+            }
+          })
+          transformThemeField.forEach((field) => {
+            if (pathname.indexOf(field) > -1) {
+              links[i].href = `/theme/${segment[segment.length - 1]}`
+            }
+          })
         }
       }
     }
@@ -66,6 +81,8 @@ export default {
   }
   img {
     cursor: zoom-in;
+    padding: 20px;
+    width: 100%;
   }
   blockquote {
     border-left: 5px solid #eee !important;

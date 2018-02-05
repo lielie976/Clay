@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="meta-container" :style="{'background-image': `url(${this.data.subjectInfo.PcImage})`}">
-      <premium-subject-meta :subject="data.subjectInfo" />
+    <div class="meta-container" :style="{'background-image': `url(${this.subscribeStore.subject.PcImage})`}">
+      <premium-subject-meta :subject="subscribeStore.subject" />
     </div>
     <section class="main-container">
       <section class="main-container-left">
@@ -11,7 +11,7 @@
         </widget-box>
       </section>
       <section class="main-container-right">
-        <aside-bought-msgs :msgs="boughtMsgs" />
+        <aside-purchased-msgs :msgs="purchasedMsgs" />
         <slot name="hotMsgs"></slot>
       </section>
     </section>
@@ -23,7 +23,7 @@
 import WidgetBox from '~/components/WidgetBox'
 import PremiumSubjectMeta from '~/components/PremiumSubject/Meta'
 import TrialMsgs from '~/components/TrialMsgs'
-import AsideBoughtMsgs from '~/components/BoughtMsgs/AsideBoughtMsgs'
+import AsidePurchasedMsgs from '~/components/PurchasedMsgs/AsidePurchasedMsgs'
 import MsgList from '~/components/PremiumSubject/MsgList'
 
 export default {
@@ -32,14 +32,17 @@ export default {
     PremiumSubjectMeta,
     MsgList,
     TrialMsgs,
-    AsideBoughtMsgs
+    AsidePurchasedMsgs
   },
   computed: {
     data () {
       return this.$store.state.premium
     },
-    boughtMsgs () {
-      return this.$store.state.boughtMsgs.msgs
+    subscribeStore () {
+      return this.$store.state.subscribe
+    },
+    purchasedMsgs () {
+      return this.$store.state.purchasedMsgs.msgs
     }
   },
   props: {
@@ -57,6 +60,8 @@ export default {
   background-size: cover;
   background-position: center center;
   overflow: hidden;
+  min-height: 296px;
+  min-width: 1200px;
 }
 </style>
 

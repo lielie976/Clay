@@ -5,7 +5,7 @@
       <li v-if="data.message">
         <pay-message-option :data="data" :select="selectMsg" />
       </li>
-      <li v-for="(i, index) in data.selectedSubject.items" :key="i.Id">
+      <li v-for="(i, index) in data.subjectItems.items" :key="i.Id">
         <pay-subject-option 
           :data="data"
           :item="i"

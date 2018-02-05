@@ -30,6 +30,8 @@ import dingTable from '~/views/dingpan/dingTable'
 import banNews from '~/views/dingpan/slideBar/banNews'
 import banChange from '~/views/dingpan/slideBar/banChange'
 import shareMethodMixin from '~/mixins/shareMethodMixin'
+import texts from '~/utils/texts'
+
 export default {
   async asyncData ({ store, params, req }) {
     return {
@@ -47,6 +49,7 @@ export default {
       svgHeight: 600,
       yidongtixing: true,
       show: false,
+      stopRefreshing: false,
       tabItems: [
         {
           index: 0,
@@ -117,14 +120,7 @@ export default {
   },
   head () {
     return {
-      title: ``,
-      meta: [
-        {
-          hid: `description`,
-          name: 'description',
-          content: ``
-        }
-      ]
+      title: `${texts.slogan}`
     }
   },
   watch: {
@@ -147,11 +143,11 @@ export default {
   },
   methods: {
     async init () {
+      // this.tabOffsetTop = this.getElementTop(this.$refs.tab);
       try {
         await this.$store.dispatch('stockSummary/initSummary', '').then()
       } catch (error) {
       }
-      // this.tabOffsetTop = this.getElementTop(this.$refs.tab);
       if (
         localStorage.getItem('dingSimple') &&
         localStorage.getItem('dingSimple') != 0
@@ -233,6 +229,17 @@ export default {
           this.smallScreen = false;
         }
       };
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          this.stopRefreshing = false;
+          this.startInterval();
+          this.$refs.tab.startInterval();
+        } else {
+          this.stopRefreshing = true;
+          this.stopInterval();
+          this.$refs.tab.stopInterval()
+        }
+      });
     },
     changeYidong () {
       this.yidongtixing = !this.yidongtixing

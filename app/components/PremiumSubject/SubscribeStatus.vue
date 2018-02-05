@@ -22,11 +22,7 @@ export default {
   },
   methods: {
     toggleModal () {
-      if (this.$store.state.user.userInfo.isLogged) {
-        this.$store.commit('subscribe/toggleModal')
-      } else {
-        this.$store.dispatch('login/showLogin')
-      }
+      this.$store.dispatch('subscribe/toggleModal')
     },
     validDate (days) {
       return formatDate(getDuration(days), 'YYYY/MM/DD')
@@ -34,9 +30,11 @@ export default {
   },
   computed: {
     minimumPrice () {
+      if (!this.data.SubscribeItems.length) return
       return this.data.SubscribeItems[0].DiscountPrice
     },
     maximumDiscount () {
+      if (!this.data.SubscribeItems.length) return
       const max = this.data.SubscribeItems[this.data.SubscribeItems.length - 1]
       return max.OriginPrice - max.DiscountPrice
     }

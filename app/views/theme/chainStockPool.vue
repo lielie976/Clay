@@ -81,7 +81,7 @@
         </div>
       </template>
     </div>
-    <div v-if="accessMode == 2" class="stocklist-chain-left stocklist-chain-left-unlog">
+    <div @click="goLogin" v-if="accessMode == 2" class="stocklist-chain-left stocklist-chain-left-unlog">
       <img class="stocklist-chain-left-unlog-img" src="/img/no-login.png" />
       <p class="stocklist-chain-left-unlog-text">登录后可查看全部内容</p>
     </div>
@@ -149,6 +149,9 @@ export default {
       let gifname = this.hsCodeToWscn(symbol).toLowerCase()
       this.chainImageSrc = `http://image.sinajs.cn/newchart/min/n/${gifname}.gif`
       this.chainImageShow = true
+    },
+    goLogin () {
+      this.$store.dispatch('login/showLogin')
     },
     chainLeave (symbol) {
       this.chainImageShow = false

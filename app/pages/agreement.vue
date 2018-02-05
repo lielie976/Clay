@@ -54,17 +54,20 @@ export default {
 
 <style lang="less" scoped>
 .agreement {
+  width: 800px;
   padding: 24px;
   &-header {
     font-size: 28px;
     color: #333333;
     line-height: 27px;
     text-align: center;
+    margin-bottom: 20px;
     &-sub {
       font-size: 20px;
       color: #333333;
       text-indent: 32px;
       margin-top: 10px;
+      margin-bottom: 20px;
     }
   }
   &-body {
@@ -73,7 +76,7 @@ export default {
       color: #333333;
       line-height: 27px;
       font-weight: bold;
-      margin-top: 16px;
+      margin: 16px 0;
       &.red {
         color: #e6394d;
       }

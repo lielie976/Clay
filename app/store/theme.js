@@ -109,6 +109,7 @@ export const actions = {
         await dispatch('getThemeStock')
       }
     }
+    return res.Data
   },
 
   getThemeMessage ({ commit }, id) {

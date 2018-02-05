@@ -1,7 +1,7 @@
 <template>
-  <widget-box title="已购文章">
+  <widget-box title="已购精选">
     <div>
-      <ul class="aside-bought-msgs">
+      <ul class="aside-purchased-msgs">
         <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="msg" />
       </ul>
       <div class="pagination" v-if="data.total > data.params.limit">
@@ -33,14 +33,14 @@ export default {
   methods: {
     changePage (page) {
       smoothscroll()
-      this.$store.commit('boughtMsgs/changePage', page)
+      this.$store.commit('purchasedMsgs/changePage', page)
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.aside-bought-msgs {
+.aside-purchased-msgs {
   background: #fff;
   padding-left: 24px;
 }

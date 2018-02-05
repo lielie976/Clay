@@ -178,7 +178,7 @@
 
 <script>
 /* eslint-disable no-debugger, eqeqeq */
-import modal from './modal'
+import Modal from './Modal'
 import { userLogin, fetchVcodeImage, fetchMobileCode, verifyMobileCode, registerUser, fetchForgetMobileCode, verifyForgetMobileCode } from '~/api/login'
 import * as Cookies from 'js-cookie'
 import shareMethodMixin from '~/mixins/shareMethodMixin'
@@ -739,7 +739,7 @@ export default {
       this.success = false
       setTimeout(() => {
         location.replace(location.href)
-      }, 200)
+      }, 4)
     },
     check_Vcode_status () {
       let t = new Date();
@@ -765,7 +765,7 @@ export default {
     }
   },
   components: {
-    modal
+    Modal
   },
   mixins: [shareMethodMixin]
 }

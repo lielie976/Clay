@@ -9,7 +9,7 @@
       <a href="http://www.miitbeian.gov.cn" target="_blank" class="beian">沪ICP备13019121号-4</a>
     </p>
     <p>
-      联系电话：021-65963809     
+      联系微信：jiepannvxia666
       <span class="work-time">工作时间：周一至周五 9:30-18:30</span>
       <span class="work-time">中国（上海）自由贸易试验区张杨路707号二层西区</span>
       <span class="work-time">风险提示：市场有风险，投资需谨慎</span>

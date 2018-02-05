@@ -1,7 +1,7 @@
 <template>
   <section class="main-container">
     <section class="main-container-left">
-      <bought-msgs :msgs="boughtMsgs.msgs" :data="boughtMsgs" />
+      <purchased-msgs :msgs="purchasedMsgs.msgs" :data="purchasedMsgs" />
     </section>
     <section class="main-container-right">
       <tuo-shui-hot-msgs />
@@ -13,22 +13,28 @@
 <script>
 import TuoShuiHotMsgs from '~/components/HotMsgs/TuoShuiYanBao'
 import ZaoZhiDaoHotMsgs from '~/components/HotMsgs/ZaoZhiDao'
-import BoughtMsgs from '~/components/BoughtMsgs'
+import PurchasedMsgs from '~/components/PurchasedMsgs'
+import texts from '~/utils/texts'
 
 export default {
   components: {
     TuoShuiHotMsgs,
     ZaoZhiDaoHotMsgs,
-    BoughtMsgs
+    PurchasedMsgs
   },
   async asyncData ({ store }) {
-    await store.dispatch('boughtMsgs/getBoughtMsgs')
+    await store.dispatch('purchasedMsgs/getPurchasedMsgs')
     await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
     await store.dispatch('premiumHotMsgs/getHotMsgs', 679)
   },
+  head () {
+    return {
+      title: `已购精选文章 | ${texts.slogan}`
+    }
+  },
   computed: {
-    boughtMsgs () {
-      return this.$store.state.boughtMsgs
+    purchasedMsgs () {
+      return this.$store.state.purchasedMsgs
     }
   }
 }

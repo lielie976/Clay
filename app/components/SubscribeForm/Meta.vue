@@ -1,5 +1,6 @@
 <template>
   <div class="subscribe-form-meta">
+    <i class="iconfont icon-guanbiduihuakuang subscribe-form-close" @click="onClose" v-if="data.payStatus !== 0"></i>
     <template v-if="data.selectedType === 'subject'">
       <img class="subscribe-form-meta-image" :src="subject.Image" v-if="subject.Image"  />
       <div class="subscribe-form-meta-info">
@@ -11,12 +12,19 @@
           </div>
           <div class="subscribe-form-meta-info-price">
             <template v-if="data.payStatus === 0">
+              <!-- 最开始显示订阅金额 -->
               <span class="subscribe-form-meta-info-price-header">总额</span>
+              <span class="subscribe-form-meta-info-price-content">￥{{selectedSubjectItem.DiscountPrice}}</span>
             </template>
-            <template v-if="data.payStatus === 1">
+            <template v-else-if="data.payStatus === 1">
+              <!-- 在支付对话框时显示剩余需要支付的金额 -->
               <span class="subscribe-form-meta-info-price-header">剩余支付</span>
+              <span class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
             </template>
-            <span class="subscribe-form-meta-info-price-content">￥{{selectedSubject.DiscountPrice}}</span>
+            <template v-else>
+              <!-- 在成功或者失败时只显示需支付的金额 -->
+              <span class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
+            </template>
           </div>
         </template>
       </div>
@@ -29,11 +37,15 @@
           <div class="subscribe-form-meta-info-price">
             <template v-if="data.payStatus === 0">
               <span class="subscribe-form-meta-info-price-header">需支付</span>
+              <span class="subscribe-form-meta-info-price-content">￥{{message.Price}}</span>
             </template>
             <template v-if="data.payStatus === 1">
               <span class="subscribe-form-meta-info-price-header">剩余支付</span>
+              <span class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
             </template>
-            <span class="subscribe-form-meta-info-price-content">￥{{message.Price}}</span>
+            <template v-else>
+              <span class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
+            </template>
           </div>
         </template>
       </div>
@@ -46,12 +58,14 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    data: Object
+    data: Object,
+    onClose: Function
   },
   computed: {
     ...mapGetters({
-      selectedSubject: 'subscribe/selectedSubject',
-      subscribeDuration: 'subscribe/subscribeDuration'
+      selectedSubjectItem: 'subscribe/selectedSubjectItem',
+      subscribeDuration: 'subscribe/subscribeDuration',
+      priceNeededToPay: 'subscribe/priceNeededToPay'
     }),
     subject () {
       return this.data.subject
@@ -66,7 +80,20 @@ export default {
 <style lang="less" scoped>
 @import '../../styles/variables.less';
 
+.subscribe-form-close {
+  position: absolute;
+  top: -4px;
+  right: -18px;
+  color: #d8d8d8;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    color: #999;
+  }
+}
+
 .subscribe-form-meta {
+  position: relative;
   display: flex;
   padding-bottom: 16px;
   border-bottom: 2px dashed #ccc;
@@ -85,14 +112,8 @@ export default {
     &-time {
       line-height: 1;
       margin: 12px 0 10px;
-    }
-    &-time-header {
+      color: @strongFontColor;
       font-size: 14px;
-      color: @subFontColor;
-    }
-    &-time-content {
-      font-size: 12px;
-      color: #999;
     }
     &-price-header {
       display: inline-block;
@@ -106,7 +127,7 @@ export default {
       display: inline-block;
       font-size: 25px;
       font-weight: bold;
-      color: #e6394d;
+      color: @strongFontColor;
       line-height: 1;
       vertical-align: middle;
     }

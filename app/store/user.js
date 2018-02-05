@@ -37,6 +37,18 @@ export const actions = {
         path: '/'
       });
     } else {
+      Cookies.remove('token', {
+        domain: '.xuangubao.cn',
+        path: '/'
+      });
+      Cookies.remove('nickname', {
+        domain: '.xuangubao.cn',
+        path: '/'
+      });
+      Cookies.remove('portrait', {
+        domain: '.xuangubao.cn',
+        path: '/'
+      });
       Cookies.remove('token', '', {
         path: '/'
       });
