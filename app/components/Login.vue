@@ -739,7 +739,7 @@ export default {
       this.success = false
       setTimeout(() => {
         location.replace(location.href)
-      }, 200)
+      }, 4)
     },
     check_Vcode_status () {
       let t = new Date();
