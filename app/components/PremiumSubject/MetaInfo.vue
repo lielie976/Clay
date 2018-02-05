@@ -2,7 +2,7 @@
   <div class="premium-subject-meta-info">
     <h1 class="premium-subject-meta-info-title">
       {{subject.Title}}
-      <i class="iconfont icon-tarengoumai"></i>
+      <img src="/img/subscribe-icon.png">
       <span class="premium-subject-meta-info-count">{{subject.SubscribeCount}}人订阅</span>
     </h1>
     <section class="premium-subject-meta-info-detail">
@@ -47,6 +47,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../styles/variables.less';
+
 .premium-subject-meta-info {
   position: relative;
   flex: 0 0 976px;
@@ -68,18 +70,20 @@ export default {
     font-size: 36px;
     line-height: 36px;
     margin-bottom: 24px;
-    .iconfont {
-      font-size: 24px;
-      color: #e6394d;
+    img {
+      margin-right: 6px;
     }
   }
   &-count {
     font-size: 16px;
+    vertical-align: middle;
   }
   &-detail {
     font-size: 14px;
     h3 {
+      display: inline-block;
       margin-bottom: 15px;
+      border-bottom: 4px solid @strongFontColor;
     }
     p {
       line-height: 22px;
