@@ -2,10 +2,12 @@
   <widget-box title="精选热文" v-if="msgs && msgs.length">
     <ul class="premium-subject-hot-list">
       <li v-for="(msg, index) in msgs" :key="msg.Id" :class="['premium-subject-hot-list-item', `${index < 3 && 'main'}`]">
-        <a :href="`/article/${msg.Id}`" target="_blank" ref="title" class="premium-subject-hot-list-item-title">
+        <div class="premium-subject-hot-list-item-meta">
           <i :class="{iconfont: true, [`icon-0${index + 1}`]: true}"></i>
-          {{msg.Title}}
-        </a>
+          <a :href="`/article/${msg.Id}`" target="_blank" ref="title" class="premium-subject-hot-list-item-title">
+            {{msg.Title}}
+          </a>
+        </div>
         <p class="premium-subject-hot-list-item-time">
           <time-widget :time="msg.CreatedAt" />
         </p>
@@ -52,11 +54,18 @@ export default {
         color: @subRiseColor;
       }
     }
+    &-meta {
+      position: relative;
+    }
     .iconfont {
+      position: absolute;
+      top: 0;
+      left: 0;
       color: #d8d8d8;
     }
     &-title {
       display: block;
+      text-indent: 1.5em;
       font-size: 16px;
       line-height: 24px;
       max-height: 48px;
