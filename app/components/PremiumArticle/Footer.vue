@@ -3,7 +3,7 @@
     <section class="main-container">
       <h2 class="premium-article-footer-subject-title">{{data.FromSubject.Title}}</h2>
       <div class="premium-article-footer-subject-subscribecount">
-        <i class="iconfont icon-tarengoumai"></i>
+        <img src="/img/subscribe-icon.png">
         <span>{{getCNPriceNum(data.FromSubject.SubscribeCount, true)}}</span>
         <span>订阅</span>
       </div>
@@ -76,13 +76,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    i {
-      font-size: 24px;
-      color: #e6394d;
-    }
     span {
       font-size: 16px;
-      margin-right: 8px;
+      margin: 0 8px;
     }
   }
   &-subject-more {

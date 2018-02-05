@@ -158,16 +158,20 @@ export default {
         '-market-color--' +
         (later === before ? 'balance' : later > before ? 'rise' : 'decline')
       )
-    }
-  },
-  mounted () {
-    this.timer = setInterval(() => {
+    },
+    refresh () {
       getStocksReal({
         stocks: this.symbol,
         fields
       }).then((res) => {
         this.stockInfo = extractFieldsToObj(res.data.snapshot)[this.symbol]
       })
+    }
+  },
+  mounted () {
+    this.refresh()
+    this.timer = setInterval(() => {
+      this.refresh()
     }, 5000)
   },
   destroyed () {
