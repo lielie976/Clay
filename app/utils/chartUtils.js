@@ -84,7 +84,7 @@ export default {
       data_style: {
         base_value: '#2DB0F9',
         candlestick: {
-          block: {up: '#f8f8f8', down: '#1EB955'},
+          block: {up: '#FF4040', down: '#1EB955'},
           border: {up: '#FF4040', down: '#1EB955'},
           wick: {up: '#FF4040', down: '#1EB955'}
         },

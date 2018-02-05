@@ -242,7 +242,7 @@ var cul = {
       var right_offset = Number.MIN_VALUE;
       for (var l = data.length; l--;){
         data[l].x = null;
-        if (pointer_x >= -30 && pointer_x <= display_width + 30){
+        if (pointer_x >= -2 && pointer_x <= display_width + 2){
           data[l].x = display_width - pointer_x + chart.style.padding.left;
           result.unshift(data[l]);
           if (l > right_offset)

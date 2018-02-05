@@ -1,10 +1,12 @@
 import { fetchStockTrend } from '~/api/theme'
+import { getKline } from '~/api/mdc'
 // import share from '~/utils/share'
 
 export const state = () => ({
   trend: null,
   stockList: null,
-  preValue: null
+  preValue: null,
+  kline: null
 })
 
 export const mutations = {
@@ -36,6 +38,9 @@ export const mutations = {
       }
     })
     state.preValue = preValue
+  },
+  saveKline (state, payload) {
+    state.kline = payload
   }
 }
 
@@ -50,5 +55,10 @@ export const actions = {
     commit('saveTrend', {data: res.data.trend.items, codes: codeArr})
     commit('savePre', {data: res.data.real.items, codes: codeArr})
     return {success: 1}
+  },
+  async getKline ({ state, commit }, code) {
+    let res = await getKline({prodCode: code})
+    console.log(res)
+    commit('saveKline', res.data.candle)
   }
 }

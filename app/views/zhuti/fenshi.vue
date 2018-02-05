@@ -11,17 +11,37 @@ import { genDefaultEvents, bindEvents } from '~/utils/chartEvents.js'
 // import { fetchThemeMessage } from '~/api/theme';
 
 export default {
-  props: ['fenshiData'],
+  props: ['fenshiData', 'chartMode'],
   watch: {
     fenshiData() {
-      this.$store.dispatch('stockTrend/getTrend', this.fenshiData.join(',')).then(res => {
-        this.trend = this.$store.state.stockTrend.trend.map(i => {
-          i[0] *= 1000
-          return i
+      if (this.chartMode === 'fenshi') {
+        this.$store.dispatch('stockTrend/getTrend', this.fenshiData.join(',')).then(res => {
+          this.trend = this.$store.state.stockTrend.trend.map(i => {
+            i[0] *= 1000
+            return i
+          })
+          this.preClose = this.$store.state.stockTrend.preValue
+          this.initFenshi()
         })
-        this.preClose = this.$store.state.stockTrend.preValue
-        this.init()
-      })
+      }
+    },
+    chartMode (mode) {
+      if (mode === 'fenshi') {
+        this.$store.dispatch('stockTrend/getTrend', this.fenshiData.join(',')).then(res => {
+          this.trend = this.$store.state.stockTrend.trend.map(i => {
+            i[0] *= 1000
+            return i
+          })
+          this.preClose = this.$store.state.stockTrend.preValue
+          this.initFenshi()
+        })
+      } else if (mode === 'lishi') {
+        this.removeCanvas(document.getElementById('XGBchart'))
+        this.$store.dispatch('stockTrend/getKline', this.fenshiData[0]).then(res => {
+          this.kline = this.$store.state.stockTrend.kline
+          this.initKline()
+        })
+      }
     }
   },
   beforeDestroy () {
@@ -35,6 +55,7 @@ export default {
   data () {
     return {
       trend: null,
+      kline: null,
       preClose: null,
       canvas_el: null,
       ia_canvas_el: null,
@@ -65,7 +86,7 @@ export default {
   },
   methods: {
     ...chartUtil,
-    init () {
+    initFenshi () {
       let init = this.preClose.map(i => i.pre_close_px)
       this.trendRate = this.trend.map(i => {
         return i.map((ii, iid) => {
@@ -83,13 +104,22 @@ export default {
           fields: fields,
           time_ranges: [[this.selectedDate.setHours(9, 30, 0, 0), this.selectedDate.setHours(11, 30, 0, 0)], [this.selectedDate.setHours(13, 1, 0, 0), this.selectedDate.setHours(15, 0, 0, 0)]]
         },
-        price_precision: 2,
+        price_precision: 4,
         style: {
           font: {family: 'Microsoft YaHei', size: 14},
-          padding: {top: 1, right: 100, bottom: 28, left: 50},
+          padding: {top: 1, right: 100, bottom: 28, left: 60},
           wheel_zoom_step: 1,
           linear_last_point: false,
           linear_name_label: true,
+          linear_label: {
+            height: 20,
+            width: 60,
+            left: 0,
+            font_color: '#ffffff',
+            font_size: 12,
+            font_style: '12px Microsoft YaHei'
+          },
+          xgb_style: true,
           tip: {
             high_color: '#FF4040',
             low_color: '#1EB955',
@@ -125,6 +155,90 @@ export default {
             y_axis_pos: 1, // 1 means on right, -1 means on left
             hide_candlestick_date: false,
             hide_candlestick_time: false,
+            show_rate: false,
+            label_pos: {
+              x_axis: {x: -35, y: 20},
+              y_axis: {x: 5, y: 4}
+            },
+            label_color: '#555',
+            pointer_length: 0,
+            bg_color: 'rgba(0,0,0,0)',
+            line_color: 'rgba(0,0,0,0)',
+            draw_frame: false
+          }
+        }
+      };
+      [this.canvas_el, this.ia_canvas_el, this.mid_canvas_el] = this.initCanvas(document.getElementById('XGBchart'), pattern)
+      this.genCtx()
+      this.Prepare(pattern)
+
+      this.genStyle()
+      this.rerender()
+      this.events = genDefaultEvents.call(this)
+      bindEvents.call(this)
+    },
+    initKline () {
+      let dt = this.kline['000300.SS'].map(i => {
+        i[0] = new Date(String(i[0]).substr(0, 4), String(i[0]).substr(4, 2), String(i[0]).substr(6, 2)).getTime()
+        return i
+      })
+
+      let pattern = {
+        data_source: {
+          data: dt,
+          fields: [{name: 'K线', type: 'candlestick', t: 0, o: 1, c: 2, h: 3, l: 4}]
+        },
+        price_precision: 1,
+        style: {
+          font: {family: 'Microsoft YaHei', size: 14},
+          padding: {top: 1, right: 100, bottom: 28, left: 60},
+          wheel_zoom_step: 1,
+          linear_last_point: false,
+          linear_name_label: true,
+          linear_label: {
+            height: 20,
+            width: 60,
+            left: 0,
+            font_color: '#ffffff',
+            font_size: 12,
+            font_style: '12px Microsoft YaHei'
+          },
+          // xgb_style: true,
+          tip: {
+            high_color: '#FF4040',
+            low_color: '#1EB955',
+            curr_price: {
+              line_width: 1,
+              line_color: 'rgba(0,0,0,0)',
+              label_bg: 'rgba(0,0,0,0)',
+              label_color: 'rgba(0,0,0,0)',
+              label_height: 20
+            }
+          },
+          crosshair: {
+            snap_to_close: false,
+            color: '#979797',
+            label_height: 20,
+            label_bg: '#EFEFEF',
+            label_color: '#333',
+            label_horiz_padding: 5,
+            pos_offset: {
+              vertical: {x: 0, y: 0, width: 0}, // 0 means auto
+              horizontal: {x: 0, y: 0, width: 0}
+            },
+            selected_point_color: ['rgba(38,165,225,0.2)', '#fff', 'rgba(38,165,225,1)']
+          },
+          grid: {
+            bg: '#fff',
+            limit: {y: [2, 8]},
+            color: {x: '#f0f0f0', y: '#f0f0f0'},
+            span: {x: 120, y: 30}
+          },
+          axis: {
+            x_axis_pos: 1, // 1 means on bottom, -1 means on top
+            y_axis_pos: 1, // 1 means on right, -1 means on left
+            hide_candlestick_date: false,
+            hide_candlestick_time: true,
             show_rate: false,
             label_pos: {
               x_axis: {x: -35, y: 20},
@@ -459,7 +573,6 @@ export default {
         boxes[c < o ? 'up' : 'down'].push([item.x - w / 2 + 1, o > c ? c : o, w - 2, Math.abs(o - c), o, c, ~~item.x]);
         peaks.push([~~item.x, c]);
       });
-
       for (let direction in lines){
         if (fields.as === 'OHLC')
           chartCul.Draw.Stroke(self.ctx, (ctx) => {
@@ -543,6 +656,7 @@ export default {
         });
       } else {
         this.data_source.fields.forEach((item) => {
+          debugger
           CsIndicatorTypeFuncs[item.type] && CsIndicatorTypeFuncs[item.type].call(self, item);
         });
       }
@@ -605,8 +719,12 @@ export default {
       // draw labels
       var rates = {up: [], down: []};
       chartCul.Draw.Text(this.ctx, (ctx) => {
+        // 这快是y轴右边的刻度
         self.coord.horiz_lines.forEach((y, index) => {
           var val = y.actual.toFixed(self.price_precision);
+          if (this.style.xgb_style) {
+            val = Number(val * 100).toFixed(2) + '%'
+          }
           var x_offset = self.style.axis.label_pos.y_axis.x;
 
           var y_pos = y.display + self.style.axis.label_pos.y_axis.y;
@@ -619,7 +737,6 @@ export default {
             x + self.style.axis.pointer_length + x_offset,
             y_pos);
         });
-
         if (!self.data_source.time_ranges){
           self.coord.vertical_lines.forEach((x) => {
             ctx.fillText(chartCul.Coord.getDateStr(x.actual, self.style.axis.hide_candlestick_date, self.style.axis.hide_candlestick_time),
@@ -630,14 +747,12 @@ export default {
           self.data_source.time_ranges.forEach((range, index) => {
             var width = self.style.padding.right_pos - self.style.padding.left;
             var display_range = [
-              index * width / self.data_source.time_ranges.length,
-              (index + 1) * width / self.data_source.time_ranges.length
+              index * width / self.data_source.time_ranges.length + this.style.padding.left,
+              (index + 1) * width / self.data_source.time_ranges.length + this.style.padding.left
             ];
-
             ctx.fillText(chartCul.Coord.getDateStr(range[0], true),
               display_range[0] + 5,
               y + self.style.axis.label_pos.x_axis.y * self.style.axis.x_axis_pos);
-
             var str_width = ctx.measureText(chartCul.Coord.getDateStr(range[1], true)).width;
             ctx.fillText(chartCul.Coord.getDateStr(range[1], true),
               display_range[1] - str_width - 5,
@@ -763,7 +878,7 @@ export default {
 .chart{
   width: 800px;
   height: 400px;
-  margin-left:30px;
+  margin-left:0px;
   user-select: none;
 }
 </style>

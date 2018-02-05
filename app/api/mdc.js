@@ -40,3 +40,21 @@ export const getStockTrend = ({
     prod_code: prodCode
   }
 })
+
+export const getKline = ({
+  prodCode,
+  candlePeriod = '6',
+  adjustPriceType = 'forward',
+  fields = 'low_px,macd',
+  dataCount = 200
+}) => {
+  return api.get('kline', {
+    params: {
+      fields,
+      prod_code: prodCode,
+      candle_period: candlePeriod,
+      data_count: dataCount,
+      adjust_price_type: adjustPriceType
+    }
+  })
+}

@@ -24,7 +24,7 @@
               <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i>
             </template>
           </div>
-          <fenshi :fenshiData="fenshiData" />
+          <fenshi :chartMode="chartMode" :fenshiData="fenshiData" />
         </div>
       </div>
     </div>
@@ -68,6 +68,7 @@ export default {
         symbol: '000300.SS',
         px: 0.6
       }],
+      chartMode: 'fenshi',
       fenshiData: ['000300.SS']
     };
   },
@@ -88,6 +89,7 @@ export default {
         i.selected = (i.target === item.target)
         return i
       })
+      this.chartMode = item.target
     },
     addStock () {
       let data = ['000300.SS', '000777.SZ', '300104.SZ', '300168.SZ', '002142.SZ']

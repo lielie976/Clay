@@ -119,7 +119,6 @@ var crosshair = function(e, name, force){
   Util.Draw.Text(self.ia_ctx, function(ctx){
     var block_left = self.style.crosshair.pos_offset.horizontal.x + (vertical_pos - label_horiz_width / 2);
     var block_width = self.style.crosshair.pos_offset.horizontal.width || label_horiz_width;
-
     ctx.fillText(Util.Coord.getDateStr(self.state.events.mouse_x_val),
                   block_left < 0 ? self.style.crosshair.label_horiz_padding : (block_left + block_width > self.origin_width ? self.origin_width - block_width : block_left) + self.style.crosshair.label_horiz_padding,
                   self.style.crosshair.pos_offset.horizontal.y + (self.style.axis.x_axis_pos > 0 ?
@@ -141,7 +140,11 @@ var crosshair = function(e, name, force){
   // draw y label text
   Util.Draw.Text(self.ia_ctx, function(ctx){
     if (!force)
-      ctx.fillText(actual_val,
+      var y_val = actual_val
+      if(self.style.xgb_style){
+        y_val = Number(y_val*100).toFixed(2) + '%'
+      }
+      ctx.fillText(y_val,
                   ((self.style.axis.y_axis_pos > 0 ? self.style.padding.right_pos : 0) +
                     self.style.axis.label_pos.y_axis.x + self.style.axis.pointer_length),
                   self.style.crosshair.pos_offset.vertical.y + (horiz_pos - self.style.crosshair.label_height / 2 + self.style.font.size + 2));
