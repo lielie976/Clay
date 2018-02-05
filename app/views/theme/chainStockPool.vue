@@ -151,7 +151,7 @@ export default {
       this.chainImageShow = true
     },
     goLogin () {
-
+      this.$store.dispatch('login/showLogin')
     },
     chainLeave (symbol) {
       this.chainImageShow = false

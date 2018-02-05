@@ -45,7 +45,7 @@
         <p class="no-stock-image-text">暂无符合当前筛选条件的股票</p>
       </div>
     </div>
-    <div v-if="accessMode == 2" class="stocklist-pool-main-guest">
+    <div @click="goLogin" v-if="accessMode == 2" class="stocklist-pool-main-guest">
       <img class="stocklist-pool-main-guest-img" src="/img/no-login.png" />
       <p class="stocklist-pool-main-guest-text">登录后可查看全部内容</p>
     </div>
@@ -106,6 +106,9 @@ export default {
     },
     poolLeave (symbol) {
       this.poolImageShow = false
+    },
+    goLogin () {
+      this.$store.dispatch('login/showLogin')
     }
   },
   mixins: [shareMethodMixin],
