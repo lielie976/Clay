@@ -492,7 +492,7 @@ export default {
     &-guest {
       width: 1200px;
       height: 400px;
-      background: url('/pool-unlog.png') #F6F7FB;
+      background: url('/img/pool-unlog.png') #F6F7FB;
       background-size: cover;
       position: relative;
       cursor: pointer;
@@ -511,7 +511,7 @@ export default {
     &-forbid {
       width: 1200px;
       height: 400px;
-      background: url('/pool-unlog.png') #F6F7FB;
+      background: url('/img/pool-unlog.png') #F6F7FB;
       background-size: cover;
       position: relative;
       cursor: pointer;
@@ -539,7 +539,7 @@ export default {
       position: relative;
       background: #fff;
       &-table {
-        background-image: url('/water-mark.png');
+        background-image: url('/img/water-mark.png');
         background-repeat: repeat;
         .stocklist-pool-thead {
           border-bottom: 1px solid #efefef;
@@ -723,7 +723,7 @@ export default {
         width: 1046px;
         &-unlog {
           height: 400px;
-          background: url('/chain-unlog.png');
+          background: url('/img/chain-unlog.png');
           background-size: cover;
           cursor: pointer;
           &-img {
@@ -740,7 +740,7 @@ export default {
         }
         &-forbid {
           height: 400px;
-          background: url('/chain-unlog.png');
+          background: url('/img/chain-unlog.png');
           background-size: cover;
           cursor: pointer;
           &-img {

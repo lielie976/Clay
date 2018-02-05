@@ -175,7 +175,7 @@ export default {
   position: relative;
   background: #fff;
   &-table {
-    background-image: url('/water-mark.png');
+    background-image: url('/img/water-mark.png');
     background-repeat: repeat;
     .stocklist-pool-thead {
       border-bottom: 1px solid #efefef;

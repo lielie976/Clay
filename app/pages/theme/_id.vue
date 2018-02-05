@@ -12,10 +12,11 @@ import themeTitle from '~/views/theme/themeTitle'
 import themeIntro from '~/views/theme/themeIntro'
 import themeModal from '~/views/theme/themeModal'
 import themeStock from '~/views/theme/themeStock'
+import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store, params, req }) {
-    await store.dispatch('theme/getThemeInfo', {
+    let info = await store.dispatch('theme/getThemeInfo', {
       id: params.id
     });
     try {
@@ -43,19 +44,13 @@ export default {
       intro: {},
       modal: false,
       id: params.id,
-      timer: 0
+      timer: 0,
+      info: info
     }
   },
   head () {
     return {
-      title: ``,
-      meta: [
-        {
-          hid: `description`,
-          name: 'description',
-          content: ``
-        }
-      ]
+      title: `${this.info.Name} | ${texts.slogan}`
     }
   },
   methods: {

@@ -30,6 +30,8 @@ import dingTable from '~/views/dingpan/dingTable'
 import banNews from '~/views/dingpan/slideBar/banNews'
 import banChange from '~/views/dingpan/slideBar/banChange'
 import shareMethodMixin from '~/mixins/shareMethodMixin'
+import texts from '~/utils/texts'
+
 export default {
   async asyncData ({ store, params, req }) {
     return {
@@ -117,14 +119,7 @@ export default {
   },
   head () {
     return {
-      title: ``,
-      meta: [
-        {
-          hid: `description`,
-          name: 'description',
-          content: ``
-        }
-      ]
+      title: `${texts.slogan}`
     }
   },
   watch: {
