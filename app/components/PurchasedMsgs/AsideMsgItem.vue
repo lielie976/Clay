@@ -1,6 +1,6 @@
 <template>
   <li class="purchased-msgs-item">
-    <a :href="`/article/${msg.Id}`" target="_blank" ref="title">{{msg.Title}}</a>
+    <a :href="`/article/${msg.Id}`" target="_blank" ref="title" class="purchased-msgs-item-title">{{msg.Title}}</a>
     <p class="purchased-msgs-item-bottom">
       <a class="purchased-msgs-item-subj" :href="`/subject/${msg.Subjects.Id}`" target="_blank" v-if="msg.Subjects">
         <img :src="msg.Subjects.Image">
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import shave from 'shave'
 import TimeWidget from '~/components/TimeWidget'
 
 export default {
@@ -22,6 +23,9 @@ export default {
   },
   props: {
     msg: Object
+  },
+  mounted () {
+    shave(this.$refs.title, 54)
   }
 }
 </script>
@@ -29,6 +33,11 @@ export default {
 <style lang="less" scoped>
 .purchased-msgs-item {
   padding: 16px 24px 16px 0;
+  &-title {
+    line-height: 24px;
+    max-height: 48px;
+    overflow: hidden;
+  }
   &:not(:last-child) {
     border-bottom: 1px solid #efefef;
   }

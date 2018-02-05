@@ -1,4 +1,4 @@
-import { getSubjectInfo, getSubjectPremiumMsgs, getSubjectTrialMsgs } from '~/api/premium'
+import { getSubjectInfo, getSubjectPremiumMsgs, getSubjectTrialMsgs, getSubjectHotMsgs } from '~/api/premium'
 import { refineApi } from '~/utils/helpers'
 
 export const state = () => ({
@@ -7,6 +7,7 @@ export const state = () => ({
     limit: 10
   },
   msgs: [],
+  hotMsgs: [],
   subjectInfo: {},
   trialMsgs: []
 })
@@ -27,6 +28,9 @@ export const mutations = {
   },
   changePage (state, page) {
     state.params.page = page
+  },
+  saveHotMsgs (state, msgs) {
+    state.hotMsgs = msgs
   }
 }
 
@@ -34,6 +38,12 @@ export const actions = {
   changePage ({ commit, state, dispatch }, page) {
     commit('changePage', page)
     dispatch('getMsgs', state.id)
+  },
+  async getHotMsgs ({ commit }, ids) {
+    const res = await getSubjectHotMsgs(ids)
+    if (res.code === 20000) {
+      commit('saveHotMsgs', refineApi(res.data.messages))
+    }
   },
   async getMsgs ({ commit, state }, id) {
     const res = await getSubjectPremiumMsgs(id, state.params)
@@ -68,5 +78,6 @@ export const actions = {
     await dispatch('getInfo', id)
     await dispatch('getMsgs', id)
     await dispatch('getTrialMsgs', id)
+    await dispatch('getHotMsgs')
   }
 }

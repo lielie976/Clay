@@ -1,11 +1,27 @@
+import { redirectPremiumSubject } from '~/utils/constants'
 import api from './index'
 import baoerApi from './baoer'
 
-export const getPurchasedMsgs = (params, headers) => baoerApi.get('/api/v2/pc/messages/paidList', { params, headers })
+export const getPurchasedMsgs = (params, headers) => baoerApi.get('/api/v2/pc/subjects/messages/paidList', {
+  params: {
+    sub_ids: Object.keys(redirectPremiumSubject).join(','),
+    ...params
+  },
+  headers
+})
 
 export const getSubjectPremiumMsgs = (id, params) => baoerApi.get(`/api/v2/pc/subjects/${id}/messages`, { params })
 
-export const getSubjectHotMsgs = (id, params, headers) => baoerApi.get(`/api/v2/pc/subjects/${id}/messages/hot`, { params, headers })
+export const getSubjectHotMsgs = ids => {
+  return baoerApi.get(`/api/v2/pc/subjects/messages/hot`, {
+    params: {
+      sub_ids: ids || Object.keys(redirectPremiumSubject).join(','),
+      page: 1,
+      limit: 10,
+      days: 30
+    }
+  })
+}
 
 export const getSubjectInfo = (id, headers) => baoerApi.get(`/api/v2/pc/subjects/${id}/info`, { headers })
 

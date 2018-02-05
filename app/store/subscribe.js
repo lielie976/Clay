@@ -62,13 +62,15 @@ export const mutations = {
   saveMessage (state, data) {
     const isSubscribable = getPath(data, 'FromSubject.IsSubscribable')
     const items = getPath(data, 'FromSubject.SubjSubscribeItems')
+    const remainingDays = getPath(data, 'FromSubject.RemainingDays')
     state.subjectItems.items = items || []
     if (isSubscribable && items && items.length) {
-      if (data.IsPremium && !data.IsPaid) {
+      if (data.IsPremium && !data.IsPaid && remainingDays === 0) {
         state.message = data
         state.selectedType = 'message'
+      } else {
+        state.selectedType = 'subject'
       }
-      state.selectedType = 'subject'
       state.subject = data.FromSubject
       state.subjectItems.index = items && (items.length - 1)
     } else if (data.IsPremium && !data.IsPaid) {
@@ -162,7 +164,7 @@ export const actions = {
       }
       try {
         const res = await buyMsgByBaodi(data, rootState.auth.headers)
-        commit('saveBalance', res.Balance)
+        commit('saveBalance', res.result.Balance)
         commit('changePayStatus', { status: 2 })
       } catch (err) {
         if (err.data.errcode === 40001) {

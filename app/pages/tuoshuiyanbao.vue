@@ -1,23 +1,18 @@
 <template>
-  <premium-subject :customization="customization">
-    <HotMsgs slot="hotMsgs" />
-  </premium-subject>
+  <premium-subject :customization="customization" />
 </template>
 
 <script>
 import PremiumSubject from '~/components/PremiumSubject'
-import HotMsgs from '~/components/HotMsgs/TuoShuiYanBao'
 import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
     await store.dispatch('premium/init', 581)
     await store.dispatch('purchasedMsgs/getPurchasedMsgs')
-    await store.dispatch('premiumHotMsgs/getHotMsgs', 581)
   },
   components: {
-    PremiumSubject,
-    HotMsgs
+    PremiumSubject
   },
   head () {
     return {
