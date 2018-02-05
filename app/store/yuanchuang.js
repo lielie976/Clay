@@ -66,7 +66,6 @@ export const actions = {
     })
   },
   getYuanchuangSubj ({ commit }, payload) {
-    commit('saveMsgs', { Messages: [] })
     return new Promise((resolve, reject) => {
       getYuanchuangSubj(payload.id, payload.params).then((res) => {
         commit('saveMsgs', res)

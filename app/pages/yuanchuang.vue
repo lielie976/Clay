@@ -95,18 +95,16 @@ import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
-    await Promise.all([
-      store.dispatch('yuanchuang/getTop'),
-      store.dispatch('yuanchuang/getLatest'),
-      store.dispatch('yuanchuang/getdayRank'),
-      store.dispatch('yuanchuang/getweekRank'),
-      store.dispatch('yuanchuang/getYuanchuangSubj', {
-        id: 657,
-        params: {
-          limit: 20
-        }
-      })
-    ])
+    await store.dispatch('yuanchuang/getTop')
+    await store.dispatch('yuanchuang/getLatest')
+    await store.dispatch('yuanchuang/getdayRank')
+    await store.dispatch('yuanchuang/getweekRank')
+    await store.dispatch('yuanchuang/getYuanchuangSubj', {
+      id: 657,
+      params: {
+        limit: 20
+      }
+    })
   },
   head () {
     return {
@@ -126,6 +124,19 @@ export default {
     hasOwnOriginal (ids) {
       return ids && ids.indexOf('396') > -1
     }
+  },
+  mounted () {
+    const { dispatch } = this.$store
+    dispatch('yuanchuang/getTop')
+    dispatch('yuanchuang/getLatest')
+    dispatch('yuanchuang/getdayRank')
+    dispatch('yuanchuang/getweekRank')
+    dispatch('yuanchuang/getYuanchuangSubj', {
+      id: 657,
+      params: {
+        limit: 20
+      }
+    })
   }
 }
 </script>
