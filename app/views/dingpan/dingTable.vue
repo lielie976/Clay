@@ -103,6 +103,7 @@ export default {
       }
     },
     startInterval () {
+      // console.log('金闪闪')
       this.getData()
       this.timer = setInterval(() => {
         this.getData()
@@ -112,6 +113,7 @@ export default {
       this.$emit('showGuide')
     },
     stopInterval () {
+      // console.log('没有金闪闪')
       clearInterval(this.timer)
     },
 

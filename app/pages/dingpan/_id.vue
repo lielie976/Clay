@@ -49,6 +49,7 @@ export default {
       svgHeight: 600,
       yidongtixing: true,
       show: false,
+      stopRefreshing: false,
       tabItems: [
         {
           index: 0,
@@ -228,6 +229,17 @@ export default {
           this.smallScreen = false;
         }
       };
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          this.stopRefreshing = false;
+          this.startInterval();
+          this.$refs.tab.startInterval();
+        } else {
+          this.stopRefreshing = true;
+          this.stopInterval();
+          this.$refs.tab.stopInterval()
+        }
+      });
     },
     changeYidong () {
       this.yidongtixing = !this.yidongtixing
