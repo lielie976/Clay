@@ -1,5 +1,5 @@
 <template>
-  <div class="article-content" ref="content" v-html="html"></div>
+  <div :class="['article-content', `${options.noSelect && 'no-select'}`]" ref="content" v-html="html"></div>
 </template>
 
 <script>
@@ -7,7 +7,8 @@ import URI from 'urijs'
 
 export default {
   props: {
-    html: String
+    html: String,
+    options: Object
   },
   methods: {
     lightGallery () {
@@ -55,11 +56,20 @@ export default {
           })
         }
       }
+    },
+    prevent () {
+      document.addEventListener('contextmenu', e => e.preventDefault())
+      document.addEventListener('selectstart', e => e.preventDefault())
+      document.addEventListener('copy', e => e.preventDefault())
+      document.addEventListener('keydown', e => {
+        if (e.ctrlKey || e.metaKey) e.preventDefault()
+      })
     }
   },
   mounted () {
     this.lightGallery()
     this.handleLinks(this.$refs.content)
+    this.prevent()
   }
 }
 </script>
@@ -68,6 +78,9 @@ export default {
 @import '../styles/variables.less';
 
 .article-content {
+  &.no-select {
+    user-select: none;
+  }
   a {
     // color: @mainColorRed;
     border-bottom: 1px solid @mainColorRed;

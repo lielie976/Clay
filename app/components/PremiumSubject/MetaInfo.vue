@@ -61,7 +61,7 @@ export default {
     content: '';
     position: absolute;
     top: 0;
-    right: 976px;
+    left: -1000px;
     height: 100%;
     width: 1000px;
     background: rgba( 53, 58, 71, 0.8);

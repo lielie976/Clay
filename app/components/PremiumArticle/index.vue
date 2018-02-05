@@ -1,7 +1,7 @@
 <template>
   <section class="main-container">
     <section class="main-container-left">
-      <article-content :html="data.Content" v-if="readable" />
+      <article-content :html="data.Content" :options="{noSelect: true}" v-if="readable" />
       <template v-else>
         <article-content :html="data.PreviewContent" />
         <div class="unlock-msg">
@@ -68,7 +68,7 @@ export default {
 }
 
 .unlock-msg {
-  text-align: center;  
+  text-align: center;
   color: #e6394d;
   font-size: 14px;
   margin: 64px 0;

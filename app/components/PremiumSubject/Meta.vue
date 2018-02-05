@@ -40,7 +40,7 @@ export default {
       content: '';
       position: absolute;
       top: 0;
-      left: 464px;
+      left: 100%;
       height: 100%;
       width: 1000px;
       background: rgba( 53, 58, 71, 0.95);

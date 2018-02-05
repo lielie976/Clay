@@ -67,7 +67,7 @@ export default {
     height: 100%;
   }
   &-subject-title {
-    // display: inline-block;
+    min-width: 210px;
     font-size: 24px;
     font-weight: bold;
     margin-right: 10px;
@@ -76,6 +76,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 120px;
     span {
       font-size: 16px;
       margin: 0 8px;
