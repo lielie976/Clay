@@ -86,6 +86,16 @@ export default {
     const { dispatch } = this.$store
     dispatch('external/getBaiduTTSToken')
     dispatch('settings/getTrending')
+    dispatch('market/getIndexes')
+    dispatch('market/getQuoteChange')
+    dispatch('market/getThermometer')
+    dispatch('settings/getTrending')
+    dispatch('zhutiku/getZhutikuRankAsc')
+    dispatch('zhutiku/getZhutikuRankDesc')
+    dispatch('yuanchuang/getTop')
+    dispatch('settings/getSettings')
+    dispatch('homeMsgs/getHotSubjects')
+    dispatch('homeMsgs/getMsgs')
     this.shortTimer = setInterval(() => {
       dispatch('market/getIndexes')
       dispatch('market/getQuoteChange')
