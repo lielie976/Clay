@@ -1,5 +1,5 @@
 <template>
-  <div class="stock-watch-item">
+  <div  @mouseleave="leaveStock(item)" @mouseenter="enterStock(item)" class="stock-watch-item">
     <span class="stock-watch-item-name">{{item.name}}</span>
     <span :class="color(item.px)">{{changeRate(item.px)}}</span>
   </div>
@@ -16,6 +16,12 @@ export default {
   },
   mixins: [shareMethodMixin],
   methods: {
+    leaveStock () {
+      this.$emit('leaveStock', this.item)
+    },
+    enterStock () {
+      this.$emit('enterStock', this.item)
+    }
   },
   mounted () {
   }
@@ -33,6 +39,7 @@ export default {
   border-left:2px solid #ADB4C7;
   font-size:12px;
   line-height: 12px;
+  cursor: pointer;
   &-name{
     margin-right: 10px;
   }

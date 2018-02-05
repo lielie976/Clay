@@ -19,12 +19,12 @@
             <span class="fenshi-title-price">当前价</span>
           </div>
           <div class="fenshi-choose">
-            <template v-if="chosenFenshi && chosenFenshi.length" >
-              <stock-watch-item :key="`fenshi`+item" :item="item" v-for="item in chosenFenshi" />
+            <template v-if="fenshiData && fenshiData.length" >
+              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in fenshiData" />
               <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i>
             </template>
           </div>
-          <fenshi :chartMode="chartMode" :fenshiData="fenshiData" />
+          <fenshi :hasHovered="hasHovered" :chartMode="chartMode" :fenshiData="fenshiData" />
         </div>
       </div>
     </div>
@@ -66,10 +66,18 @@ export default {
       chosenFenshi: [{
         name: '沪深300',
         symbol: '000300.SS',
+        hover: false,
         px: 0.6
       }],
+      hasHovered: false,
       chartMode: 'fenshi',
-      fenshiData: ['000300.SS']
+      fenshiData: [{
+        name: '沪深300',
+        symbol: '000300.SS',
+        hover: false,
+        px: 0.6
+      }],
+      highlight: 1
     };
   },
   mixins: [shareMethodMixin],
@@ -79,7 +87,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.fenshiData = ['000300.SS']
+      this.fenshiData = this.chosenFenshi
     }, 10);
   },
   methods: {
@@ -91,8 +99,39 @@ export default {
       })
       this.chartMode = item.target
     },
+    enterStock (item) {
+      item.hover = true
+      this.hasHovered = item.symbol
+    },
+    leaveStock (item) {
+      item.hover = false
+      this.hasHovered = false
+    },
     addStock () {
-      let data = ['000300.SS', '000777.SZ', '300104.SZ', '300168.SZ', '002142.SZ']
+      let data = [{
+        name: '沪深300',
+        symbol: '000300.SS',
+        hover: false,
+        px: 0.6
+      },
+      {
+        name: '中核科技',
+        symbol: '000777.SZ',
+        hover: false,
+        px: 0.6
+      },
+      {
+        name: '乐视网',
+        symbol: '300104.SZ',
+        hover: false,
+        px: 0.6
+      },
+      {
+        name: '万达信息',
+        symbol: '300168.SZ',
+        hover: false,
+        px: 0.6
+      }]
       let length = this.fenshiData.length
       if (length < data.length) {
         this.fenshiData = data.slice(0, length + 1)

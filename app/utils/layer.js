@@ -68,19 +68,19 @@ export const CsIndicatorTypeFuncs = {
 export const LinearIndicatorTypeFuncs = {
   line: function(params){
     var self = this;
-    if(params.color && self.style.linear_name_label){
-      let labelData = self.data_source.filtered_data_buckets[0][0]
-      Util.Draw.Fill(self.ctx, function(ctx){
-        ctx.rect(self.style.linear_label.left, Util.Coord.linearActual2Display(labelData[params.val_index], self.coord.y), self.style.linear_label.width,  self.style.linear_label.height)
-      }, params.color);
-      Util.Draw.Text(self.ctx, function(ctx){
-        ctx.textAlign = "center";
-        ctx.fillText(self.fenshiData[params.val_index-1],// 这里的名字以后要改 params.val_index-1是第几条线
-        self.style.linear_label.left + self.style.linear_label.width/2,
-        Util.Coord.linearActual2Display(labelData[params.val_index], self.coord.y)+(self.style.linear_label.font_size +self.style.linear_label.height)/2);
-      }, self.style.linear_label.font_color, self.style.linear_label.font_style);
-      // console.log(self.data_source.filtered_data_buckets[0][0], params)
-    }
+    // if(params.color && self.style.linear_name_label){
+    //   let labelData = self.data_source.filtered_data_buckets[0][0]
+    //   Util.Draw.Fill(self.ctx, function(ctx){
+    //     ctx.rect(self.style.linear_label.left, Util.Coord.linearActual2Display(labelData[params.val_index], self.coord.y), self.style.linear_label.width,  self.style.linear_label.height)
+    //   }, params.color);
+    //   Util.Draw.Text(self.ctx, function(ctx){
+    //     ctx.textAlign = "center";
+
+    //     ctx.fillText(self.fenshiData[params.val_index-1].name,// 这里的名字以后要改 params.val_index-1是第几条线
+    //     self.style.linear_label.left + self.style.linear_label.width/2,
+    //     Util.Coord.linearActual2Display(labelData[params.val_index], self.coord.y)+(self.style.linear_label.font_size +self.style.linear_label.height)/2);
+    //   }, self.style.linear_label.font_color, self.style.linear_label.font_style);
+    // }
 
     Util.Draw.Stroke(self.ctx, function(ctx){
       ctx.lineWidth = params.line_width || 1;

@@ -11,11 +11,11 @@ import { genDefaultEvents, bindEvents } from '~/utils/chartEvents.js'
 // import { fetchThemeMessage } from '~/api/theme';
 
 export default {
-  props: ['fenshiData', 'chartMode'],
+  props: ['fenshiData', 'chartMode', 'hasHovered'],
   watch: {
     fenshiData() {
       if (this.chartMode === 'fenshi') {
-        this.$store.dispatch('stockTrend/getTrend', this.fenshiData.join(',')).then(res => {
+        this.$store.dispatch('stockTrend/getTrend', this.fenshiData.map(i => i.symbol).join(',')).then(res => {
           this.trend = this.$store.state.stockTrend.trend.map(i => {
             i[0] *= 1000
             return i
@@ -27,7 +27,7 @@ export default {
     },
     chartMode (mode) {
       if (mode === 'fenshi') {
-        this.$store.dispatch('stockTrend/getTrend', this.fenshiData.join(',')).then(res => {
+        this.$store.dispatch('stockTrend/getTrend', this.fenshiData.map(i => i.symbol).join(',')).then(res => {
           this.trend = this.$store.state.stockTrend.trend.map(i => {
             i[0] *= 1000
             return i
@@ -37,15 +37,31 @@ export default {
         })
       } else if (mode === 'lishi') {
         this.removeCanvas(document.getElementById('XGBchart'))
-        this.$store.dispatch('stockTrend/getKline', this.fenshiData[0]).then(res => {
+        this.$store.dispatch('stockTrend/getKline', this.fenshiData[0].symbol).then(res => {
           this.kline = this.$store.state.stockTrend.kline
           this.initKline()
         })
       }
+    },
+    hasHovered(v) {
+      if (v) {
+        this.data_source.fields = this.data_source.fields.map((field, index) => {
+          console.log()
+          field.color = (field.name == v) ? `rgba(${this.lineColorList[index]},1)` : `rgba(${this.lineColorList[index]},0.2)`
+          return field
+        })
+      } else {
+        this.data_source.fields = this.data_source.fields.map((field, index) => {
+          field.color = `rgba(${this.lineColorList[index]},1)`
+          return field
+        })
+      }
+      console.log(this.data_source.fields)
+      this.rerender(true)
     }
   },
   beforeDestroy () {
-    this.clean()
+    // this.clean()
     this.removeCanvas(document.getElementById('XGBchart'))
   },
   computed: {
@@ -79,7 +95,8 @@ export default {
       data_source: null,
       coord: null,
       selectedDate: new Date(),
-      trendRate: null
+      trendRate: null,
+      lineColorList: ['0,0,0', '255,174,0', '194,145,242', '76,165,255', '61,207,238']
       // startDate: new Date().setHours(9, 30, 0, 0),
       // endDate: new Date().setHours(15, 30, 0, 0)
     }
@@ -94,9 +111,9 @@ export default {
         })
       })
       this.selectedDate = new Date(this.trendRate[0][0])
-      let lineColorList = ['#000', '#FFAE00', '#C291F2', '#4CA5FF', '#3DCFEE']
+      // let lineColorList = ['0,0,0', '255,174,0', '194,145,242', '76,165,255', '61,207,238']
       let fields = this.preClose.map((i, index) => {
-        return {name: i.symbol, type: 'line', as: 'mountain', t: 0, val_index: index + 1, color: lineColorList[index], line_width: 1}
+        return {name: i.symbol, type: 'line', as: 'mountain', t: 0, val_index: index + 1, color: `rgba(${this.lineColorList[index]},1)`, line_width: 1}
       })
       let pattern = {
         data_source: {
@@ -173,7 +190,7 @@ export default {
       this.Prepare(pattern)
 
       this.genStyle()
-      this.rerender()
+      this.rerender(true)
       this.events = genDefaultEvents.call(this)
       bindEvents.call(this)
     },
@@ -257,7 +274,7 @@ export default {
       this.Prepare(pattern)
 
       this.genStyle()
-      this.rerender()
+      this.rerender(true)
       this.events = genDefaultEvents.call(this)
       bindEvents.call(this)
     },
@@ -304,6 +321,7 @@ export default {
       this.style.padding.bottom_pos = this.origin_height - this.style.padding.bottom;
     },
     rerender (force) {
+      if (!force && +new Date() - this.state.ctx_clock <= 30) return;
       this.state.ready = 0;
       this.state.ctx_clock = +new Date();
       this.state.ready = 0;
@@ -653,12 +671,35 @@ export default {
       if (this.data_source.time_ranges){
         this.data_source.fields.forEach((item) => {
           LinearIndicatorTypeFuncs[item.type] && LinearIndicatorTypeFuncs[item.type].call(self, item);
+          this.drawDivLabel(item)
         });
       } else {
         this.data_source.fields.forEach((item) => {
-          debugger
           CsIndicatorTypeFuncs[item.type] && CsIndicatorTypeFuncs[item.type].call(self, item);
         });
+      }
+    },
+    drawDivLabel (params) {
+      if (params.color && this.style.linear_name_label) {
+        let labelData = this.data_source.filtered_data_buckets[0][0]
+        let d = document.createElement('div');
+        d.style = `position:absolute;display:inline-block;background:${params.color}`
+        d.setAttribute('class', 'stock-label');
+        d.innerHTML = `<span style=` + `"left:${this.style.linear_label.left};top:${chartCul.Coord.linearActual2Display(labelData[params.val_index], this.coord.y)};font-size:12px;"` + `>${this.fenshiData[params.val_index - 1].name}</span>`
+        console.log(d)
+        document.getElementById('XGBchart').appendChild(d)
+
+        // let labelData = self.data_source.filtered_data_buckets[0][0]
+        // Util.Draw.Fill(self.ctx, function(ctx){
+        //   ctx.rect(self.style.linear_label.left, Util.Coord.linearActual2Display(labelData[params.val_index], self.coord.y), self.style.linear_label.width,  self.style.linear_label.height)
+        // }, params.color);
+        // Util.Draw.Text(self.ctx, function(ctx){
+        //   ctx.textAlign = "center";
+
+        //   ctx.fillText(self.fenshiData[params.val_index-1].name,// 这里的名字以后要改 params.val_index-1是第几条线
+        //   self.style.linear_label.left + self.style.linear_label.width/2,
+        //   Util.Coord.linearActual2Display(labelData[params.val_index], self.coord.y)+(self.style.linear_label.font_size +self.style.linear_label.height)/2);
+        // }, self.style.linear_label.font_color, self.style.linear_label.font_style);
       }
     },
     drawAxis () {
@@ -880,6 +921,12 @@ export default {
   height: 400px;
   margin-left:0px;
   user-select: none;
+  position: relative;
+  .stock-label{
+    position: absolute;
+    display: inline-block;
+  }
 }
 </style>
+
 
