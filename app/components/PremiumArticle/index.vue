@@ -1,7 +1,7 @@
 <template>
-  <section class="main-container">
+  <section class="main-container premium-article">
     <section class="main-container-left">
-      <article-content :html="data.Content" :options="{noSelect: true}" v-if="readable" />
+      <article-content ref="content" :html="data.Content" v-if="readable" />
       <template v-else>
         <article-content :html="data.PreviewContent" />
         <div class="unlock-msg">
@@ -33,6 +33,7 @@ import LockedAsideBkj from '~/components/LockedAsideBkj'
 import ArticleContent from '~/components/ArticleContent'
 import BkjAsideList from '~/components/BkjAsideList'
 import StocksAsideList from '~/components/StocksAsideList'
+import axios from 'axios'
 
 export default {
   components: {
@@ -50,7 +51,22 @@ export default {
   methods: {
     unlock () {
       this.$store.dispatch('subscribe/toggleModal')
+    },
+    generateCypher () {
+      const userId = JSON.parse(localStorage.getItem('_xgb_userinfo') || {}).Id
+      if (!userId) return
+      axios.get(`https://api-prod.wallstreetcn.com/apiv1/anti_fake/image/gen?app_type=xgb&&backgroud_color_rgba=230,57,77,255&front_color_rgba=242,86,78,255&dx=8&dy=16&cipher=${userId}`)
+        .then((res) => {
+          const hash = res.data.data.cipher_hash
+          Array.prototype.slice.call(this.$refs.content.$refs.content.querySelectorAll('h2')).forEach((ele) => {
+            ele.style.background = `url('${hash}') no-repeat left 3px`
+            ele.style.backgroundSize = '8px 23px'
+          })
+        })
     }
+  },
+  mounted () {
+    this.generateCypher()
   }
 }
 </script>
@@ -81,6 +97,14 @@ export default {
     height: 48px;
     display: block;
     margin: 0 auto 12px;
+  }
+}
+</style>
+
+<style lang="less">
+.premium-article {
+  h2 {
+    padding-left: 15px;
   }
 }
 </style>

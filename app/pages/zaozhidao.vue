@@ -16,13 +16,13 @@ export default {
   },
   head () {
     return {
-      title: `机会早知道 | ${texts.slogan}`
+      title: `选股宝早知道 | ${texts.slogan}`
     }
   },
   data () {
     return {
       customization: {
-        msgListTitle: '早知道更新'
+        msgListTitle: '选股宝早知道更新'
       }
     }
   }
