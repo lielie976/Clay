@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       customization: {
-        msgListTitle: '研报更新'
+        msgListTitle: '脱水研报更新'
       }
     }
   }
