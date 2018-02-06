@@ -19,7 +19,8 @@ export default {
     HotMsgs,
     PurchasedMsgs
   },
-  async asyncData ({ store }) {
+  async asyncData ({ store, redirect }) {
+    if (!store.state.user.userInfo.isLogged) redirect('/')
     await store.dispatch('purchasedMsgs/getPurchasedMsgs')
     await store.dispatch('premium/getHotMsgs', '581,679')
   },
