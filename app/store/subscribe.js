@@ -139,7 +139,7 @@ export const actions = {
       pay_way: payload.type,
       return_url: payload.returnUrl,
       product_type: state.selectedType === 'message' ? 1 : 2,
-      product_id: Number(state.selectedType === 'message' ? state.message.Id : getters.subject.Id),
+      product_id: Number(state.selectedType === 'message' ? state.message.Id : state.subject.Id),
       subject_item_id: Number(getters.selectedSubjectItem.Id)
     }
     await createPayOrder(data, rootState.auth.headers).then((res) => {
