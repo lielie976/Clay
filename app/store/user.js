@@ -86,6 +86,7 @@ export const actions = {
         path: '/'
       });
     }
+
     localStorage.removeItem('_xgb_userinfo')
     return commit('saveUserInfo', {
       isLogged: false,
