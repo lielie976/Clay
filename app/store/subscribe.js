@@ -80,8 +80,8 @@ export const mutations = {
   },
   saveSubject (state, data) {
     const items = getPath(data, 'SubscribeItems')
-    if (!items || !items.length) return
     state.subject = data
+    if (!items || !items.length) return
     state.selectedType = 'subject'
     state.subjectItems = {
       index: items && (items.length - 1),

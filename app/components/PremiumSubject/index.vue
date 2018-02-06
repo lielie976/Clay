@@ -15,7 +15,6 @@
         <hot-msgs />
       </section>
     </section>
-
   </div>
 </template>
 

@@ -2,7 +2,7 @@
   <div class="premium-subject-meta">
     <meta-info :subject="subject" />
     <div class="premium-subject-meta-subscribe">
-      <subscribe-status  :data="subject" />
+      <subscribe-status :data="subject" />
     </div>
     <subscribe-form-with-modal />
   </div>
