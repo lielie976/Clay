@@ -44,10 +44,15 @@ export default {
           Cookies.remove('portrait', {domain: '.xuangubao.cn'})
         }
       }
+      if (!localStorage.getItem('_xgb_userinfo')) {
+        this.$store.dispatch('user/logOut')
+        this.$store.commit('auth/saveToken', null)
+      }
       this.$store.dispatch('user/saveAuth', {
         Token: Cookies.get('token'),
         nickname: Cookies.get('nickname')
       })
+      this.$store.commit('auth/saveToken', Cookies.get('token'))
     }
   }
 }
