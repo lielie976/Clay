@@ -9,10 +9,10 @@
 				</div>
 				<ul class="stock-list-content">
           <li class="stock-list-body" v-for="stock in stocks" :key="stock.Symbol">
-            <a 
+            <a
               :class="{
                 'stock-list-body-link': true,
-                [renderMarketColor(currentStock(stock.Symbol).last_px)]: true
+                [renderMarketColor(currentStock(stock.Symbol).px_change_rate)]: true
               }"
               :href="`/stock/${stock.Symbol}`"
               target="_blank"
