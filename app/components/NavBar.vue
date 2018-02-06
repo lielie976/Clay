@@ -55,6 +55,9 @@ export default {
     },
     logOut () {
       this.$store.dispatch('user/logOut')
+      setTimeout(() => {
+        location.reload()
+      }, 200);
     }
   }
 }
