@@ -1,31 +1,20 @@
 <template>
-  <widget-box title="已购精选" href="/purchased-message" subTitle="查看全部">
-    <div>
-      <template v-if="!hasLoggined">
-        <non-login />
-      </template>
-      <template v-else>
-        <ul class="aside-purchased-msgs"  v-if="msgs && msgs.length">
-          <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="msg" />
-        </ul>
-        <div v-else>
-          暂无已购精选
-        </div>
-      </template>
-    </div>
+  <widget-box title="已购精选" href="/purchased-message" subTitle="查看全部" v-if="hasLoggined">
+    <aside-msg-content :hasLoggined="hasLoggined" :msgs="msgs" />
+  </widget-box>
+  <widget-box title="已购精选" v-else>
+    <aside-msg-content :hasLoggined="hasLoggined" :msgs="msgs" />
   </widget-box>
 </template>
 
 <script>
-import NonLogin from '~/components/NonLogin'
 import WidgetBox from '~/components/WidgetBox'
-import MsgItem from './AsideMsgItem'
+import AsideMsgContent from './AsideMsgContent'
 
 export default {
   components: {
-    NonLogin,
     WidgetBox,
-    MsgItem
+    AsideMsgContent
   },
   props: {
     msgs: Array

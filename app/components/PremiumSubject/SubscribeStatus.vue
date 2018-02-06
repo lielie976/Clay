@@ -1,7 +1,7 @@
 <template>
   <div class="subscribe-status">
-    <template v-if="data.IsSubscribed && data.RemainingDays > 0">
-      <p class="subscribe-status-remaindate">只剩<span>{{data.RemainingDays}}</span>天</p>
+    <template v-if="hasLoggined && data.IsSubscribed && data.RemainingDays > 0">
+      <p class="subscribe-status-remaindate" v-if="data.RemainingDays <= 10">只剩<span>{{data.RemainingDays}}</span>天</p>
       <p class="subscribe-status-validdate">有效期：{{validDate(data.RemainingDays)}}</p>
       <a class="subscribe-status-action" @click="toggleModal">我要续订</a>
     </template>
@@ -37,6 +37,9 @@ export default {
       if (!this.data.SubscribeItems.length) return
       const max = this.data.SubscribeItems[this.data.SubscribeItems.length - 1]
       return max.OriginPrice - max.DiscountPrice
+    },
+    hasLoggined () {
+      return this.$store.state.user.userInfo.isLogged
     }
   }
 }

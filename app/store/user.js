@@ -16,7 +16,6 @@ export const mutations = {
 
 export const actions = {
   saveAuth ({ state, commit }, payload) {
-    console.log(payload)
     if (!payload.Token) return
     return commit('saveUserInfo', {
       isLogged: true,
