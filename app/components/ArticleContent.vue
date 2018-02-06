@@ -62,6 +62,7 @@ export default {
     },
     prevent () {
       if (!this.options.noSelect) return
+      if (process.env.NODE_ENV === 'development') return
       document.addEventListener('contextmenu', e => e.preventDefault())
       document.addEventListener('selectstart', e => e.preventDefault())
       document.addEventListener('copy', e => e.preventDefault())
