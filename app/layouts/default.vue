@@ -33,6 +33,17 @@ export default {
   methods: {
     refreshToken () {
       // console.log('refresh', Cookies.get('token'))
+      if (process.env.ENV === 'sit') {
+        if (Cookies.get('token') === '') {
+          Cookies.remove('token', {domain: '.xuangubao.cn'})
+        }
+        if (Cookies.get('nickname') === '') {
+          Cookies.remove('nickname', {domain: '.xuangubao.cn'})
+        }
+        if (Cookies.get('portrait') === '') {
+          Cookies.remove('portrait', {domain: '.xuangubao.cn'})
+        }
+      }
       this.$store.dispatch('user/saveAuth', {
         Token: Cookies.get('token'),
         nickname: Cookies.get('nickname')
