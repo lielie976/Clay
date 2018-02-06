@@ -8,7 +8,10 @@ import URI from 'urijs'
 export default {
   props: {
     html: String,
-    options: Object
+    options: {
+      default: {},
+      type: Object
+    }
   },
   methods: {
     lightGallery () {
@@ -58,6 +61,7 @@ export default {
       }
     },
     prevent () {
+      if (!this.options.noSelect) return
       document.addEventListener('contextmenu', e => e.preventDefault())
       document.addEventListener('selectstart', e => e.preventDefault())
       document.addEventListener('copy', e => e.preventDefault())
