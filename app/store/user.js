@@ -22,6 +22,26 @@ export const actions = {
       nickname: decodeURIComponent(payload.nickname)
     })
   },
+  checkUserState ({state, commit}) {
+    if (Cookies.get('token') === '') {
+      Cookies.remove('token', {
+        domain: '.xuangubao.cn',
+        path: '/'
+      });
+    }
+    if (Cookies.get('nickname') === '') {
+      Cookies.remove('nickname', {
+        domain: '.xuangubao.cn',
+        path: '/'
+      });
+    }
+    if (Cookies.get('nickname') === '') {
+      Cookies.remove('nickname', {
+        domain: '.xuangubao.cn',
+        path: '/'
+      });
+    }
+  },
   logOut ({ state, commit }) {
     if (process.env.ENV === 'production') {
       Cookies.remove('token', {
@@ -65,6 +85,7 @@ export const actions = {
         path: '/'
       });
     }
+    localStorage.removeItem('_xgb_userinfo')
     return commit('saveUserInfo', {
       isLogged: false,
       Token: '',
