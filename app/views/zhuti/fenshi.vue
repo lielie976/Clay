@@ -682,10 +682,11 @@ export default {
     drawDivLabel (params) {
       if (params.color && this.style.linear_name_label) {
         let labelData = this.data_source.filtered_data_buckets[0][0]
-        let d = document.createElement('div');
-        d.style = `position:absolute;display:inline-block;background:${params.color}`
+        let d = document.createElement('span');
+        let mtop = chartCul.Coord.linearActual2Display(labelData[params.val_index], this.coord.y) - 10
+        d.style = `cursor:pointer;text-align:center;color:#fff;position:absolute;display:inline-block;background:${params.color};left:${this.style.linear_label.left};top:${mtop}px;width:${this.style.padding.left - 2}px;font-size:12px;`
         d.setAttribute('class', 'stock-label');
-        d.innerHTML = `<span style=` + `"left:${this.style.linear_label.left};top:${chartCul.Coord.linearActual2Display(labelData[params.val_index], this.coord.y)};font-size:12px;"` + `>${this.fenshiData[params.val_index - 1].name}</span>`
+        d.innerHTML = `${this.fenshiData[params.val_index - 1].name}`
         console.log(d)
         document.getElementById('XGBchart').appendChild(d)
 
@@ -925,6 +926,7 @@ export default {
   .stock-label{
     position: absolute;
     display: inline-block;
+    text-align: center;
   }
 }
 </style>
