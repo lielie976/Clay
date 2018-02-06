@@ -704,6 +704,7 @@ export default {
       }
     },
     setCookie (json) {
+      localStorage.setItem('_xgb_userinfo', JSON.stringify(json.UserInfo))
       if (process.env.ENV === 'production') {
         Cookies.set('token', json.Token, {
           domain: '.xuangubao.cn',
@@ -735,11 +736,31 @@ export default {
         });
       }
     },
+    refreshToken () {
+      // console.log('refresh', Cookies.get('token'))
+      if (process.env.ENV === 'sit') {
+        if (Cookies.get('token') === '') {
+          Cookies.remove('token', {domain: '.xuangubao.cn'})
+        }
+        if (Cookies.get('nickname') === '') {
+          Cookies.remove('nickname', {domain: '.xuangubao.cn'})
+        }
+        if (Cookies.get('portrait') === '') {
+          Cookies.remove('portrait', {domain: '.xuangubao.cn'})
+        }
+      }
+      this.$store.dispatch('user/saveAuth', {
+        Token: Cookies.get('token'),
+        nickname: Cookies.get('nickname')
+      })
+      this.$store.commit('auth/saveToken', Cookies.get('token'))
+    },
     loginCb () {
-      this.success = false
+      this.refreshToken()
+      // this.success = false
       setTimeout(() => {
         location.replace(location.href)
-      }, 200)
+      }, 4)
     },
     check_Vcode_status () {
       let t = new Date();

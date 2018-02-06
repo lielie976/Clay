@@ -50,7 +50,7 @@ export default {
   },
   head () {
     return {
-      title: `${this.info.Name} | ${texts.slogan}`
+      title: `${this.info ? this.info.Name : ''} | ${texts.slogan}`
     }
   },
   methods: {
