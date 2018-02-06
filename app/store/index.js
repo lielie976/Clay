@@ -14,7 +14,7 @@ export const actions = {
         nickname: cookies.get('nickname')
       })
       commit('auth/saveToken', token)
+      await dispatch('subscribe/getBalance')
     }
-    await dispatch('subscribe/getBalance')
   }
 }
