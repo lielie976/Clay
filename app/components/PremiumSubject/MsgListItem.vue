@@ -18,8 +18,7 @@
           <p>{{formatDate(msg.CreatedAt * 1000, 'MM月DD日')}}</p>
           <p>{{isStock(msg) || '脱水研报'}}</p>
         </div> -->
-        <!-- <img src="/img/tuo-shui-ge-gu-msg.png" :alt="msg.Title"> -->
-        <img  src="/img/tuo-shui-yan-bao-msg.png">
+        <img :alt="msg.Title" :src="`${ msg.PcImage.trim() || msg.Image.trim() || '/img/tuo-shui-yan-bao-msg.png' }`">
       </div>
       <div class="premium-subject-list-item-content">
         <h3 class="premium-subject-list-item-title">
