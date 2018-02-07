@@ -7,7 +7,7 @@
         class="trial-msg"
       >
         <a :href="`/article/${msg.Id}`" target="_blank">
-          <img :src="`${msg.Image || '/img/tuo-shui-yan-bao-msg.png'}`" alt="试读文章配图" class="trial-msg-img">
+          <img :src="`${msg.Image.trim() || msg.Image.trim() || '/img/tuo-shui-yan-bao-msg.png'}`" alt="试读文章配图" class="trial-msg-img">
           <div class="trial-msg-title">
             <span ref="title">{{ msg.Title }}</span>
             <div class="trial-msg-flag">试读</div>
