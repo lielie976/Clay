@@ -59,6 +59,7 @@ export default {
   }
   &-title {
     font-size: 28px;
+    font-weight: bold;
     line-height: 40px;
     max-height: 80px;
     overflow: hidden;

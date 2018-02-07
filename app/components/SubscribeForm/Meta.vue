@@ -32,7 +32,7 @@
     <template v-else-if="data.selectedType === 'message'">
       <img class="subscribe-form-meta-image" :src="message.Image" v-if="message.Image" />
       <div class="subscribe-form-meta-info">
-        <h2>{{message.Title}}</h2>
+        <h2 ref="msgTitle">{{message.Title}}</h2>
         <template v-if="data.selectedType">
           <div class="subscribe-form-meta-info-price">
             <template v-if="data.payStatus === 0">
@@ -55,6 +55,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import shave from 'shave'
 
 export default {
   props: {
@@ -72,6 +73,11 @@ export default {
     },
     message () {
       return this.data.message
+    }
+  },
+  mounted () {
+    if (this.$refs.msgTitle) {
+      shave(this.$refs.msgTitle, 54)
     }
   }
 }
@@ -96,18 +102,19 @@ export default {
   position: relative;
   display: flex;
   padding-bottom: 16px;
-  border-bottom: 2px dashed #ccc;
+  border-bottom: 1px dashed #ccc;
   &-image {
     width: 96px;
     height: 96px;
+    margin-right: 16px;
   }
   &-info {
-    padding: 0 16px;
+    padding-right: 16px;
     h2 {
       font-size: 20px;
       color: @mainFontColor;
       line-height: 27px;
-      margin-top: 6px;
+      margin: 4px 0;
     }
     &-time {
       line-height: 1;

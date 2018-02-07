@@ -39,7 +39,7 @@ export default {
 .xgb-tools {
   position: fixed;
   right: 40px;
-  bottom: 0px;
+  bottom: 60px;
   cursor: pointer;
   transition: .3s;
 }

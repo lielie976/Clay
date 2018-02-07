@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="meta-container" :style="{'background-image': `url(${this.subscribeStore.subject.PcImage})`}">
+    <div class="meta-container" >
+      <div class="meta-bg" :style="{'background-image': `url(${this.subscribeStore.subject.PcImage})`}">
+      </div>
       <premium-subject-meta :subject="subscribeStore.subject" />
     </div>
     <section class="main-container">
@@ -57,12 +59,21 @@ export default {
   margin: 24px auto;
 }
 .meta-container {
+  position: relative;
+  overflow: hidden;
+}
+.meta-bg {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
   overflow: hidden;
   min-height: 296px;
   min-width: 1200px;
+  width: 100%;
+  height: 110%;
+  position: absolute;
+  filter: blur(5px);
+  margin: -5px -5px;
 }
 </style>
 

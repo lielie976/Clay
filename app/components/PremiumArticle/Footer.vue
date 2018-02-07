@@ -1,28 +1,32 @@
 <template>
   <footer class="premium-article-footer" v-if="show">
     <section class="main-container">
-      <h2 class="premium-article-footer-subject-title">{{data.FromSubject.Title}}</h2>
-      <div class="premium-article-footer-subject-subscribecount">
-        <img src="/img/subscribe-icon.png">
-        <span>{{getCNPriceNum(data.FromSubject.SubscribeCount, true)}}</span>
-        <span>订阅</span>
+      <div class="left">
+        <h2 class="premium-article-footer-subject-title">{{data.FromSubject.Title}}</h2>
+        <div class="premium-article-footer-subject-subscribecount">
+          <img src="/img/subscribe-icon.png">
+          <span>{{getCNPriceNum(data.FromSubject.SubscribeCount, true)}}</span>
+          <span>订阅</span>
+        </div>
+        <div class="premium-article-footer-subject-more">
+          <a :href="`/subject/${data.FromSubject.Id}`">了解更多</a><i class="iconfont icon-xiangyou"></i>
+        </div>
       </div>
-      <div class="premium-article-footer-subject-more">
-        <a :href="`/subject/${data.FromSubject.Id}`">了解更多</a><i class="iconfont icon-xiangyou"></i>
+      <div class="right">
+        <div class="premium-article-footer-subject-subscribe">
+          <p>
+            <span class="price"><small>¥</small>432.00</span>
+            <span class="text">起</span>
+          </p>
+          <p>
+            <span class="text">包年/月/年立省</span>
+            <span class="discount">1843.20</span>
+          </p>
+        </div>
+        <a class="premium-article-footer-subject-subscribe-action" @click="toggleModal">
+          我要{{data.FromSubject.RemainingDays > 0 ? '续订' : '订阅'}}
+        </a>
       </div>
-      <div class="premium-article-footer-subject-subscribe">
-        <p>
-          <span class="price"><small>¥</small>432.00</span>
-          <span class="text">起</span>
-        </p>
-        <p>
-          <span class="text">包年/月/年立省</span>
-          <span class="discount">1843.20</span>
-        </p>
-      </div>
-      <a class="premium-article-footer-subject-subscribe-action" @click="toggleModal">
-        我要{{data.FromSubject.RemainingDays > 0 ? '续订' : '订阅'}}
-      </a>
     </section>
     <div class="premium-article-footer-close" @click="show = false">
       <i class="iconfont icon-guanbiduihuakuang"></i>
@@ -65,9 +69,21 @@ export default {
     display: flex;
     align-items: center;
     height: 100%;
+    & > div {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    .left {
+      h2, div {
+        flex: 1;
+      }
+    }
+    .right {
+      justify-content: flex-end;
+    }
   }
   &-subject-title {
-    min-width: 210px;
     font-size: 24px;
     font-weight: bold;
     margin-right: 10px;
@@ -76,7 +92,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 120px;
     span {
       font-size: 16px;
       margin: 0 8px;
@@ -86,7 +101,6 @@ export default {
     flex-basis: 450px;
     font-size: 14px;
     color: #f2564e;
-    margin-left: 24px;
     a {
       color: #f2564e;
     }

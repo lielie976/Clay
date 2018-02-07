@@ -94,7 +94,7 @@ export default {
     transition: 0.4s;
     margin-top: 15px;
     &:hover {
-      box-shadow: 0 0 8px 0 rgba(29, 33, 38, 0.1);
+      box-shadow: 0 0 8px 0 rgba(29, 33, 38, 0.2);
     }
   }
   &-headertime {
@@ -153,6 +153,7 @@ export default {
     line-height: 27px;
     color: #333;
     margin-bottom: 6px;
+    font-weight: bold;
   }
   &-summary {
     flex: 1;
