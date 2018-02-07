@@ -53,6 +53,7 @@ export default {
       this.$store.dispatch('subscribe/toggleModal')
     },
     generateCypher () {
+      if (!this.$refs.content) return
       const userId = JSON.parse(localStorage.getItem('_xgb_userinfo') || {}).Id
       if (!userId) return
       axios.get(`https://api-prod.wallstreetcn.com/apiv1/anti_fake/image/gen?app_type=xgb&&backgroud_color_rgba=230,57,77,255&front_color_rgba=242,86,78,255&dx=8&dy=16&cipher=${userId}`)
@@ -93,8 +94,7 @@ export default {
     cursor: pointer;
   }
   img {
-    width: 40px;
-    height: 48px;
+    height: 40px;
     display: block;
     margin: 0 auto 12px;
   }
@@ -102,9 +102,11 @@ export default {
 </style>
 
 <style lang="less">
-.premium-article {
+.premium-article .article-content {
   h2 {
     padding-left: 15px;
+    font-weight: bold;
+    font-size: 20px;
   }
 }
 </style>

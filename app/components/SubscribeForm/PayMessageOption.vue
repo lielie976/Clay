@@ -7,6 +7,7 @@
   >
     <div class="subscribe-message-option-day">单篇</div>
     <div class="subscribe-message-option-price">￥{{data.message.Price}}</div>
+    <div class="subscribe-subject-option-badge"></div>
   </div>
 </template>
 
@@ -47,14 +48,33 @@ export default {
     .subscribe-message-option-discount span {
       color: #e6394d;
     }
-    &::after {
+    .subscribe-subject-option-badge {
       position: absolute;
-      content: '';
       top: 0;
       right: 0;
       border: 10px solid #e6394d;
       border-left-color: transparent;
       border-bottom-color: transparent;
+      &::before {
+        content: '';
+        position: absolute;
+        top: -4px;
+        right: -5px;
+        width: 5px;
+        height: 1px;
+        background-color: #fff;
+        transform: rotate(45deg);
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        top: -5px;
+        right: -9px;
+        width: 6px;
+        height: 1px;
+        background-color: #fff;
+        transform: rotate(-45deg);
+      }
     }
   }
   &-day {

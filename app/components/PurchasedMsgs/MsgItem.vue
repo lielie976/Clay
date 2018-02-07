@@ -3,7 +3,7 @@
     <a :href="`/article/${msg.Id}`" target="_blank">{{msg.Title}}</a>
     <p class="purchased-msgs-item-bottom">
       <a class="purchased-msgs-item-subj" :href="`/subject/${msg.Subjects.Id}`" target="_blank" v-if="msg.Subjects">
-        <!-- <img src="/img/tuoshui-banner.jpg"> -->
+        <img :src="msg.Subjects.Image">
         {{msg.Subjects.Title}}
       </a>
       <span class="purchased-msgs-item-time">
@@ -28,7 +28,7 @@ export default {
 
 <style lang="less" scoped>
 .purchased-msgs-item {
-  padding: 16px 24px 16px 0;
+  padding: 16px 48px 16px 0;
   a {
     font-weight: 500;
   }
