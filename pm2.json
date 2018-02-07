@@ -1,7 +1,7 @@
 {
   "apps": [{
     "name": "Clay",
-    "script": "server.js",
+    "script": "server/index.js",
     "instances": "max",
     "exec_mode" : "cluster",
     "error_file": "logs/Clay-err.log",
