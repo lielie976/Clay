@@ -68,6 +68,9 @@ export default {
   },
   mounted () {
     this.generateCypher()
+    if (!this.$store.state.subscribe.balance) {
+      this.$store.dispatch('subscribe/getBalance')
+    }
   }
 }
 </script>
