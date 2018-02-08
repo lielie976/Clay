@@ -1,9 +1,9 @@
 <template>
-  <section class="ztk-jinrifengkou-container">
+  <section class="ztk-jinrifengkou-container" v-if="trending && trending.length">
     <widget-box title="今日盘中风口">
       <section class="ztk-jinrifengkou" id="ztk-jinrifengkou">
         <div class="ztk-jinrifengkou-content" v-for="(item, index) in trending" :key="item.plate_id">
-          <div 
+          <div
             :class="{
               'ztk-jinrifengkou-title': true,
               'ztk-jinrifengkou-title-main': index <= 2
