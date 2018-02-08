@@ -31,11 +31,19 @@ import texts from '~/utils/texts'
 
 export default {
   async asyncData ({ store }) {
-    await Promise.all([
-      store.dispatch('zhutiku/getZhutikuRankAsc'),
-      store.dispatch('zhutiku/getZhutikuRankDesc'),
-      store.dispatch('settings/getSettings')
-    ])
+    try {
+      await Promise.all([
+        store.dispatch('zhutiku/getZhutikuRankAsc'),
+        store.dispatch('zhutiku/getZhutikuRankDesc')
+      ])
+    } catch (err) {
+      console.log(err)
+    }
+    try {
+      await store.dispatch('settings/getSettings')
+    } catch (err) {
+      console.log(err)
+    }
   },
   head () {
     return {

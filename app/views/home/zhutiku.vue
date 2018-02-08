@@ -1,19 +1,20 @@
 <template>
-  <section class="home-ztk-container">
+  <section class="home-ztk-container" v-if="zhutiku && zhutiku.length">
     <section class="home-ztk" id="home-ztk">
-      <a 
+      <a
         :class="{
           'home-ztk-content': true,
           [renderMarketColor(z.pcp)]: true
         }"
         :href="`/theme/${z.plate_id}`"
         target="_blank"
-        v-for="z in zhutiku":key="z.plate_id"
+        v-for="z in zhutiku"
+        :key="z.plate_id"
       >
         <div class="home-ztk-title" :title="z.plate_name">{{ z.plate_name | truncate(7, '...') }}</div>
         <div class="home-ztk-rate">{{ z.pcp | numToRate}}</div>
       </a>
-      
+
       <a class="home-ztk-more" href="/zhutiku" target="_blank">
         <i class="icon-xiangyou iconfont"></i>
       </a>

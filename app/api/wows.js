@@ -21,7 +21,7 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use((response) => {
-  if (response.data.errcode) {
+  if (response.data.code !== 200) {
     return Promise.reject(response)
   }
   return response.data
