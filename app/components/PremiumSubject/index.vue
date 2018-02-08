@@ -50,6 +50,11 @@ export default {
   },
   props: {
     customization: Object
+  },
+  mounted () {
+    if (!this.$store.state.subscribe.balance) {
+      this.$store.dispatch('subscribe/getBalance')
+    }
   }
 }
 </script>
