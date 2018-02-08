@@ -23,7 +23,7 @@
             </template>
             <template v-else>
               <!-- 在成功或者失败时只显示需支付的金额 -->
-              <span v-if="priceNeededToPay > 0" class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
+              <span v-if="priceNeededToPay && priceNeededToPay > 0" class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
             </template>
           </div>
         </template>
@@ -44,7 +44,7 @@
               <span class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
             </template>
             <template v-else>
-              <span v-if="priceNeededToPay > 0" class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
+              <span v-if="priceNeededToPay && priceNeededToPay > 0" class="subscribe-form-meta-info-price-content">￥{{priceNeededToPay}}</span>
             </template>
           </div>
         </template>
