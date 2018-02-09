@@ -1,6 +1,8 @@
 <template>
   <div class="premium-subject-meta">
-    <meta-info :subject="subject" />
+    <div class="premium-subject-meta-info">
+      <meta-info :subject="subject" />
+    </div>
     <div class="premium-subject-meta-subscribe">
       <subscribe-status :data="subject" />
     </div>
@@ -26,15 +28,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.premium-subject-meta-info {
+  position: relative;
+  flex: 2;
+  background: rgba( 53, 58, 71, 0.8);
+  min-height: 296px;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1000px;
+    height: 100%;
+    width: 1000px;
+    background: rgba( 53, 58, 71, 0.8);
+  }
+}
 .premium-subject-meta {
   display: flex;
-  width: 1440px;
+  width: 1200px;
   margin: 0 auto;
   color: #fff;
   min-height: 296px;
   &-subscribe {
     position: relative;
-    flex: 0 0 464px;
+    flex: 1;
     background: rgba( 53, 58, 71, 0.95);
     &::after {
       content: '';
@@ -44,15 +61,6 @@ export default {
       height: 100%;
       width: 1000px;
       background: rgba( 53, 58, 71, 0.95);
-    }
-  }
-}
-
-@media screen and (max-width: 1440px) {
-  .premium-subject-meta {
-    width: 1200px;
-    &-subscribe {
-      flex: 1;
     }
   }
 }

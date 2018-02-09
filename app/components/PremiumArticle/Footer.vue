@@ -126,6 +126,7 @@ export default {
     }
   }
   &-subject-subscribe-action {
+    display: block;
     width: 256px;
     height: 48px;
     line-height: 48px;

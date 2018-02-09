@@ -1,23 +1,23 @@
 <template>
-  <div class="premium-subject-meta-info">
-    <h1 class="premium-subject-meta-info-title">
+  <div class="subscribe-info">
+    <h1 class="subscribe-info-title">
       {{subject.Title}}
       <img src="/img/subscribe-icon.png">
-      <span class="premium-subject-meta-info-count">{{subject.SubscribeCount}}人订阅</span>
+      <span class="subscribe-info-count">{{subject.SubscribeCount}}人订阅</span>
     </h1>
-    <section class="premium-subject-meta-info-detail">
+    <section class="subscribe-info-detail">
       <h3>简介</h3>
       <p>{{subject.Introduction}}</p>
     </section>
-    <section class="premium-subject-meta-info-detail"  v-if="showAll">
+    <section class="subscribe-info-detail"  v-if="showAll">
       <h3>能力圈</h3>
       <div><pre class="normal-pre-text">{{specialty}}</pre></div>
     </section>
-    <section class="premium-subject-meta-info-detail"  v-if="showAll">
+    <section class="subscribe-info-detail"  v-if="showAll">
       <h3>更新频率</h3>
       <p>{{subject.UpdateFrequency}}</p>
     </section>
-    <span class="premium-subject-meta-info-toggle" @click="showAll = !showAll">
+    <span class="subscribe-info-toggle" @click="showAll = !showAll">
       <template v-if="!showAll">
         展开<i class="iconfont icon-xiangxia"></i>
       </template>
@@ -49,23 +49,10 @@ export default {
 <style lang="less" scoped>
 @import '../../styles/variables.less';
 
-.premium-subject-meta-info {
+.subscribe-info {
   position: relative;
-  flex: 0 0 976px;
-  background: rgba( 53, 58, 71, 0.8);
-  padding: 56px 72px 24px 160px;
-  @media screen and (max-width: 1440px) {
-    flex: 1;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -1000px;
-    height: 100%;
-    width: 1000px;
-    background: rgba( 53, 58, 71, 0.8);
-  }
+  height: 100%;
+  padding: 56px 72px 24px 0;
   &-title {
     font-size: 36px;
     line-height: 36px;
