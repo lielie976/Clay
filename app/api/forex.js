@@ -4,7 +4,7 @@ import config from '~/conf'
 
 const api = axios.create({
   baseURL: config.FOREX_API,
-  timeout: 60 * 1000
+  timeout: 10 * 1000
 })
 
 api.interceptors.request.use((config) => {
