@@ -50,6 +50,9 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      if (isClient) {
+        config.entry.vendor.push('babel-polyfill')
+      }
       config.plugins.push(
         new webpack.DefinePlugin({
           CONFIG: JSON.stringify(require('./config'))

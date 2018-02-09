@@ -5,7 +5,7 @@
   "author": "troywith77 <ruitang307@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "cross-env ENV=sit node server/index.js",
+    "dev": "cross-env ENV=sit HOST=0.0.0.0 node server/index.js",
     "build": "ENV=production nuxt build",
     "build:sit": "ENV=sit nuxt build",
     "build:stage": "ENV=stage nuxt build",

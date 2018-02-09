@@ -1,14 +1,18 @@
 <template>
   <div class="subscribe-status">
     <template v-if="hasLoggined && data.IsSubscribed && data.RemainingDays > 0">
-      <p class="subscribe-status-remaindate" v-if="data.RemainingDays <= 10">只剩<span>{{data.RemainingDays}}</span>天</p>
-      <p class="subscribe-status-validdate">有效期：{{validDate(data.RemainingDays)}}</p>
-      <a class="subscribe-status-action" @click="toggleModal">我要续订</a>
+      <div class="subscribe-status-inner">
+        <p class="subscribe-status-remaindate" v-if="data.RemainingDays <= 10">只剩<span>{{data.RemainingDays}}</span>天</p>
+        <p class="subscribe-status-validdate">有效期：{{validDate(data.RemainingDays)}}</p>
+        <a class="subscribe-status-action" @click="toggleModal">我要续订</a>
+      </div>
     </template>
     <template v-else>
-      <p class="subscribe-status-price"><small id="rmb">￥</small>{{minimumPrice}} <small>起</small></p>
-      <p class="subscribe-status-discount">包年/月/年立省 {{maximumDiscount | toFixed(2)}}</p>
-      <a class="subscribe-status-action" @click="toggleModal">我要订阅</a>
+      <div class="subscribe-status-inner">
+        <p class="subscribe-status-price"><small id="rmb">￥</small>{{minimumPrice}} <small>起</small></p>
+        <p class="subscribe-status-discount">包年/月/年立省 {{maximumDiscount | toFixed(2)}}</p>
+        <a class="subscribe-status-action" @click="toggleModal">我要订阅</a>
+      </div>
     </template>
   </div>
 </template>
@@ -52,8 +56,11 @@ export default {
   display: flex;
   height: 100%;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   padding-top: 70px;
+  &-inner {
+    text-align: center
+  }
   &-price {
     font-size: 36px;
     line-height: 36px;
@@ -71,6 +78,7 @@ export default {
     margin: 8px 0 24px;
   }
   &-action {
+    display: block;
     width: 256px;
     height: 48px;
     line-height: 48px;

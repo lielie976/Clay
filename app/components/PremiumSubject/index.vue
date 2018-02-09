@@ -66,6 +66,7 @@ export default {
 .meta-container {
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 .meta-bg {
   background-repeat: no-repeat;
@@ -74,8 +75,8 @@ export default {
   overflow: hidden;
   min-height: 296px;
   min-width: 1200px;
-  width: 100%;
-  height: 110%;
+  width: 105%;
+  height: 105%;
   position: absolute;
   filter: blur(5px);
   margin: -5px -5px;
