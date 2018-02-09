@@ -4,7 +4,7 @@ import config from '~/conf'
 
 const api = axios.create({
   baseURL: config.WOWS_BAOER_API,
-  timeout: 60 * 1000
+  timeout: 15 * 1000
 })
 
 api.interceptors.request.use((config) => {
