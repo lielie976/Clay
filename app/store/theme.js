@@ -179,7 +179,6 @@ export const actions = {
   },
   getGoodBad ({ state, commit }, payload) {
     return fetchGoodBad({plateId: payload.plateId, from_time: payload.from_time, end_time: payload.end_time}).then(res => {
-      console.log(res)
       // console.log(res.data.items[id].items)
       commit('setGoodBad', res.data.messages)
     })
