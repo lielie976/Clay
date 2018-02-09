@@ -1,34 +1,61 @@
 <template>
-  <div class="chart" id="XGBchart">
+  <div class="XGBchart-container">
+    <div @click="clickDelegate" class="chart" id="XGBchart">
+      <!--明天用vue吧label重写，z-index放高，添加时间，循环位置的时候用clone对象操作-->
+
+    </div>
+    <template v-if="chartMode == 'fenshi' && fenshiLabel && fenshiLabel.length">
+      <span @mouseenter="enterLabel(item)" @mouseleave="leaveLabel(item)" v-for="item in fenshiLabel" class="fenshi-stock-label" :symbol="item.symbol"
+      :style="{'backgroundColor': item.color,'left': item.pos.left +'px', 'top': item.pos.top +'px', width: item.width +'px'}">{{item.text}}</span>
+     </template>
   </div>
 </template>
 <script>
-/* eslint-disable no-debugger, camelcase, space-before-function-paren, space-before-blocks, curly, eqeqeq */
+/* eslint-disable no-debugger, camelcase, space-before-function-paren, space-before-blocks, curly, eqeqeq, no-unused-vars */
 import chartUtil from '~/utils/chartUtils'
 import chartCul from '~/utils/chartCul'
 import {LinearIndicatorTypeFuncs, CsIndicatorTypeFuncs} from '~/utils/layer.js'
-import { genDefaultEvents, bindEvents } from '~/utils/chartEvents.js'
+import { genDefaultEvents, bindEvents, removeEvents } from '~/utils/chartEvents.js'
+import format from 'date-fns/format'
+import poolHelper from '~/utils/poolHelper'
 // import { fetchThemeMessage } from '~/api/theme';
 
 export default {
-  props: ['fenshiData', 'chartMode', 'hasHovered'],
+  props: ['fenshiData', 'chartMode', 'hasHovered', 'startTongji', 'lishiStock', 'fenxiStock'],
   watch: {
     fenshiData() {
+      this.changingData = true
       if (this.chartMode === 'fenshi') {
         this.$store.dispatch('stockTrend/getTrend', this.fenshiData.map(i => i.symbol).join(',')).then(res => {
-          this.trend = this.$store.state.stockTrend.trend.map(i => {
+          this.trend = JSON.parse(JSON.stringify(this.$store.state.stockTrend.trend)).map(i => {
             i[0] *= 1000
             return i
           })
+          console.log(this.$store.state.stockTrend.trend)
+          console.log(this.$store.state.zhutiTrend.trend)
           this.preClose = this.$store.state.stockTrend.preValue
           this.initFenshi()
         })
       }
+      this.changingData = false
+    },
+    startTongji (v) {
+      if (v) {
+        removeEvents.call(this, document.getElementById('XGBchart'))
+        this.events = genDefaultEvents.call(this)
+        bindEvents.call(this)
+        this.genCtx()
+      } else {
+        this.events = genDefaultEvents.call(this)
+        bindEvents.call(this)
+        this.genCtx()
+      }
+      this.rerender(true)
     },
     chartMode (mode) {
       if (mode === 'fenshi') {
         this.$store.dispatch('stockTrend/getTrend', this.fenshiData.map(i => i.symbol).join(',')).then(res => {
-          this.trend = this.$store.state.stockTrend.trend.map(i => {
+          this.trend = JSON.parse(JSON.stringify(this.$store.state.stockTrend.trend)).map(i => {
             i[0] *= 1000
             return i
           })
@@ -37,22 +64,73 @@ export default {
         })
       } else if (mode === 'lishi') {
         this.removeCanvas(document.getElementById('XGBchart'))
-        this.$store.dispatch('stockTrend/getKline', this.fenshiData[0].symbol).then(res => {
-          this.kline = this.$store.state.stockTrend.kline
+        let pre = this.$store.state.zhutiTrend.preValue
+        this.kline = JSON.parse(JSON.stringify(this.$store.state.zhutiTrend.kline)).map(i => {
+          i = i.map((item, index) => {
+            if (index == 0) {
+              item *= 1000
+            } else {
+              item = item / pre.pre_close_px - 1
+            }
+            return item
+          })
+          if (this.lishiStock.length == 1) {
+            return i
+          } else {
+            return i.slice(0, 1)
+          }
+        })
+        this.$store.dispatch('stockTrend/getKline', this.lishiStock.map(i => i.symbol)).then(res => {
+          this.mainStockkline = JSON.parse(JSON.stringify(this.$store.state.stockTrend.kline))
+          this.initKline()
+        })
+      } else if (mode === 'fenxi') {
+        // this.removeCanvas(document.getElementById('XGBchart'))
+        // this.$store.dispatch('stockTrend/getKline', this.lishiStock[0].symbol).then(res => {
+        //   this.mainStockkline = JSON.parse(JSON.stringify(this.$store.state.stockTrend.kline))
+        //   this.initFenxi()
+        // })
+      }
+    },
+    lishiStock () {
+      if (this.chartMode === 'lishi') {
+        this.removeCanvas(document.getElementById('XGBchart'))
+        let pre = this.$store.state.zhutiTrend.preValue
+        this.kline = JSON.parse(JSON.stringify(this.$store.state.zhutiTrend.kline)).map(i => {
+          i = i.map((item, index) => {
+            if (index == 0) {
+              item *= 1000
+            } else {
+              item = item / pre.pre_close_px - 1
+            }
+            return item
+          })
+          if (this.lishiStock.length == 1) {
+            return i
+          } else {
+            return i.slice(0, 1)
+          }
+        })
+        this.$store.dispatch('stockTrend/getKline', this.lishiStock.map(i => i.symbol)).then(res => {
+          this.mainStockkline = JSON.parse(JSON.stringify(this.$store.state.stockTrend.kline))
           this.initKline()
         })
       }
     },
     hasHovered(v) {
+      if (this.changingData) return
       if (v) {
         this.data_source.fields = this.data_source.fields.map((field, index) => {
-          console.log()
-          field.color = (field.name == v) ? `rgba(${this.lineColorList[index]},1)` : `rgba(${this.lineColorList[index]},0.2)`
+          if (field.type == 'line' && !field.isMain) {
+            field.color = (field.name == v) ? `rgba(${this.lineColorList[index]},1)` : `rgba(${this.lineColorList[index]},0.1)`
+          }
           return field
         })
       } else {
         this.data_source.fields = this.data_source.fields.map((field, index) => {
-          field.color = `rgba(${this.lineColorList[index]},1)`
+          if (field.type == 'line' && !field.isMain) {
+            field.color = `rgba(${this.lineColorList[index]},1)`
+          }
           return field
         })
       }
@@ -72,6 +150,10 @@ export default {
     return {
       trend: null,
       kline: null,
+      mainStockkline: null, // 沪深300的kline
+      mainStock: {
+        code: '000300.SS'
+      },
       preClose: null,
       canvas_el: null,
       ia_canvas_el: null,
@@ -94,9 +176,14 @@ export default {
       data_style: null,
       data_source: null,
       coord: null,
+      defaultCsWidth: 10,
       selectedDate: new Date(),
       trendRate: null,
-      lineColorList: ['0,0,0', '255,174,0', '194,145,242', '76,165,255', '61,207,238']
+      lineColorList: ['255,174,0', '194,145,242', '76,165,255', '61,207,238'],
+      fenshiLabel: [],
+      dragTime: [],
+      analyseTime: [],
+      hsmap: {}
       // startDate: new Date().setHours(9, 30, 0, 0),
       // endDate: new Date().setHours(15, 30, 0, 0)
     }
@@ -105,16 +192,30 @@ export default {
     ...chartUtil,
     initFenshi () {
       let init = this.preClose.map(i => i.pre_close_px)
+      let zhutiTrend = JSON.parse(JSON.stringify(this.$store.state.zhutiTrend.trend))
+      let zhutiPre = this.$store.state.zhutiTrend.preValue.pre_close_px
+      let zhutiMap = {}
+      zhutiTrend.map(z => {
+        zhutiMap[z[0] * 1000] = z[1] / zhutiPre - 1
+      })
+
       this.trendRate = this.trend.map(i => {
-        return i.map((ii, iid) => {
+        let timeTrend = i.map((ii, iid) => {
           return iid == 0 ? ii : (ii / init[iid - 1]) - 1
         })
+        if (zhutiMap[timeTrend[0]]) {
+          timeTrend.push(zhutiMap[timeTrend[0]])
+        } else {
+          timeTrend.push(0)
+        }
+        return timeTrend
       })
       this.selectedDate = new Date(this.trendRate[0][0])
-      // let lineColorList = ['0,0,0', '255,174,0', '194,145,242', '76,165,255', '61,207,238']
+      // let lineColorList = ['255,174,0', '194,145,242', '76,165,255', '61,207,238']
       let fields = this.preClose.map((i, index) => {
-        return {name: i.symbol, type: 'line', as: 'mountain', t: 0, val_index: index + 1, color: `rgba(${this.lineColorList[index]},1)`, line_width: 1}
+        return {name: i.code, type: 'line', as: 'mountain', t: 0, val_index: index + 1, color: `rgba(${this.lineColorList[index]},1)`, line_width: 1, isMain: false}
       })
+      fields.push({name: '板块', type: 'line', as: 'mountain', t: 0, val_index: this.preClose.length + 1, color: `rgba(0,0,0,1)`, line_width: 1, isMain: true})
       let pattern = {
         data_source: {
           data: this.trendRate,
@@ -195,17 +296,38 @@ export default {
       bindEvents.call(this)
     },
     initKline () {
-      let dt = this.kline['000300.SS'].map(i => {
-        i[0] = new Date(String(i[0]).substr(0, 4), String(i[0]).substr(4, 2), String(i[0]).substr(6, 2)).getTime()
-        return i
+      let dt = this.kline // 主题的kline
+      let tempFields = []
+      if (this.lishiStock.length == 1) {
+        tempFields.push({name: 'K线', type: 'candlestick', t: 0, o: 1, c: 2, h: 3, l: 4})
+      }
+      this.lishiStock.map((stock, stockIndex) => {
+        let hsmap = {}
+        let stockKlineFields = this.$store.state.stockTrend.klineFields
+        let mainStockPre = this.mainStockkline[stock.symbol][0][stockKlineFields.indexOf('close_px')]
+        let hs = this.mainStockkline[stock.symbol].map(i => {
+          let temptime = new Date(String(i[0]).substr(0, 4) + '-' + String(i[0]).substr(4, 2) + '-' + String(i[0]).substr(6, 2) + 'T00:00:00').getTime()
+          i[0] = temptime
+          hsmap[temptime] = i[stockKlineFields.indexOf('close_px')] / mainStockPre - 1
+          return i
+        }) // 沪深300的kline
+        let mainStockIndex = dt[0].length
+        dt = dt.map(i => {
+          if (hsmap[i[0]]) {
+            i.push(hsmap[i[0]])
+          } else {
+            i.push(0)
+          }
+          return i
+        })
+        tempFields.push({name: stock.symbol, type: 'line', t: 0, val_index: mainStockIndex, color: `rgba(${this.lineColorList[stockIndex]},1)`, line_width: 1})
       })
-
       let pattern = {
         data_source: {
           data: dt,
-          fields: [{name: 'K线', type: 'candlestick', t: 0, o: 1, c: 2, h: 3, l: 4}]
+          fields: tempFields
         },
-        price_precision: 1,
+        price_precision: 4,
         style: {
           font: {family: 'Microsoft YaHei', size: 14},
           padding: {top: 1, right: 100, bottom: 28, left: 60},
@@ -220,7 +342,7 @@ export default {
             font_size: 12,
             font_style: '12px Microsoft YaHei'
           },
-          // xgb_style: true,
+          xgb_style: true,
           tip: {
             high_color: '#FF4040',
             low_color: '#1EB955',
@@ -282,6 +404,10 @@ export default {
       this.ctx.clearRect(0, 0, this.origin_width, this.origin_height);
       this.ia_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
       this.mid_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
+      // let stockLabel = document.querySelectorAll('.fenshi-stock-label')
+      // for (let i = 0; i < stockLabel.length; i++) {
+      //   document.getElementById('XGBchart').removeChild(stockLabel[i])
+      // }
     },
     genCtx () {
       var dpr = window.devicePixelRatio;
@@ -341,7 +467,98 @@ export default {
         this.drawAxis()
         this.drawAdditionalTips()
       }
+      if (this.startTongji) {
+        chartCul.Draw.Fill(this.mid_ctx, (ctx) => {
+          ctx.rect(0, 0, this.origin_width, this.origin_height);
+        }, 'rgba(255, 255, 255, 0.5)');
+      }
+      if (!this.data_source.time_ranges && this.analyseTime && this.analyseTime.length) {
+        this.showAnalyseShadow()
+      }
       this.state.ready = 1;
+    },
+    clickDelegate (e) {
+      if (e.target.className == 'drag-analyse-btn' || e.target.className == 'drag-zoom-btn') {
+        this.dragTime = [this.state.events.dragstart_x_val, this.state.events.mouse_x_val]
+
+        this.removeDragEndChoice()
+        this.ia_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
+        this.mid_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
+        this.$emit('drag-selected', this.dragTime)
+      }
+      if (e.target.className == 'drag-zoom-btn') {
+        this.zoomToTimeArea()
+      }
+      if (e.target.className == 'drag-analyse-btn') {
+        // this.showDragArea()
+        this.analyseTime = [this.state.events.dragstart_x_val, this.state.events.mouse_x_val]
+        console.log(this.analyseTime)
+        this.$emit('switch-analyse')
+      }
+    },
+    enterLabel (item) {
+      this.data_source.fields = this.data_source.fields.map((field, index) => {
+        if (!field.isMain) {
+          field.color = (field.name == item.symbol) ? `rgba(${this.lineColorList[index]},1)` : `rgba(${this.lineColorList[index]},0.1)`
+        }
+        return field
+      })
+      this.rerender(true)
+    },
+    leaveLabel (e) {
+      this.data_source.fields = this.data_source.fields.map((field, index) => {
+        console.log()
+        if (!field.isMain) {
+          field.color = `rgba(${this.lineColorList[index]},1)`
+        }
+        return field
+      })
+      this.rerender(true)
+    },
+    zoomToTimeArea () {
+      console.log(this.state.events.selected_index, this.state.events.dragstart_index)
+      let tempwidth = Math.floor((this.origin_width - this.style.padding.left - this.style.padding.right) / Math.abs(this.state.events.selected_index - this.state.events.dragstart_index + 1))
+      this.viewport.width = tempwidth < 64 ? tempwidth : 63
+      this.viewport.offset = this.viewport.width * ((Math.max(this.state.events.selected_index, this.state.events.dragstart_index) + 1 + 0.5) - (this.kline.length))
+      // this.viewport.offset = 0
+      this.rerender()
+      // this.viewport.width = this.kline
+    },
+    showDragEndChoice () {
+      // console.log(this.state.events.mouse_x_val, this.state.events.dragstart_x_val) //当前选取的时间范围
+      console.log(this.state.events.mouse_x_px, this.state.events.mouse_y_px)
+      console.log(this.style.padding.right_pos, this.style.padding.bottom_pos)
+      let btn_left, btn_top
+      if (this.state.events.mouse_x_px + 120 < this.style.padding.right_pos) {
+        // 可以放在右边
+        if (this.state.events.mouse_y_px + 50 < this.style.padding.bottom_pos) {
+          // 放在下面
+          btn_left = this.state.events.mouse_x_px + 20
+          btn_top = this.state.events.mouse_y_px + 10
+        } else {
+          btn_left = this.state.events.mouse_x_px + 20
+          btn_top = this.state.events.mouse_y_px - 10
+        }
+      } else if (this.state.events.drag_x_px + 120 < this.style.padding.right_pos && this.state.events.mouse_y_px + 50 < this.style.padding.bottom_pos){
+        // 有机会放在下面
+        btn_left = this.state.events.drag_x_px
+        btn_top = this.state.events.mouse_y_px + 10
+      } else {
+        // 只能放在左边
+        btn_left = this.state.events.drag_x_px - 180
+        btn_top = this.state.events.mouse_y_px - 10
+      }
+      let d = document.createElement('div');
+      d.setAttribute('class', 'drag-choice-div');
+      d.style = `left:${btn_left}px;top:${btn_top}px;width:120px;`
+      d.innerHTML = `<span class="drag-analyse-btn">区间统计</span><span class="drag-zoom-btn">放大</span>`
+      document.getElementById('XGBchart').appendChild(d)
+    },
+    removeDragEndChoice () {
+      let stockLabel = document.querySelectorAll('.drag-choice-div')
+      for (let i = 0; i < stockLabel.length; i++) {
+        document.getElementById('XGBchart').removeChild(stockLabel[i])
+      }
     },
     genLinearCoord () {
       var self = this;
@@ -463,7 +680,6 @@ export default {
       // filter data by viewport
       // var filter_result = chartCul.Coord.dataFilterByViewport(JSON.parse(JSON.stringify(this.data_source.data)), this.viewport, this);
       var filter_result = chartCul.Coord.dataFilterByViewport(this.data_source.data, this.viewport, this);
-      console.log(filter_result)
       this.data_source.filtered_data = filter_result.result;
       this.data_source.left_offset = filter_result.left_offset;
       this.data_source.right_offset = filter_result.right_offset;
@@ -586,8 +802,7 @@ export default {
         var c = ~~chartCul.Coord.linearActual2Display(item[fields.c], self.coord.y);
         var l = ~~chartCul.Coord.linearActual2Display(item[fields.l], self.coord.y);
         lines[c < o ? 'up' : 'down'].push([~~item.x, l, h]);
-
-        var w = self.viewport.width - 2;
+        var w = self.viewport.width - 2 > 48 ? 48 : self.viewport.width - 2;
         boxes[c < o ? 'up' : 'down'].push([item.x - w / 2 + 1, o > c ? c : o, w - 2, Math.abs(o - c), o, c, ~~item.x]);
         peaks.push([~~item.x, c]);
       });
@@ -666,12 +881,63 @@ export default {
         }, gradient);
       }
     },
+    showAnalyseShadow () {
+      // console.log(this.data_source.filtered_data)
+      let visMaxTime = this.data_source.filtered_data[this.data_source.filtered_data.length - 1][0]
+      let visMinTime = this.data_source.filtered_data[0][0]
+      let analyseMaxTime = Math.max(this.analyseTime[0], this.analyseTime[1])
+      let analyseMinTime = Math.min(this.analyseTime[0], this.analyseTime[1])
+      let shadow_x_min = 0
+      let shadow_x_max = 0
+      if (visMaxTime > analyseMaxTime && visMinTime < analyseMinTime) {
+        // 在中间画阴影
+        shadow_x_min = this.data_source.filtered_data.find(i => i[0] >= analyseMinTime).x
+        shadow_x_max = this.data_source.filtered_data.find(i => i[0] >= analyseMaxTime).x
+      } else if (visMaxTime <= analyseMaxTime){
+        // 最大值超了
+        if (visMinTime > analyseMinTime) {
+        // 最小值超了
+          // shadow_x_min = this.data_source.filtered_data.find(i => i[0] >= analyseMinTime).x
+          shadow_x_min = this.style.padding.left - this.viewport.width / 2
+          shadow_x_max = this.style.padding.right_pos + this.viewport.width / 2
+        } else if (visMaxTime > analyseMinTime) {
+          // 最小值没超了
+          shadow_x_min = this.data_source.filtered_data.find(i => i[0] >= analyseMinTime).x
+          shadow_x_max = this.style.padding.right_pos + this.viewport.width / 2
+        } else {
+          shadow_x_min = 0
+          shadow_x_max = 0
+        }
+      } else {
+        // 最小值超了
+        if (visMinTime > analyseMaxTime) {
+          shadow_x_min = 0
+          shadow_x_max = 0
+        } else if (visMaxTime > analyseMaxTime) {
+          // 最大值没超
+          shadow_x_min = this.style.padding.left - this.viewport.width / 2
+          shadow_x_max = this.data_source.filtered_data.find(i => i[0] >= analyseMaxTime).x
+        } else {
+          shadow_x_min = this.style.padding.left - this.viewport.width / 2
+          shadow_x_max = this.style.padding.right_pos + this.viewport.width / 2
+        }
+      }
+      chartCul.Draw.Fill(this.mid_ctx, (ctx) => {
+        ctx.rect(shadow_x_min, 0, shadow_x_max - shadow_x_min, this.origin_height);
+      }, 'rgba(53, 58, 71, 0.05)');
+      // console.log(shadow_x_min, shadow_x_max)
+    },
     drawIndicators () {
       var self = this;
       if (this.data_source.time_ranges){
+        if (this.chartMode === 'fenshi') {
+          this.fenshiLabel = []
+        }
         this.data_source.fields.forEach((item) => {
           LinearIndicatorTypeFuncs[item.type] && LinearIndicatorTypeFuncs[item.type].call(self, item);
-          this.drawDivLabel(item)
+          if (this.chartMode === 'fenshi') {
+            this.drawDivLabel(item)
+          }
         });
       } else {
         this.data_source.fields.forEach((item) => {
@@ -684,24 +950,49 @@ export default {
         let labelData = this.data_source.filtered_data_buckets[0][0]
         let d = document.createElement('span');
         let mtop = chartCul.Coord.linearActual2Display(labelData[params.val_index], this.coord.y) - 10
-        d.style = `cursor:pointer;text-align:center;color:#fff;position:absolute;display:inline-block;background:${params.color};left:${this.style.linear_label.left};top:${mtop}px;width:${this.style.padding.left - 2}px;font-size:12px;`
-        d.setAttribute('class', 'stock-label');
-        d.innerHTML = `${this.fenshiData[params.val_index - 1].name}`
-        console.log(d)
-        document.getElementById('XGBchart').appendChild(d)
-
-        // let labelData = self.data_source.filtered_data_buckets[0][0]
-        // Util.Draw.Fill(self.ctx, function(ctx){
-        //   ctx.rect(self.style.linear_label.left, Util.Coord.linearActual2Display(labelData[params.val_index], self.coord.y), self.style.linear_label.width,  self.style.linear_label.height)
-        // }, params.color);
-        // Util.Draw.Text(self.ctx, function(ctx){
-        //   ctx.textAlign = "center";
-
-        //   ctx.fillText(self.fenshiData[params.val_index-1].name,// 这里的名字以后要改 params.val_index-1是第几条线
-        //   self.style.linear_label.left + self.style.linear_label.width/2,
-        //   Util.Coord.linearActual2Display(labelData[params.val_index], self.coord.y)+(self.style.linear_label.font_size +self.style.linear_label.height)/2);
-        // }, self.style.linear_label.font_color, self.style.linear_label.font_style);
+        let rendData
+        if (params.isMain) {
+          rendData = {
+            symbol: params.name,
+            text: params.name,
+            pos: {
+              left: this.style.linear_label.left,
+              top: mtop
+            },
+            color: params.color,
+            width: this.style.padding.left - 2
+          }
+        } else {
+          rendData = {
+            symbol: this.fenshiData[params.val_index - 1].symbol,
+            text: this.fenshiData[params.val_index - 1].name,
+            pos: {
+              left: this.style.linear_label.left,
+              top: mtop
+            },
+            color: params.color,
+            width: this.style.padding.left - 2
+          }
+        }
+        rendData = this.adjustLabelPos(rendData)
+        this.fenshiLabel.push(rendData)
+        d.style = `background-color:${rendData.color};left:${rendData.pos.left}px;top:${rendData.pos.top}px;width:${rendData.width}px;`
+        d.setAttribute('class', 'fenshi-stock-label');
+        d.setAttribute('symbol', rendData.symbol);
+        d.innerHTML = `${rendData.text}`
+        // document.getElementById('XGBchart').appendChild(d)
       }
+    },
+    adjustLabelPos (rendData) {
+      while (this.fenshiLabel.some(i => Math.abs(i.pos.top - rendData.pos.top) < 20)) {
+        let temp = this.fenshiLabel.find(i => Math.abs(i.pos.top - rendData.pos.top) < 20)
+        if (rendData.pos.top < temp.pos.top && rendData.pos.top - 20 > 0) {
+          rendData.pos.top -= 20
+        } else {
+          rendData.pos.top += 20
+        }
+      }
+      return rendData
     },
     drawAxis () {
       var self = this;
@@ -760,11 +1051,12 @@ export default {
 
       // draw labels
       var rates = {up: [], down: []};
+      // 这快是y轴右边的刻度
       chartCul.Draw.Text(this.ctx, (ctx) => {
-        // 这快是y轴右边的刻度
         self.coord.horiz_lines.forEach((y, index) => {
           var val = y.actual.toFixed(self.price_precision);
           if (this.style.xgb_style) {
+            ctx.fillStyle = poolHelper.colorStr(val)
             val = Number(val * 100).toFixed(2) + '%'
           }
           var x_offset = self.style.axis.label_pos.y_axis.x;
@@ -779,6 +1071,8 @@ export default {
             x + self.style.axis.pointer_length + x_offset,
             y_pos);
         });
+      })
+      chartCul.Draw.Text(this.ctx, (ctx) => {
         if (!self.data_source.time_ranges){
           self.coord.vertical_lines.forEach((x) => {
             ctx.fillText(chartCul.Coord.getDateStr(x.actual, self.style.axis.hide_candlestick_date, self.style.axis.hide_candlestick_time),
@@ -870,7 +1164,7 @@ export default {
       }
 
       // draw highest and lowest price
-      if (this.data_source.fields[0].type === 'candlestick'){
+      if (this.data_source.fields[0].type === 'candlestick' && !this.style.xgb_style){
         var max = this.data_source.filtered_data[0];
         var min = this.data_source.filtered_data[0];
         var high_index = this.data_source.fields[0].h;
@@ -917,18 +1211,76 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.XGBchart-container{
+  width: 800px;
+  height: 400px;
+  position: relative;
+  .fenshi-stock-label{
+    position: absolute;
+    display: inline-block;
+    text-align: center;
+  }
+}
 .chart{
   width: 800px;
   height: 400px;
   margin-left:0px;
   user-select: none;
   position: relative;
-  .stock-label{
+
+}
+</style>
+<style lang="less">
+.XGBchart-container{
+  .fenshi-stock-label{
     position: absolute;
     display: inline-block;
     text-align: center;
+    cursor:pointer;
+    text-align:center;
+    color:#fff;
+    font-size:12px;
+  }
+  .drag-choice-div{
+    position: absolute;
+    display: flex;
+    text-align: center;
+    cursor:pointer;
+    font-size:12px;
+    background: #FFFFFF;
+    border: 1px solid #EFEFEF;
+    width:160px;
+    height: 32px;
+    font-size:12px;
+    line-height:32px;
+    box-shadow: 0 0 4px 0 rgba(53,58,71,0.10);
+    .drag-analyse-btn{
+      width:50%;
+      text-align:center;
+      font-size:12px;
+      line-height:32px;
+      color:#666;
+      text-align:center;
+      &:hover{
+        background: #FF5A51;
+        color:#fff;
+      }
+    }
+    .drag-zoom-btn{
+      width:50%;
+      text-align:center;
+      font-size:12px;
+      line-height:32px;
+      color:#666;
+      text-align:center;
+      &:hover{
+        background: #FF5A51;
+        color:#fff;
+      }
+    }
   }
 }
 </style>
+
 
 

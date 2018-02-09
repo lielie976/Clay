@@ -388,8 +388,8 @@ var cul = {
 
         data.forEach(function(item){
           fields.map(field => {
-            var h = item[field.h];
-            var l = item[field.l];
+            var h = field.h ? item[field.h] : item[field.val_index];
+            var l = field.l ? item[field.l] : item[field.val_index];
 
             if (h > y_max) y_max = h;
             if (l < y_min) y_min = l;
@@ -420,7 +420,6 @@ var cul = {
           if (val > y_max) y_max = val;
           if (val < y_min) y_min = val;
         });
-
         return [y_min, y_max];
       }
     }

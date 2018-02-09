@@ -7,9 +7,12 @@
             <span @click="swapChartTab(item)" :class="{active:item.selected}" class="zhuti-chart-graph-tab-list-item" :key="item.target" v-if="item.active">{{item.text}}</span>
           </template>
         </div>
-        <div class="zhuti-chart-graph-tab-date">
+        <div v-if="chartMode == 'fenshi'" class="zhuti-chart-graph-tab-date">
           <span class="zhuti-chart-graph-tab-date-item"><i class="iconfont">&#xe638;</i> 前一天</span>
           <span class="zhuti-chart-graph-tab-date-item">后一天 <i class="iconfont">&#xe634;</i></span>
+        </div>
+        <div v-if="chartMode == 'lishi'" class="zhuti-chart-graph-tab-tongji">
+          <span @click="clickTongji" class="zhuti-chart-graph-tab-tongji-item"><i v-if="!startTongji" class="iconfont">&#xe608;</i><i v-else class="iconfont">&#xe610;</i> 区间统计</span>
         </div>
       </div>
       <div class="zhuti-chart-graph-main">
@@ -19,16 +22,25 @@
             <span class="fenshi-title-price">当前价</span>
           </div>
           <div class="fenshi-choose">
-            <template v-if="fenshiData && fenshiData.length" >
+            <template v-if="chartMode == 'fenshi'&& fenshiData && fenshiData.length" >
               <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in fenshiData" />
               <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i>
             </template>
+             <template v-if="chartMode == 'lishi'&& lishiStock && lishiStock.length" >
+              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in lishiStock" />
+              <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i>
+            </template>
+             <template v-if="chartMode == 'fenxi' && fenxiStock && fenxiStock.length" >
+              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in fenxiStock" />
+              <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i>
+            </template>
           </div>
-          <fenshi :hasHovered="hasHovered" :chartMode="chartMode" :fenshiData="fenshiData" />
+          <fenshi :fenxiStock="fenxiStock" :switch-analyse="goAnalyse" :lishiStock="lishiStock" @drag-selected="dragSelected" :startTongji="startTongji" :hasHovered="hasHovered" :chartMode="chartMode" :fenshiData="fenshiData" />
         </div>
       </div>
     </div>
-    <div class="zhuti-chart-msg">
+    <div class="zhuti-chart-event">
+      <zhuti-event />
     </div>
   </div>
 </template>
@@ -38,8 +50,10 @@
 import shareMethodMixin from '~/mixins/shareMethodMixin'
 import stockWatchItem from './stockWatchItem.vue'
 import fenshi from './fenshi.vue'
+import zhutiEvent from './zhutiEvent.vue'
 
 export default {
+  props: ['id'],
   data () {
     return {
       tabItems: [
@@ -56,7 +70,7 @@ export default {
           selected: false
         },
         {
-          text: '叠加走势',
+          text: '区间统计',
           active: false,
           target: 'diejia',
           selected: false
@@ -77,13 +91,37 @@ export default {
         hover: false,
         px: 0.6
       }],
+      lishiStock: [{
+        name: '沪深300',
+        symbol: '000300.SS',
+        hover: false,
+        px: 0.6
+      }],
+      fenxiStock: [{
+        name: '沪深300',
+        symbol: '000300.SS',
+        hover: false,
+        px: 0.6
+      }],
+      startTongji: false,
       highlight: 1
     };
+  },
+  computed: {
+    zhutiInfo () {
+      return {
+        name: '主题',
+        symbol: this.id,
+        hover: false,
+        px: 0.6
+      }
+    }
   },
   mixins: [shareMethodMixin],
   components: {
     stockWatchItem,
-    fenshi
+    fenshi,
+    zhutiEvent
   },
   mounted () {
     setTimeout(() => {
@@ -93,11 +131,21 @@ export default {
   methods: {
     swapChartTab (item) {
       if (item.selected) return
+      this.startTongji = false
       this.tabItems = this.tabItems.map(i => {
         i.selected = (i.target === item.target)
         return i
       })
       this.chartMode = item.target
+    },
+    goAnalyse () {
+      this.chartMode = 'fenxi'
+      this.tabItems[0].active = false
+      this.tabItems[1].active = false
+      this.tabItems[2].active = true
+    },
+    clickTongji () {
+      this.startTongji = !this.startTongji
     },
     enterStock (item) {
       item.hover = true
@@ -106,6 +154,9 @@ export default {
     leaveStock (item) {
       item.hover = false
       this.hasHovered = false
+    },
+    dragSelected (time) {
+      this.startTongji = false
     },
     addStock () {
       let data = [{
@@ -132,11 +183,29 @@ export default {
         hover: false,
         px: 0.6
       }]
-      let length = this.fenshiData.length
-      if (length < data.length) {
-        this.fenshiData = data.slice(0, length + 1)
-      } else {
-        this.fenshiData = data.slice(0, 1)
+      if (this.chartMode === 'fenshi') {
+        let length = this.fenshiData.length
+        if (length < data.length) {
+          this.fenshiData = data.slice(0, length + 1)
+        } else {
+          this.fenshiData = data.slice(0, 1)
+        }
+      }
+      if (this.chartMode === 'fenxi') {
+        let length = this.fenxiStock.length
+        if (length < data.length) {
+          this.fenxiStock = data.slice(0, length + 1)
+        } else {
+          this.fenxiStock = data.slice(0, 1)
+        }
+      }
+      if (this.chartMode === 'lishi') {
+        let length = this.lishiStock.length
+        if (length < data.length) {
+          this.lishiStock = data.slice(0, length + 1)
+        } else {
+          this.lishiStock = data.slice(0, 1)
+        }
       }
     }
   }
@@ -182,6 +251,17 @@ export default {
         }
       }
       &-date{
+        line-height: 40px;
+        cursor: pointer;
+        &-item{
+          padding: 0 20px;
+          font-size: 14px;
+          color: #666666;
+          letter-spacing: 0;
+        }
+      }
+      &-tongji{
+        cursor: pointer;
         line-height: 40px;
         &-item{
           padding: 0 20px;

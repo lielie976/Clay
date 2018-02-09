@@ -2,7 +2,7 @@
   <div>
     <theme-title />
     <!-- <theme-intro @mutate-intro="mutateIntro" @show-modal="modal = true" :modal.sync="modal" :intro.sync="intro" /> -->
-    <zhuti-chart />
+    <zhuti-chart :id="id" />
     <theme-modal @mutate-intro="mutateIntro" @hide-modal="modal = false" :modal.sync="modal" :intro.sync="intro" />
   </div>
 </template>
@@ -14,15 +14,45 @@ import themeModal from '~/views/theme/themeModal'
 
 export default {
   async asyncData ({ store, params, req }) {
-    await store.dispatch('theme/getThemeInfo', {
-      id: params.id
-    });
-    await store.dispatch('theme/getThemeMessage', params.id);
-    await store.dispatch('theme/getPlateSetInfo', params.id);
-    // await store.dispatch('theme/getThemeStock')
-    await store.dispatch('theme/getBkjInfo')
-    await store.dispatch('theme/getStockFlow')
-    await store.dispatch('theme/getLongtou', params.id)
+    try {
+      await store.dispatch('theme/getThemeInfo', {
+        id: params.id
+      });
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getThemeMessage', params.id);
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getBkjInfo')
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getStockFlow')
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('theme/getLongtou', params.id)
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('zhutiTrend/getTrend', params.id)
+    } catch (error) {
+    }
+    try {
+      await store.dispatch('zhutiTrend/getKline', params.id)
+    } catch (error) {
+    }
+    // await store.dispatch('zhutiTrend/getKline', params.id)
+    try {
+      await store.dispatch('theme/getGoodBad', {plateId: 27})
+    } catch (error) {
+    }
+    // try {
+    //   await store.dispatch('theme/getHideEvent', params.id)
+    // } catch (error) {
+    // }
     return {
       intro: {},
       modal: false,

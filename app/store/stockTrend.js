@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { fetchStockTrend } from '~/api/theme'
 import { getKline } from '~/api/mdc'
 // import share from '~/utils/share'
@@ -6,7 +7,8 @@ export const state = () => ({
   trend: null,
   stockList: null,
   preValue: null,
-  kline: null
+  kline: {},
+  klineFields: null
 })
 
 export const mutations = {
@@ -15,7 +17,6 @@ export const mutations = {
     payload.codes.map((c) => {
       if (newTrend.length === 0) {
         newTrend = payload.data[c]
-        console.log(newTrend)
       } else {
         newTrend = newTrend.map((item, index) => {
           if (index < payload.data[c].length) {
@@ -33,14 +34,16 @@ export const mutations = {
     let preValue = []
     preValue = payload.codes.map((c) => {
       return {
-        symbol: c,
+        code: c,
+        type: 'stock',
         pre_close_px: payload.data[c][0]
       }
     })
     state.preValue = preValue
   },
   saveKline (state, payload) {
-    state.kline = payload
+    state.kline[payload.code] = payload.data
+    state.klineFields = payload.fields
   }
 }
 
@@ -57,8 +60,18 @@ export const actions = {
     return {success: 1}
   },
   async getKline ({ state, commit }, code) {
-    let res = await getKline({prodCode: code})
-    console.log(res)
-    commit('saveKline', res.data.candle)
+    let promiseAll = []
+    code.map(c => {
+      promiseAll.push(getKline({prodCode: c}))
+    })
+    let resArr = await Promise.all(promiseAll)
+    resArr.map(res => {
+      code.map(c => {
+        if (res.data.candle[c]) {
+          commit('saveKline', {data: res.data.candle[c], code: c, fields: res.data.candle.fields})
+        }
+      })
+    })
+    return {}
   }
 }

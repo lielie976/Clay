@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import Util from './chartCul'
+import format from 'date-fns/format'
 
 var basic = function(e){
   var rect = this.ia_canvas_el.getBoundingClientRect();
@@ -13,6 +14,82 @@ var basic = function(e){
   }
   this.ia_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
 };
+
+
+var dragRect = function name(e, name, force) {
+  let self = this
+  if(self.state.events.drag_end) return
+  var rect = this.ia_canvas_el.getBoundingClientRect();
+  if (e.touches){
+    this.state.events.mouse_x_px = e.touches[0].clientX - rect.left;
+    this.state.events.mouse_y_px = e.touches[0].clientY - rect.top;
+  } else {
+    this.state.events.mouse_x_px = e.clientX - rect.left;
+    this.state.events.mouse_y_px = e.clientY - rect.top;
+  }
+
+  this.ia_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
+
+  if(self.state.events.drag_x_px == null) return
+  if (!force &&
+    (self.state.events.mouse_y_px < self.style.padding.top ||
+      self.state.events.mouse_y_px > self.style.padding.bottom_pos))
+  return;
+
+  if (self.state.events.mouse_x_px < self.style.padding.left ||
+      self.state.events.mouse_x_px > self.style.padding.right_pos)
+    return;
+    Util.Draw.FillnStroke(self.ia_ctx, function(ctx){
+      ctx.setLineDash([5,5]);
+      ctx.strokeRect(self.state.events.drag_x_px, self.state.events.drag_y_px,self.state.events.mouse_x_px-self.state.events.drag_x_px,
+        self.state.events.mouse_y_px-self.state.events.drag_y_px,
+      );
+    }, 'rgba(53,58,71,0.05)');
+    var vertical_pos, horiz_pos;
+    vertical_pos = self.state.events.mouse_x_px;
+    if (!self.data_source.time_ranges){
+      //这里的if是两种图标分别计算当前鼠标位置拟合的数据的x值（时间）
+      // snap to each candlestick
+      var snaps = self.data_source.filtered_data.map(function(item){return item.x});
+      for (var l = snaps.length; l--;){
+        if (Math.abs(self.state.events.mouse_x_px - snaps[l]) <= self.viewport.width / 2){
+          vertical_pos = snaps[l];
+          self.state.events.mouse_x_val = self.data_source.filtered_data[l][self.data_source.fields[0].t];
+          self.state.events.selected_index = l + self.data_source.left_offset;
+          self.state.events.selected_item = self.data_source.data[l + self.data_source.left_offset];
+          break;
+        }
+      }
+    } else {
+      // snap to linear chart
+      var index = ~~((vertical_pos - self.style.padding.left) /
+                            ((self.style.padding.right_pos - self.style.padding.left) /
+                              self.coords.length));
+
+      var snaps = self.data_source.filtered_data_buckets.map(function(bucket, index){
+        return bucket.map(function(item){
+          return [item.x, item];
+        });
+      });
+
+      for (var l = snaps[index].length; l--;){
+        var half_width = (snaps[index][1][0] - snaps[index][0][0]) / 2;
+        half_width = half_width < 1 ? 1 : half_width;
+
+        if (Math.abs(self.state.events.mouse_x_px - snaps[index][l][0]) <= half_width){
+          vertical_pos = snaps[index][l][0];
+          self.state.events.mouse_x_val = snaps[index][l][1][self.data_source.fields[0].t];
+          self.state.events.selected_item = snaps[index][l][1];
+          break;
+        }
+      }
+    }
+    // 在方形选框上方绘制时间
+    Util.Draw.Text(self.ia_ctx, function(ctx){
+      ctx.fillText(format(self.state.events.dragstart_x_val,'YYYY-MM-DD')+'至'+format(self.state.events.mouse_x_val,'YYYY-MM-DD'),self.state.events.drag_x_px, self.state.events.drag_y_px- 15 );
+    }, self.style.crosshair.label_color);
+    // console.log(self.state.events.mouse_x_val,self.state.events.dragstart_x_val)
+}
 
 // crosshair drawing method
 // force means being called by other charts
@@ -76,7 +153,6 @@ var crosshair = function(e, name, force){
           break;
         }
       }
-
     }
 
     // draw horizontal line
@@ -152,9 +228,10 @@ var crosshair = function(e, name, force){
 
 };
 
-var dragStart = function(e){
-  var rect = this.ia_canvas_el.getBoundingClientRect();
 
+var dragStart = function(e){
+  let self = this
+  var rect = this.ia_canvas_el.getBoundingClientRect();
   if (e.touches){
     this.state.events.drag_x_px = e.touches[0].clientX - rect.left;
     this.state.events.drag_y_px = e.touches[0].clientY - rect.top;
@@ -162,11 +239,52 @@ var dragStart = function(e){
     this.state.events.drag_x_px = e.clientX - rect.left;
     this.state.events.drag_y_px = e.clientY - rect.top;
   }
-
   this.state.events.drag_offset = this.viewport.offset;
-
   if (this.state.events.drag_x_px < 0)
     this.state.events.drag_x_px = 0;
+  if (this.startTongji) {
+    this.state.events.drag_end = false
+    this.removeDragEndChoice()
+    var dragstart_vertical_pos, dragstart_horiz_pos;
+    dragstart_vertical_pos = self.state.events.drag_x_px;
+    if (!self.data_source.time_ranges){
+      // snap to each candlestick
+      var snaps = self.data_source.filtered_data.map(function(item){return item.x});
+      for (var l = snaps.length; l--;){
+        if (Math.abs(self.state.events.drag_x_px - snaps[l]) <= self.viewport.width / 2){
+          dragstart_vertical_pos = snaps[l];
+          self.state.events.dragstart_x_val = self.data_source.filtered_data[l][self.data_source.fields[0].t];
+          self.state.events.dragstart_index = l + self.data_source.left_offset;
+          self.state.events.dragstart_item = self.data_source.data[l + self.data_source.left_offset];
+          break;
+        }
+      }
+    } else {
+      // snap to linear chart
+      var index = ~~((vertical_pos - self.style.padding.left) /
+                            ((self.style.padding.right_pos - self.style.padding.left) /
+                              self.coords.length));
+
+      var snaps = self.data_source.filtered_data_buckets.map(function(bucket, index){
+        return bucket.map(function(item){
+          return [item.x, item];
+        });
+      });
+
+      for (var l = snaps[index].length; l--;){
+        var half_width = (snaps[index][1][0] - snaps[index][0][0]) / 2;
+        half_width = half_width < 1 ? 1 : half_width;
+
+        if (Math.abs(self.state.events.drag_x_px - snaps[index][l][0]) <= half_width){
+          dragstart_vertical_pos = snaps[index][l][0];
+          self.state.events.dragstart_x_val = snaps[index][l][1][self.data_source.fields[0].t];
+          self.state.events.dragstart_item = snaps[index][l][1];
+          break;
+        }
+      }
+    }
+    console.log(self.state.events.dragstart_x_val)
+  }
 };
 
 var dragMove = function(e){
@@ -187,6 +305,22 @@ var dragEnd = function(e){
   this.state.events.drag_y_px = null;
   this.state.events.pinch_distance = null;
   this.state.events.pinch_width = null;
+  this.state.events.dragstart_x_val = null;
+  this.state.events.dragstart_item = null;
+  this.state.events.dragstart_index = null;
+};
+
+var dragRectEnd = function(e){
+  this.state.events.drag_end = true
+  this.showDragEndChoice()
+  // this.state.events.drag_offset = null;
+  // this.state.events.drag_x_px = null;
+  // this.state.events.drag_y_px = null;
+  // this.state.events.pinch_distance = null;
+  // this.state.events.pinch_width = null;
+  // this.state.events.dragstart_x_val = null;
+  // this.state.events.dragstart_item = null;
+  // this.state.events.dragstart_index = null;
 };
 
 var zoom = function(e){
@@ -209,7 +343,7 @@ var zoom = function(e){
       var width_offset = this.state.events.pinch_width + (scale - scale % 2);
       var do_zooming = false;
       if (scale > 0){
-        if (this.viewport.width < 32)
+        if (this.viewport.width < 64)
           do_zooming = true;
       } else {
         if (this.viewport.width > 4)
@@ -226,20 +360,20 @@ var zoom = function(e){
   } else if (e.wheelDelta && this.state.events.selected_index > -1) {
 
     var offset_index = this.data_source.data.length - this.state.events.selected_index;
-
     if (e.wheelDelta > 0){
-      if (this.viewport.width < 32){
+      if (this.viewport.width < 64){
         this.viewport.width += this.style.wheel_zoom_step;
         this.viewport.offset -= offset_index * this.style.wheel_zoom_step;
+        this.rerender();
       }
     } else {
       if (this.viewport.width > 4){
         this.viewport.width -= this.style.wheel_zoom_step;
         this.viewport.offset += offset_index * this.style.wheel_zoom_step;
+        this.rerender();
       }
     }
 
-    this.rerender();
   }
 };
 
@@ -277,8 +411,22 @@ var selected_cs_point = function(){
   }
 };
 
-var clean = function(e, name, force){
+var cleanDragRect = function(e, name, force){
+  console.log(e.toElement.className)
+  if(e.toElement.className == 'drag-analyse-btn' || e.toElement.className == 'drag-zoom-btn' || e.toElement.className == 'drag-choice-div') {return}
+  this.removeDragEndChoice()
   this.ia_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
+
+  // rerender all linked charts
+  // if (this.linked_charts.length() && !force){
+  //   this.linked_charts.forEach(function(chart){
+  //     chart.events.mouseout.clean.call(chart, null, 'clean', true);
+  //   });
+  // }
+};
+
+var clean = function(e, name, force){
+    this.ia_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
 
   // rerender all linked charts
   // if (this.linked_charts.length() && !force){
@@ -320,7 +468,21 @@ export function genDefaultEvents (){
     mousemove: {basic: basic, crosshair: crosshair, selected_point: selected_point},
     mouseout: {clean: clean}
   };
-  return this.data_source.time_ranges ? events4LinearChart : events4CsChart;
+
+  var events4Tongji = {
+    mousedown: {dragStart: dragStart},
+    mousemove: {dragRect: dragRect, },
+    mouseout: {cleanDragRect: cleanDragRect},
+    mouseup: {dragRectEnd: dragRectEnd},
+    touchstart: {dragStart: dragStart},
+    touchmove: { dragRect: dragRect},
+    touchend: {dragRectEnd: dragRectEnd}
+  };
+  if(!this.startTongji){
+    return this.data_source.time_ranges ? events4LinearChart : events4CsChart;
+  } else {
+    return events4Tongji
+  }
 };
 
 
@@ -328,10 +490,8 @@ export function genDefaultEvents (){
 // so this binding function should only be run once.
 export function bindEvents (){
   var self = this;
-
   var event_names = [];
   for (var event_name in this.events){event_names.push(event_name);}
-
   event_names.forEach(function(event_name){
     self.ia_canvas_el.addEventListener(event_name, function(event){
       if (event_name === 'mousemove' ||
@@ -348,6 +508,18 @@ export function bindEvents (){
     });
   });
 };
+
+export function removeEvents (div_el){
+  let oldElement = this.ia_canvas_el
+  let newElement = oldElement.cloneNode(true);
+  newElement.style.position = 'absolute';
+  newElement.style.top = 0;
+  newElement.style.left = 0;
+  div_el.removeChild(oldElement)
+  div_el.appendChild(newElement)
+  this.ia_canvas_el = newElement
+};
+
 
 export function addEvent (event, name, func){
   if (!this.events[event])

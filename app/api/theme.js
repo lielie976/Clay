@@ -2,6 +2,7 @@
 import api from './index';
 import wows from './wows';
 import axios from 'axios'
+import baoer from './baoer'
 
 export const fetchThemeMessage = ({ id, limit = 5, Mark = 0 }) => {
   return api({
@@ -184,6 +185,48 @@ export const fetchEvent = ({head, tail, count = 20, types}) => {
       tail,
       count,
       types
+    }
+  })
+}
+
+export const fetchZhutiTrend = (prodCode) => {
+  return wows({
+    method: 'GET',
+    url: '/v3/aioria/index/trend',
+    params: {
+      prod_code: prodCode
+    }
+  })
+}
+
+export const fetchZhutiKline = (prodCode) => {
+  return wows({
+    method: 'GET',
+    url: '/v3/aioria/index/kline',
+    params: {
+      prod_code: prodCode
+    }
+  })
+}
+
+export const fetchGoodBad = ({plateId, from_time, end_time}) => {
+  return baoer({
+    method: 'GET',
+    url: `/api/v2/pc/plates/${plateId}/messages/good-bad-event`,
+    params: {
+      from_time,
+      end_time
+    }
+  })
+}
+
+export const fetchHideEvent = ({plateId, from_time, end_time}) => {
+  return baoer({
+    method: 'GET',
+    url: `/api/v2/pc/plates/${plateId}/messages/future-hide-event`,
+    params: {
+      from_time,
+      end_time
     }
   })
 }

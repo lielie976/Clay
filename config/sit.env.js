@@ -8,7 +8,7 @@ module.exports = {
     WSCNPEAR_DOMAIN: 'https://pear-sit.wallstreetcn.com/login',
     WSCN_DOMAIN: 'https://api-sit.wallstreetcn.com',
     BASE_API: 'https://api-sit.xuangubao.cn',
-    WOWS_API: 'https://wows-api.wallstreetcn.com',
+    WOWS_API: 'https://wows-api-sit.wallstreetcn.com',
     WOWS_BAOER_API: 'https://baoer-api-sit.xuangubao.cn',
     MDC_API: 'https://mdc.wallstreetcn.com',
     CAPTURE_API: 'http://121.41.77.236:8080',

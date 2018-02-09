@@ -1,5 +1,5 @@
 <template>
-  <div class="theme-main-title-bg">
+  <div v-if="themeInfo && themeSets && plateSetInfo && plateSetInfo.core_pcp" class="theme-main-title-bg">
     <div class="theme-main-title">
       <div class="theme-main-title-desc">
         <h1>{{themeInfo.Name}}

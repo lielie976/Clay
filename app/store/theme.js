@@ -1,10 +1,10 @@
-import { fetchTheme, fetchThemeMessage, fetPlateSetInfo, fetchFlow, fetchLongtou } from '~/api/theme'
+import {fetchTheme, fetchThemeMessage, fetPlateSetInfo, fetchFlow, fetchLongtou, fetchGoodBad, fetchHideEvent} from '~/api/theme'
 import { getStocksReal } from '~/api/wows'
 import { extractFieldsToObj } from '~/utils/helpers'
 import share from '~/utils/share'
 
 export const state = () => ({
-  themeInfo: {},
+  themeInfo: null,
   themeMsg: {},
   plateSetInfo: {},
   excpetionTheme: ['24291465', '24898553', '17864537', '19322062', '17136297', '17290881', '27912881', '27924249'],
@@ -19,7 +19,8 @@ export const state = () => ({
   themeSets: [],
   accessMode: null,
   stockFlow: null,
-  themeJinRiLongTou: null
+  themeJinRiLongTou: null,
+  themeGoodBad: null
 })
 
 export const getters = {
@@ -84,6 +85,10 @@ export const mutations = {
 
   setLongTou (state, data) {
     state.themeJinRiLongTou = data
+  },
+
+  setGoodBad (state, data) {
+    state.themeGoodBad = data
   }
 }
 
@@ -170,6 +175,19 @@ export const actions = {
     return fetchLongtou(id).then(res => {
       console.log(res.data.items[id].items)
       commit('setLongTou', res.data.items[id].items)
+    })
+  },
+  getGoodBad ({ state, commit }, payload) {
+    return fetchGoodBad({plateId: payload.plateId, from_time: payload.from_time, end_time: payload.end_time}).then(res => {
+      console.log(res)
+      // console.log(res.data.items[id].items)
+      commit('setGoodBad', res.data.messages)
+    })
+  },
+  getHideEvent ({ state, commit }, payload) {
+    return fetchHideEvent({plateId: payload.plateId, from_time: payload.from_time, end_time: payload.end_time}).then(res => {
+      // console.log(res.data.items[id].items)
+      // commit('setHideEvent', res.data.items[id].items)
     })
   }
 }
