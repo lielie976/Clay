@@ -1,6 +1,6 @@
 <template>
   <div class="nav-item" target="_blank" @mouseover="show = true" @mouseleave="show = false">
-    <span>精选</span>
+    <span>精选<img src="/img/tuoshui-badge.png" class="is-hot" /></span>
     <ul :class="['nav-dropdown', `${show && 'is-active'}`]">
       <li><a href="/tuoshuiyanbao" target="_blank">脱水研报</a></li>
       <li><a href="/tuoshuidiaoyan" target="_blank">脱水调研</a></li>
@@ -26,6 +26,11 @@ export default {
   cursor: pointer;
   margin: 0 0 0 -13px !important;
   padding: 0 40px 0 13px;
+  img {
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-left: 2px;
+  }
 }
 
 .nav-dropdown {

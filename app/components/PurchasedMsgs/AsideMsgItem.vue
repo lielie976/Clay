@@ -2,9 +2,9 @@
   <li class="purchased-msgs-item">
     <a :href="`/article/${msg.Id}`" target="_blank" ref="title" class="purchased-msgs-item-title">{{msg.Title}}</a>
     <p class="purchased-msgs-item-bottom">
-      <a class="purchased-msgs-item-subj" :href="`/subject/${msg.Subjects.Id}`" target="_blank" v-if="msg.Subjects">
-        <img :src="msg.Subjects.Image">
-        {{msg.Subjects.Title}}
+      <a class="purchased-msgs-item-subj" :href="`/subject/${msg.Subjects && msg.Subjects[0].Id}`" target="_blank" v-if="msg.Subjects && msg.Subjects[0]">
+        <img :src="msg.Subjects && msg.Subjects[0].Image">
+        {{msg.Subjects && msg.Subjects[0].Title}}
       </a>
       <span class="purchased-msgs-item-time">
         <time-widget :time="msg.CreatedAt" />
