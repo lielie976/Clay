@@ -34,8 +34,9 @@ export default {
           return
         }
         const newWindow = window.open('about:blank', '_blank')
-        newWindow.document.body.innerHTML = '加载中...'
-        newWindow.location = url
+        setTimeout(() => {
+          newWindow.location = url
+        }, 0)
         this.timer = setInterval(() => {
           this.$store.dispatch('subscribe/checkOrderStatus', { order_no: orderNo })
         }, 1000)
