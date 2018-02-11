@@ -33,9 +33,9 @@ export default {
           this.$store.commit('subscribe/changePayStatus', { status: 3 })
           return
         }
-        const newWindow = window.open('about:blank', '_blank')
+        const newWindow = window.open('', '_blank')
         setTimeout(() => {
-          newWindow.location = url
+          newWindow.location.href = url
         }, 0)
         this.timer = setInterval(() => {
           this.$store.dispatch('subscribe/checkOrderStatus', { order_no: orderNo })
