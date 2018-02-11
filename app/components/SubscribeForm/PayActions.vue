@@ -29,7 +29,7 @@ export default {
         method
       })
       if (method === 'alipay') {
-        window.win1 = window.open('', '_blank')
+        window.alipayWindow = window.open('', '_blank')
       }
     },
     payWithBalance () {
