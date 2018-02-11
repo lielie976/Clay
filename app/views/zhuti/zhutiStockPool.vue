@@ -30,10 +30,9 @@
         </thead>
         <tbody v-if="filterList && filterList.length">
           <template v-for="(item, index) in filterList">
-            <stock-item :sortTime="sortTime" @symbolOver="poolOver" @symbolLeave="poolLeave" :is-login="accessMode == 1" :scrollVal="scrollVal" v-if="item && (showWeakBindPool || item.IsImportant)" :key="item.Symbol" :symbol="item.Symbol" :ignoreImportant="!showWeakBindPool" :index="index" :icon-flag="iconFlag" :item="item" :sort-rule="sortRule" />
+            <stock-item @diejia="diejia" :sortTime="sortTime" @symbolOver="poolOver" @symbolLeave="poolLeave" :is-login="accessMode == 1" :scrollVal="scrollVal" v-if="item && (showWeakBindPool || item.IsImportant)" :key="item.Symbol" :symbol="item.Symbol" :ignoreImportant="!showWeakBindPool" :index="index" :icon-flag="iconFlag" :item="item" :sort-rule="sortRule" />
           </template>
         </tbody>
-
       </table>
       <component :is="specialComponent" v-if="isSpecial" @symbolOver="poolOver" @symbolLeave="poolLeave" @specialSort="startSort" :poolFixed="poolFixed" :sortRule="sortRule" :stockList="filterList" :loading="false" />
       <div v-if="poolImageShow" :style="{top:poolImageTop+'px',left:poolImageLeft+'px'}" class="img-div">
@@ -109,6 +108,9 @@ export default {
     },
     goLogin () {
       this.$store.dispatch('login/showLogin')
+    },
+    diejia (item) {
+      this.$emit('diejia', item)
     }
   },
   mixins: [shareMethodMixin],

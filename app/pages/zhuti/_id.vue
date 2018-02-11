@@ -3,7 +3,7 @@
     <theme-title />
     <!-- <theme-intro @mutate-intro="mutateIntro" @show-modal="modal = true" :modal.sync="modal" :intro.sync="intro" /> -->
     <zhuti-chart :id="id" />
-    <!-- <zhuti-stock @refresh="refresh" :id="id"/> -->
+    <zhuti-stock @refresh="refresh" :id="id"/>
     <theme-modal @mutate-intro="mutateIntro" @hide-modal="modal = false" :modal.sync="modal" :intro.sync="intro" />
   </div>
 </template>

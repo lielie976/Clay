@@ -12,30 +12,30 @@
           <span class="zhuti-chart-graph-tab-date-item">后一天 <i class="iconfont">&#xe634;</i></span>
         </div>
         <div v-if="chartMode == 'lishi'" class="zhuti-chart-graph-tab-tongji">
-          <span @click="clickTongji" class="zhuti-chart-graph-tab-tongji-item"><i v-if="!startTongji" class="iconfont">&#xe608;</i><i v-else class="iconfont">&#xe610;</i> 区间统计</span>
+          <span @click="clickTongji" class="zhuti-chart-graph-tab-tongji-item"><i v-if="!startTongjiDrag" class="iconfont">&#xe608;</i><i v-else class="iconfont">&#xe610;</i> 区间统计</span>
         </div>
       </div>
       <div class="zhuti-chart-graph-main">
         <div class="fenshi">
           <div class="fenshi-title">
             <span class="fenshi-title-time">{{dateFormatter(now, 'YYYY-MM-DD HH:mm:ss')}}</span>
-            <span class="fenshi-title-price">当前价</span>
+            <!-- <span class="fenshi-title-price">当前价</span> -->
           </div>
           <div class="fenshi-choose">
-            <template v-if="chartMode == 'fenshi'&& fenshiData && fenshiData.length" >
-              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in fenshiData" />
-              <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i>
+            <template v-if="chartMode == 'fenshi'&& chartDiejia.fenshi && chartDiejia.fenshi.length" >
+              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in chartDiejia.fenshi" />
+              <!-- <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i> -->
             </template>
-             <template v-if="chartMode == 'lishi'&& lishiStock && lishiStock.length" >
-              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in lishiStock" />
-              <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i>
+             <template v-if="chartMode == 'lishi'&& chartDiejia.lishi && chartDiejia.lishi.length" >
+              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in chartDiejia.lishi" />
+              <!-- <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i> -->
             </template>
-             <template v-if="chartMode == 'fenxi' && fenxiStock && fenxiStock.length" >
-              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in fenxiStock" />
-              <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i>
+             <template v-if="chartMode == 'fenxi' && chartDiejia.fenxi && chartDiejia.fenxi.length" >
+              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in chartDiejia.fenxi" />
+              <!-- <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i> -->
             </template>
           </div>
-          <fenshi :fenxiStock="fenxiStock" :switch-analyse="goAnalyse" :lishiStock="lishiStock" @drag-selected="dragSelected" :startTongji="startTongji" :hasHovered="hasHovered" :chartMode="chartMode" :fenshiData="fenshiData" />
+          <fenshi :id="id" :fenxiStock="chartDiejia.fenxi" @switch-analyse="goAnalyse" :lishiStock="chartDiejia.lishi" @drag-selected="dragSelected" :startTongjiDrag="startTongjiDrag" :hasHovered="hasHovered" :chartMode="chartMode" :fenshiData="chartDiejia.fenshi" />
         </div>
       </div>
     </div>
@@ -84,26 +84,20 @@ export default {
         px: 0.6
       }],
       hasHovered: false,
-      chartMode: 'fenshi',
       fenshiData: [{
         name: '沪深300',
         symbol: '000300.SS',
         hover: false,
         px: 0.6
       }],
-      lishiStock: [{
-        name: '沪深300',
-        symbol: '000300.SS',
-        hover: false,
-        px: 0.6
-      }],
-      fenxiStock: [{
-        name: '沪深300',
-        symbol: '000300.SS',
-        hover: false,
-        px: 0.6
-      }],
-      startTongji: false,
+      chartDiejia: {
+        fenshi: [],
+        lishi: [],
+        fenxi: []
+      },
+      lishiStock: [],
+      fenxiStock: [],
+      startTongjiDrag: false,
       highlight: 1
     };
   },
@@ -115,6 +109,21 @@ export default {
         hover: false,
         px: 0.6
       }
+    },
+    diejia () {
+      return this.$store.state.zhutiChart.diejia
+    },
+    _fenshi () {
+      return this.$store.state.zhutiChart.diejia.fenshi
+    },
+    _lishi () {
+      return this.$store.state.zhutiChart.diejia.lishi
+    },
+    _fenxi () {
+      return this.$store.state.zhutiChart.diejia.fenxi
+    },
+    chartMode () {
+      return this.$store.state.zhutiChart.mode
     }
   },
   mixins: [shareMethodMixin],
@@ -123,29 +132,130 @@ export default {
     fenshi,
     zhutiEvent
   },
+  watch: {
+    _fenshi: {
+      deep: true,
+      handler: function (v) {
+        if (this.chartMode === 'fenshi') {
+          let d = v.filter(i => i.checked)
+          if (!d.length) {
+            this.chartDiejia[this.chartMode] = [{
+              name: '沪深300',
+              symbol: '000300.SS',
+              hover: false,
+              px: 0.6,
+              _index: 0
+            }]
+          } else {
+            this.chartDiejia[this.chartMode] = d.map(i => {
+              i.symbol = i.Symbol
+              i.name = i.Name
+              i.hover = false
+              return i
+            }).sort((a, b) => a._index - b._index)
+          }
+        }
+      }
+    },
+    _lishi: {
+      deep: true,
+      handler: function (v) {
+        if (this.chartMode === 'lishi') {
+          let d = v.filter(i => i.checked)
+          debugger
+          if (!d.length) {
+            this.chartDiejia[this.chartMode] = [{
+              name: '沪深300',
+              symbol: '000300.SS',
+              hover: false,
+              px: 0.6,
+              _index: 0
+            }]
+          } else {
+            this.chartDiejia[this.chartMode] = d.map(i => {
+              i.symbol = i.Symbol
+              i.name = i.Name
+              i.hover = false
+              return i
+            }).sort((a, b) => a._index - b._index)
+          }
+        }
+      }
+    },
+    _fenxi: {
+      deep: true,
+      handler: function (v) {
+        if (this.chartMode === 'fenxi') {
+          let d = v.filter(i => i.checked)
+          if (!d.length) {
+            this.chartDiejia[this.chartMode] = [{
+              name: '沪深300',
+              symbol: '000300.SS',
+              hover: false,
+              px: 0.6,
+              _index: 0
+            }]
+          } else {
+            this.chartDiejia[this.chartMode] = d.map(i => {
+              i.symbol = i.Symbol
+              i.name = i.Name
+              i.hover = false
+              return i
+            }).sort((a, b) => a._index - b._index)
+          }
+        }
+      }
+    },
+    chartMode (v) {
+      let d = this.diejia[v].filter(i => i.checked)
+      if (!d.length && (v === 'fenxi' || v === 'fenshi')) {
+        this.chartDiejia[v] = [{
+          name: '沪深300',
+          symbol: '000300.SS',
+          hover: false,
+          px: 0.6,
+          _index: 0
+        }]
+      } else {
+        this.chartDiejia[v] = d.map(i => {
+          i.symbol = i.Symbol
+          i.name = i.Name
+          i.hover = false
+          return i
+        }).sort((a, b) => a._index - b._index)
+      }
+    }
+  },
   mounted () {
     setTimeout(() => {
-      this.fenshiData = this.chosenFenshi
+      this.chartDiejia[this.chartMode] = [{
+        name: '沪深300',
+        symbol: '000300.SS',
+        hover: false,
+        px: 0.6,
+        _index: 0
+      }]
     }, 10);
   },
   methods: {
     swapChartTab (item) {
       if (item.selected) return
-      this.startTongji = false
+      this.startTongjiDrag = false
       this.tabItems = this.tabItems.map(i => {
         i.selected = (i.target === item.target)
         return i
       })
-      this.chartMode = item.target
+      this.$store.commit('zhutiChart/changeMode', item.target)
     },
     goAnalyse () {
-      this.chartMode = 'fenxi'
+      debugger
+      this.$store.commit('zhutiChart/changeMode', 'fenxi')
       this.tabItems[0].active = false
       this.tabItems[1].active = false
       this.tabItems[2].active = true
     },
     clickTongji () {
-      this.startTongji = !this.startTongji
+      this.startTongjiDrag = !this.startTongjiDrag
     },
     enterStock (item) {
       item.hover = true
@@ -156,7 +266,7 @@ export default {
       this.hasHovered = false
     },
     dragSelected (time) {
-      this.startTongji = false
+      this.startTongjiDrag = false
     },
     addStock () {
       let data = [{

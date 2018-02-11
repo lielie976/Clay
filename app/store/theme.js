@@ -102,6 +102,7 @@ export const actions = {
       if (!res.Data.AllStocks) return
       commit('setThemeStockSymbol', res.Data.AllStocks)
       commit('setThemeStockList', res.Data.AllStocks)
+      dispatch('zhutiChart/initData', res.Data.AllStocks, { root: true })
       await dispatch('getThemeStock')
     } else {
       console.log('special')
@@ -119,7 +120,7 @@ export const actions = {
 
   getThemeMessage ({ commit }, id) {
     return fetchThemeMessage({ id: id }).then(res => {
-      commit('setThemeMsg', res.Messages.slice(0, 3))
+      commit('setThemeMsg', res.Messages.slice(0, 5))
     })
   },
 

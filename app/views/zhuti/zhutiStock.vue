@@ -29,7 +29,7 @@
             </div>
           </div>
         </div>
-        <zhuti-stock-pool :themeId="id" :sortTime="sortTime" @sort-pool="sortPool" :accessMode="accessMode" :poolFixed="poolFixed" :isSpecial="isSpecial" :filterList="filterList" :sortRule="sortRule" :scrollVal="scrollVal" :showWeakBindPool="showWeakBindPool" :iconFlag="iconFlag" />
+        <zhuti-stock-pool @diejia="poolDiejia" :themeId="id" :sortTime="sortTime" @sort-pool="sortPool" :accessMode="accessMode" :poolFixed="poolFixed" :isSpecial="isSpecial" :filterList="filterList" :sortRule="sortRule" :scrollVal="scrollVal" :showWeakBindPool="showWeakBindPool" :iconFlag="iconFlag" />
       </div>
       <div v-if="tabItems[1].checked" class="stocklist-chain">
         <zhuti-stock-chain :activeChain="activeChain" :isLogin="isLogin" :sortTime="sortTime"  :accessMode="accessMode" :anchorFixed="anchorFixed" :scrollVal="scrollVal" :anchorList="anchorList" @sort-chain="sortChain" :poolFixed="poolFixed" :categories="categories" :sort-rule="chainSortRule" />
@@ -42,6 +42,7 @@
 import shareMethodMixin from '~/mixins/shareMethodMixin'
 import zhutiStockPool from './zhutiStockPool'
 import zhutiStockChain from './zhutiStockChain'
+
 export default {
   props: ['id'],
   data () {
@@ -88,6 +89,8 @@ export default {
       sortTime: 0,
       anchorFixed: false,
       activeChain: 0,
+      stockList: [],
+      themeInfo: {},
       stockDictional: {
       }
     }
@@ -97,11 +100,29 @@ export default {
     zhutiStockPool,
     zhutiStockChain
   },
+
   mounted () {
     window.addEventListener('scroll', this.handleScroll);
+    this.stockList = JSON.parse(JSON.stringify(this.$store.state.theme.themeStockList)).map(i => {
+      i.checked = false
+      return i
+    })
+    this.themeInfo = JSON.parse(JSON.stringify(this.$store.state.theme.themeInfo))
     if (this.themeInfo.Ssets && this.themeInfo.Ssets.length === 1 && this.themeInfo.Ssets[0].Categories && this.themeInfo.Ssets[0].Categories.length && this.themeInfo.AllStocks) {
       this.themeInfo.Ssets[0].AllStocks.map(item => {
         this.stockDictional[item.Symbol] = item
+      })
+
+      this.themeInfo.Ssets[0].Categories.filter(item => {
+        return item.Stocks && item.Stocks.length
+      })
+      this.themeInfo.Ssets[0].Categories.map(cata => {
+        if (cata.Stocks && cata.Stocks.length) {
+          cata.Stocks = cata.Stocks.map(i => {
+            i.checked = false
+            return i
+          })
+        }
       })
     } else {
       this.tabItems[1].visible = false
@@ -121,17 +142,72 @@ export default {
       })
     }
   },
+  watch: {
+    diejia: {
+      deep: true,
+      handler: function (v) {
+        let d = v[this.diejiaMode]
+        d.map(di => {
+          this.stockList.map(t => {
+            if (t.Symbol === di.Symbol) {
+              t.checked = di.checked
+            }
+          })
+          if (this.themeInfo.Ssets && this.themeInfo.Ssets.length === 1 && this.themeInfo.Ssets[0].Categories && this.themeInfo.Ssets[0].Categories.length && this.themeInfo.AllStocks) {
+            this.themeInfo.Ssets[0].Categories.map(cata => {
+              if (cata.Stocks && cata.Stocks.length) {
+                cata.Stocks = cata.Stocks.map(i => {
+                  if (i.Symbol === di.Symbol) {
+                    i.checked = di.checked
+                  }
+                  return i
+                })
+              }
+            })
+          }
+        })
+      }
+    },
+    diejiaMode: {
+      deep: true,
+      handler: function (v) {
+        let d = this.diejia[v]
+        d.map(di => {
+          this.stockList.map(t => {
+            if (t.Symbol === di.Symbol) {
+              t.checked = di.checked
+            }
+          })
+          if (this.themeInfo.Ssets && this.themeInfo.Ssets.length === 1 && this.themeInfo.Ssets[0].Categories && this.themeInfo.Ssets[0].Categories.length && this.themeInfo.AllStocks) {
+            this.themeInfo.Ssets[0].Categories.map(cata => {
+              if (cata.Stocks && cata.Stocks.length) {
+                cata.Stocks = cata.Stocks.map(i => {
+                  if (i.Symbol === di.Symbol) {
+                    i.checked = di.checked
+                  }
+                  return i
+                })
+              }
+            })
+          }
+        })
+      }
+    }
+  },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll);
   },
   computed: {
+    diejia () {
+      return this.$store.state.zhutiChart.diejia
+    },
+    diejiaMode () {
+      return this.$store.state.zhutiChart.mode
+    },
     selectedItem () {
       return this.tabItems.find((item) => {
         return item.checked
       })
-    },
-    themeInfo () {
-      return this.$store.state.theme.themeInfo
     },
     categories () {
       if (this.themeInfo.Ssets && this.themeInfo.Ssets.length === 1 && this.themeInfo.Ssets[0].Categories && this.themeInfo.Ssets[0].Categories.length && this.themeInfo.AllStocks) {
@@ -168,9 +244,8 @@ export default {
       }
     },
     themeStockList () {
-      let stockList = JSON.parse(JSON.stringify(this.$store.state.theme.themeStockList))
       let stockReal = this.$store.state.theme.stockReal
-      return stockList.map((item, index) => {
+      return this.stockList.map((item, index) => {
         if (stockReal[item.Symbol || item.symbol]) {
           let i = Object.assign({}, item, stockReal[item.Symbol]);
           if (this.stockFlow[item.Symbol]) {
@@ -432,8 +507,10 @@ export default {
           this.poolFixed = false
         }
       }
+    },
+    poolDiejia (item) {
+      this.$store.commit('zhutiChart/changeStock', item)
     }
-
   },
   mixins: [shareMethodMixin]
 }

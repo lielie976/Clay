@@ -4,7 +4,7 @@ import wows from './wows';
 import axios from 'axios'
 import baoer from './baoer'
 
-export const fetchThemeMessage = ({ id, limit = 5, Mark = 0 }) => {
+export const fetchThemeMessage = ({ id, limit = 10, Mark = 0 }) => {
   return api({
     method: 'GET',
     url: `/api/pc/bkjMsgs/` + id,

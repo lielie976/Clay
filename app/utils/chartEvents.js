@@ -15,7 +15,6 @@ var basic = function(e){
   this.ia_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
 };
 
-
 var dragRect = function name(e, name, force) {
   let self = this
   if(self.state.events.drag_end) return
@@ -228,7 +227,6 @@ var crosshair = function(e, name, force){
 
 };
 
-
 var dragStart = function(e){
   let self = this
   var rect = this.ia_canvas_el.getBoundingClientRect();
@@ -242,7 +240,7 @@ var dragStart = function(e){
   this.state.events.drag_offset = this.viewport.offset;
   if (this.state.events.drag_x_px < 0)
     this.state.events.drag_x_px = 0;
-  if (this.startTongji) {
+  if (this.startTongjiDrag) {
     this.state.events.drag_end = false
     this.removeDragEndChoice()
     var dragstart_vertical_pos, dragstart_horiz_pos;
@@ -478,7 +476,7 @@ export function genDefaultEvents (){
     touchmove: { dragRect: dragRect},
     touchend: {dragRectEnd: dragRectEnd}
   };
-  if(!this.startTongji){
+  if(!this.startTongjiDrag){
     return this.data_source.time_ranges ? events4LinearChart : events4CsChart;
   } else {
     return events4Tongji

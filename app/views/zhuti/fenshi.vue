@@ -2,9 +2,9 @@
   <div class="XGBchart-container">
     <div @click="clickDelegate" class="chart" id="XGBchart">
       <!--明天用vue吧label重写，z-index放高，添加时间，循环位置的时候用clone对象操作-->
-
+      <!--showAnalyseShadow 时间转图上坐标点-->
     </div>
-    <template v-if="chartMode == 'fenshi' && fenshiLabel && fenshiLabel.length">
+    <template v-if="fenshiLabel && fenshiLabel.length">
       <span @mouseenter="enterLabel(item)" @mouseleave="leaveLabel(item)" v-for="item in fenshiLabel" class="fenshi-stock-label" :symbol="item.symbol"
       :style="{'backgroundColor': item.color,'left': item.pos.left +'px', 'top': item.pos.top +'px', width: item.width +'px'}">{{item.text}}</span>
      </template>
@@ -21,7 +21,7 @@ import poolHelper from '~/utils/poolHelper'
 // import { fetchThemeMessage } from '~/api/theme';
 
 export default {
-  props: ['fenshiData', 'chartMode', 'hasHovered', 'startTongji', 'lishiStock', 'fenxiStock'],
+  props: ['fenshiData', 'chartMode', 'hasHovered', 'startTongjiDrag', 'lishiStock', 'fenxiStock', 'id'],
   watch: {
     fenshiData() {
       this.changingData = true
@@ -31,15 +31,15 @@ export default {
             i[0] *= 1000
             return i
           })
-          console.log(this.$store.state.stockTrend.trend)
-          console.log(this.$store.state.zhutiTrend.trend)
+          // console.log(this.$store.state.stockTrend.trend)
+          // console.log(this.$store.state.zhutiTrend.trend)
           this.preClose = this.$store.state.stockTrend.preValue
           this.initFenshi()
         })
       }
       this.changingData = false
     },
-    startTongji (v) {
+    startTongjiDrag (v) {
       if (v) {
         removeEvents.call(this, document.getElementById('XGBchart'))
         this.events = genDefaultEvents.call(this)
@@ -74,7 +74,7 @@ export default {
             }
             return item
           })
-          if (this.lishiStock.length == 1) {
+          if (this.lishiStock.length < 2) {
             return i
           } else {
             return i.slice(0, 1)
@@ -82,14 +82,30 @@ export default {
         })
         this.$store.dispatch('stockTrend/getKline', this.lishiStock.map(i => i.symbol)).then(res => {
           this.mainStockkline = JSON.parse(JSON.stringify(this.$store.state.stockTrend.kline))
-          this.initKline()
+          this.initKline(this.lishiStock, this.lishiMap)
         })
       } else if (mode === 'fenxi') {
-        // this.removeCanvas(document.getElementById('XGBchart'))
-        // this.$store.dispatch('stockTrend/getKline', this.lishiStock[0].symbol).then(res => {
-        //   this.mainStockkline = JSON.parse(JSON.stringify(this.$store.state.stockTrend.kline))
-        //   this.initFenxi()
-        // })
+        this.removeCanvas(document.getElementById('XGBchart'))
+        let pre = this.$store.state.zhutiTrend.preValue
+        this.kline = JSON.parse(JSON.stringify(this.$store.state.zhutiTrend.kline)).map(i => {
+          i = i.map((item, index) => {
+            if (index == 0) {
+              item *= 1000
+            } else {
+              item = item / pre.pre_close_px - 1
+            }
+            return item
+          })
+          if (this.fenxiStock.length < 2) {
+            return i
+          } else {
+            return i.slice(0, 1)
+          }
+        })
+        this.$store.dispatch('stockTrend/getKline', this.fenxiStock.map(i => i.symbol)).then(res => {
+          this.mainStockkline = JSON.parse(JSON.stringify(this.$store.state.stockTrend.kline))
+          this.initKline(this.fenxiStock, this.fenxiMap)
+        })
       }
     },
     lishiStock () {
@@ -105,7 +121,7 @@ export default {
             }
             return item
           })
-          if (this.lishiStock.length == 1) {
+          if (this.lishiStock.length < 2) {
             return i
           } else {
             return i.slice(0, 1)
@@ -113,7 +129,32 @@ export default {
         })
         this.$store.dispatch('stockTrend/getKline', this.lishiStock.map(i => i.symbol)).then(res => {
           this.mainStockkline = JSON.parse(JSON.stringify(this.$store.state.stockTrend.kline))
-          this.initKline()
+          this.initKline(this.lishiStock, this.lishiMap)
+        })
+      }
+    },
+    fenxiStock () {
+      if (this.chartMode === 'fenxi') {
+        this.removeCanvas(document.getElementById('XGBchart'))
+        let pre = this.$store.state.zhutiTrend.preValue
+        this.kline = JSON.parse(JSON.stringify(this.$store.state.zhutiTrend.kline)).map(i => {
+          i = i.map((item, index) => {
+            if (index == 0) {
+              item *= 1000
+            } else {
+              item = item / pre.pre_close_px - 1
+            }
+            return item
+          })
+          if (this.fenxiStock.length < 2) {
+            return i
+          } else {
+            return i.slice(0, 1)
+          }
+        })
+        this.$store.dispatch('stockTrend/getKline', this.fenxiStock.map(i => i.symbol)).then(res => {
+          this.mainStockkline = JSON.parse(JSON.stringify(this.$store.state.stockTrend.kline))
+          this.initKline(this.fenxiStock, this.fenxiMap)
         })
       }
     },
@@ -121,15 +162,15 @@ export default {
       if (this.changingData) return
       if (v) {
         this.data_source.fields = this.data_source.fields.map((field, index) => {
-          if (field.type == 'line' && !field.isMain) {
-            field.color = (field.name == v) ? `rgba(${this.lineColorList[index]},1)` : `rgba(${this.lineColorList[index]},0.1)`
+          if (field.type == 'line' && field.stockIndex) {
+            field.color = (field.code == v) ? `rgba(${this.lineColorList[field.stockIndex - 1]},1)` : `rgba(${this.lineColorList[field.stockIndex - 1]},0.1)`
           }
           return field
         })
       } else {
         this.data_source.fields = this.data_source.fields.map((field, index) => {
-          if (field.type == 'line' && !field.isMain) {
-            field.color = `rgba(${this.lineColorList[index]},1)`
+          if (field.type == 'line' && field.stockIndex) {
+            field.color = `rgba(${this.lineColorList[field.stockIndex - 1]},1)`
           }
           return field
         })
@@ -143,6 +184,27 @@ export default {
     this.removeCanvas(document.getElementById('XGBchart'))
   },
   computed: {
+    lishiMap () {
+      let r = {}
+      this.lishiStock.map(l => {
+        r[l.symbol] = l
+      })
+      return r
+    },
+    fenshiMap () {
+      let r = {}
+      this.fenshiData.map(l => {
+        r[l.symbol] = l
+      })
+      return r
+    },
+    fenxiMap () {
+      let r = {}
+      this.fenxiStock.map(l => {
+        r[l.symbol] = l
+      })
+      return r
+    }
   },
   mounted () {
   },
@@ -169,6 +231,7 @@ export default {
         ia_ctx_clock: 0,
         mid_ctx_interval: 0
       },
+      fenshiDate: new Date().setHours(0, 0, 0, 0),
       defaults: null,
       viewport: null,
       price_precision: null,
@@ -213,9 +276,9 @@ export default {
       this.selectedDate = new Date(this.trendRate[0][0])
       // let lineColorList = ['255,174,0', '194,145,242', '76,165,255', '61,207,238']
       let fields = this.preClose.map((i, index) => {
-        return {name: i.code, type: 'line', as: 'mountain', t: 0, val_index: index + 1, color: `rgba(${this.lineColorList[index]},1)`, line_width: 1, isMain: false}
+        return {name: this.fenshiMap[i.code].name, code: i.code, type: 'line', as: 'mountain', t: 0, val_index: index + 1, color: `rgba(${this.lineColorList[index]},1)`, line_width: 1, isMain: false, stockIndex: index + 1}
       })
-      fields.push({name: '板块', type: 'line', as: 'mountain', t: 0, val_index: this.preClose.length + 1, color: `rgba(0,0,0,1)`, line_width: 1, isMain: true})
+      fields.push({name: '板块', code: this.id, type: 'line', as: 'mountain', t: 0, val_index: this.preClose.length + 1, color: `rgba(0,0,0,1)`, line_width: 1, isMain: true, stockIndex: 0})
       let pattern = {
         data_source: {
           data: this.trendRate,
@@ -295,13 +358,13 @@ export default {
       this.events = genDefaultEvents.call(this)
       bindEvents.call(this)
     },
-    initKline () {
+    initKline (source, map) {
       let dt = this.kline // 主题的kline
       let tempFields = []
-      if (this.lishiStock.length == 1) {
-        tempFields.push({name: 'K线', type: 'candlestick', t: 0, o: 1, c: 2, h: 3, l: 4})
+      if (source.length < 2) {
+        tempFields.push({name: 'K线', code: this.id, type: 'candlestick', t: 0, o: 1, c: 2, h: 3, l: 4, stockIndex: 0})
       }
-      this.lishiStock.map((stock, stockIndex) => {
+      source.map((stock, stockIndex) => {
         let hsmap = {}
         let stockKlineFields = this.$store.state.stockTrend.klineFields
         let mainStockPre = this.mainStockkline[stock.symbol][0][stockKlineFields.indexOf('close_px')]
@@ -320,13 +383,15 @@ export default {
           }
           return i
         })
-        tempFields.push({name: stock.symbol, type: 'line', t: 0, val_index: mainStockIndex, color: `rgba(${this.lineColorList[stockIndex]},1)`, line_width: 1})
+        tempFields.push({name: map[stock.symbol].name, code: stock.symbol, type: 'line', t: 0, val_index: mainStockIndex, color: `rgba(${this.lineColorList[stockIndex]},1)`, line_width: 1, stockIndex: stockIndex + 1})
       })
+      let tempwidth = Math.floor((this.origin_width - this.style.padding.left - this.style.padding.right) / dt.length)
       let pattern = {
         data_source: {
           data: dt,
           fields: tempFields
         },
+        viewport: {offset: 0, width: tempwidth},
         price_precision: 4,
         style: {
           font: {family: 'Microsoft YaHei', size: 14},
@@ -467,7 +532,7 @@ export default {
         this.drawAxis()
         this.drawAdditionalTips()
       }
-      if (this.startTongji) {
+      if (this.startTongjiDrag) {
         chartCul.Draw.Fill(this.mid_ctx, (ctx) => {
           ctx.rect(0, 0, this.origin_width, this.origin_height);
         }, 'rgba(255, 255, 255, 0.5)');
@@ -499,7 +564,7 @@ export default {
     enterLabel (item) {
       this.data_source.fields = this.data_source.fields.map((field, index) => {
         if (!field.isMain) {
-          field.color = (field.name == item.symbol) ? `rgba(${this.lineColorList[index]},1)` : `rgba(${this.lineColorList[index]},0.1)`
+          field.color = (field.code == item.symbol) ? `rgba(${this.lineColorList[field.stockIndex - 1]},1)` : `rgba(${this.lineColorList[field.stockIndex - 1]},0.1)`
         }
         return field
       })
@@ -509,7 +574,7 @@ export default {
       this.data_source.fields = this.data_source.fields.map((field, index) => {
         console.log()
         if (!field.isMain) {
-          field.color = `rgba(${this.lineColorList[index]},1)`
+          field.color = `rgba(${this.lineColorList[field.stockIndex - 1]},1)`
         }
         return field
       })
@@ -566,6 +631,7 @@ export default {
 
       this.data_source.filtered_data_buckets = this.datafilterByTimeRanges(this.data_source.data,
         this.data_source.time_ranges, fields.t);
+      this.$store.commit('zhutiChart/setTimeRange', [this.data_source.time_ranges[0][0], this.data_source.time_ranges[this.data_source.time_ranges.length - 1][1]])
       var y_max = Number.MIN_VALUE;
       var y_min = Number.MAX_VALUE;
       var y_actuals = this.data_source.filtered_data_buckets.map((bucket) => {
@@ -676,13 +742,13 @@ export default {
     },
     genCsCoord () {
       var fields = this.data_source.fields[0];
-
       // filter data by viewport
       // var filter_result = chartCul.Coord.dataFilterByViewport(JSON.parse(JSON.stringify(this.data_source.data)), this.viewport, this);
       var filter_result = chartCul.Coord.dataFilterByViewport(this.data_source.data, this.viewport, this);
       this.data_source.filtered_data = filter_result.result;
       this.data_source.left_offset = filter_result.left_offset;
       this.data_source.right_offset = filter_result.right_offset;
+      this.$store.commit('zhutiChart/setTimeRange', [this.data_source.filtered_data[0][0], this.data_source.filtered_data[0][this.data_source.filtered_data.length - 1]])
       // calculate actual range of data
       var y_actual = chartCul.Coord.calcYRangeNew[fields.type](this.data_source.filtered_data, this.data_source.fields);
       var x_actual = [
@@ -694,7 +760,7 @@ export default {
       var vertical_padding = chartCul.Coord.linearPixels2Actual(this.style.grid.span.y * 2, {
         display: [this.style.padding.bottom_pos, this.style.padding.top],
         actual: y_actual
-      });
+      })
       y_actual[0] -= vertical_padding;
       y_actual[1] += vertical_padding;
 
@@ -802,7 +868,7 @@ export default {
         var c = ~~chartCul.Coord.linearActual2Display(item[fields.c], self.coord.y);
         var l = ~~chartCul.Coord.linearActual2Display(item[fields.l], self.coord.y);
         lines[c < o ? 'up' : 'down'].push([~~item.x, l, h]);
-        var w = self.viewport.width - 2 > 48 ? 48 : self.viewport.width - 2;
+        var w = self.viewport.width - 2 > 30 ? 30 : self.viewport.width - 2;
         boxes[c < o ? 'up' : 'down'].push([item.x - w / 2 + 1, o > c ? c : o, w - 2, Math.abs(o - c), o, c, ~~item.x]);
         peaks.push([~~item.x, c]);
       });
@@ -936,19 +1002,24 @@ export default {
         this.data_source.fields.forEach((item) => {
           LinearIndicatorTypeFuncs[item.type] && LinearIndicatorTypeFuncs[item.type].call(self, item);
           if (this.chartMode === 'fenshi') {
-            this.drawDivLabel(item)
+            this.fenshiLabel.push(this.drawDivLabel(this.fenshiMap, item))
           }
         });
       } else {
+        if (this.chartMode === 'lishi') {
+          this.fenshiLabel = []
+        }
         this.data_source.fields.forEach((item) => {
           CsIndicatorTypeFuncs[item.type] && CsIndicatorTypeFuncs[item.type].call(self, item);
+          if (this.chartMode === 'lishi' && item.val_index) {
+            this.fenshiLabel.push(this.drawDivLabel(this.lishiMap, item))
+          }
         });
       }
     },
-    drawDivLabel (params) {
+    drawDivLabel (dataSource, params) {
       if (params.color && this.style.linear_name_label) {
-        let labelData = this.data_source.filtered_data_buckets[0][0]
-        let d = document.createElement('span');
+        let labelData = this.data_source.filtered_data_buckets ? this.data_source.filtered_data_buckets[0][0] : this.data_source.filtered_data[0]
         let mtop = chartCul.Coord.linearActual2Display(labelData[params.val_index], this.coord.y) - 10
         let rendData
         if (params.isMain) {
@@ -964,8 +1035,8 @@ export default {
           }
         } else {
           rendData = {
-            symbol: this.fenshiData[params.val_index - 1].symbol,
-            text: this.fenshiData[params.val_index - 1].name,
+            symbol: dataSource[params.code].symbol,
+            text: dataSource[params.code].name,
             pos: {
               left: this.style.linear_label.left,
               top: mtop
@@ -975,18 +1046,14 @@ export default {
           }
         }
         rendData = this.adjustLabelPos(rendData)
-        this.fenshiLabel.push(rendData)
-        d.style = `background-color:${rendData.color};left:${rendData.pos.left}px;top:${rendData.pos.top}px;width:${rendData.width}px;`
-        d.setAttribute('class', 'fenshi-stock-label');
-        d.setAttribute('symbol', rendData.symbol);
-        d.innerHTML = `${rendData.text}`
+        return rendData
         // document.getElementById('XGBchart').appendChild(d)
       }
     },
     adjustLabelPos (rendData) {
       while (this.fenshiLabel.some(i => Math.abs(i.pos.top - rendData.pos.top) < 20)) {
         let temp = this.fenshiLabel.find(i => Math.abs(i.pos.top - rendData.pos.top) < 20)
-        if (rendData.pos.top < temp.pos.top && rendData.pos.top - 20 > 0) {
+        if (rendData.pos.top - 20 > 0) {
           rendData.pos.top -= 20
         } else {
           rendData.pos.top += 20

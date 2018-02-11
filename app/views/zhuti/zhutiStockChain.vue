@@ -69,7 +69,7 @@
             </thead>
             <tbody>
               <template v-for="(stockitem,index) in item.Stocks">
-                <stock-item @symbolOver="chainOver" @symbolLeave="chainLeave" v-if="showWeakBind || stockitem.IsImportant " :isLogin="isLogin" :scrollVal="scrollVal" :ignoreImportant="!showWeakBind" :index="index" :icon-flag="null" :item="stockitem" :sort-rule="sortRule" />
+                <stock-item @diejia="diejia" @symbolOver="chainOver" @symbolLeave="chainLeave" v-if="showWeakBind || stockitem.IsImportant " :isLogin="isLogin" :scrollVal="scrollVal" :ignoreImportant="!showWeakBind" :index="index" :icon-flag="null" :item="stockitem" :sort-rule="sortRule" />
               </template>
             </tbody>
           </table>
@@ -158,6 +158,9 @@ export default {
       if (this.isLogin) {
         window.scrollTo(0, this.getElementTop(document.getElementById(item.id)))
       }
+    },
+    diejia (item) {
+      this.$emit('diejia', item)
     }
   },
   mixins: [shareMethodMixin],

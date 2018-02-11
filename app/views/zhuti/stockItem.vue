@@ -81,7 +81,12 @@
     <td class="td-center td-flow">
       <stock-flow v-if="item.stockFlow" :flow-info="item.stockFlow"/>
     </td>
-    <td></td>
+    <td>
+      <span class="diejia" @click="Diejia(item)">
+        <i v-if="item.checked" class="iconfont red">&#xe6c5;</i>
+        <i v-if="!item.checked" class="iconfont ">&#xe6c6;</i>
+      </span>
+    </td>
   </tr>
 </template>
 
@@ -185,6 +190,9 @@ export default {
     },
     symbolLeave () {
       this.$emit('symbolLeave', this.item.Symbol)
+    },
+    Diejia (item) {
+      this.$emit('diejia', item)
     }
   }
 }
@@ -288,6 +296,12 @@ export default {
     }
     &.sort-target {
       background:rgba(230, 57, 77,0.06);
+    }
+    .diejia{
+      cursor: pointer;
+      .red{
+        color: #E6394D;
+      }
     }
     .line-clamp {
       max-height: 60px;

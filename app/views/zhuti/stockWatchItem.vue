@@ -1,7 +1,7 @@
 <template>
   <div  @mouseleave="leaveStock(item)" @mouseenter="enterStock(item)" class="stock-watch-item">
     <span class="stock-watch-item-name">{{item.name}}</span>
-    <span :class="color(item.px)">{{changeRate(item.px)}}</span>
+    <!-- <span :class="color(item.px)">{{changeRate(item.px)}}</span> -->
   </div>
 </template>
 
