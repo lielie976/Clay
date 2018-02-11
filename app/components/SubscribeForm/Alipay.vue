@@ -9,8 +9,6 @@
 </template>
 
 <script>
-// import $ from 'zepto'
-
 export default {
   props: {
     data: Object
@@ -31,20 +29,13 @@ export default {
       }).then((res) => {
         const url = this.data.order.pay_url
         const orderNo = this.data.order.order_no
-        const $ = window.$
         if (!url || !orderNo) {
           this.$store.commit('subscribe/changePayStatus', { status: 3 })
           return
         }
-        const newWindow = document.createElement('a')
-        newWindow.id = 'paying-order'
-        newWindow.href = url
-        newWindow.setAttribute('target', '_blank')
-        $('body').append(newWindow)
-        $('#paying-order').trigger('click')
-        console.log(1, $('#paying-order'))
-        $('#paying-order').remove()
-        console.log(2, $('#paying-order'))
+        const newWindow = window.open('about:blank', '_blank')
+        newWindow.document.body.innerHTML = '加载中...'
+        newWindow.location = url
         this.timer = setInterval(() => {
           this.$store.dispatch('subscribe/checkOrderStatus', { order_no: orderNo })
         }, 1000)

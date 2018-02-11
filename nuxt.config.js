@@ -26,8 +26,7 @@ module.exports = {
     ],
     script: [
       { src: '/js/qrcode.js' },
-      { src: 'https://polyfillservice.wallstreetcn.com/v2/polyfill.min.js?features=default,es6,es7,fetch&unknown=polyfill&flags=gated' },
-      { src: '//cdn.bootcss.com/zepto/1.2.0/zepto.min.js' }
+      { src: 'https://polyfillservice.wallstreetcn.com/v2/polyfill.min.js?features=default,es6,es7,fetch&unknown=polyfill&flags=gated' }
     ]
   },
   /*
