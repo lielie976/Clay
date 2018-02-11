@@ -28,6 +28,9 @@ export default {
         status,
         method
       })
+      if (method === 'alipay') {
+        window.win1 = window.open('', '_blank')
+      }
     },
     payWithBalance () {
       this.$store.dispatch('subscribe/payWithBalance')
