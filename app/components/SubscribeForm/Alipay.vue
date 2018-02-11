@@ -23,6 +23,7 @@ export default {
       })
     },
     createOrder () {
+      window.win2 = window.open('', '_blank')
       this.$store.dispatch('subscribe/createPayOrder', {
         type: 2,
         returnUrl: location.href
@@ -33,10 +34,8 @@ export default {
           this.$store.commit('subscribe/changePayStatus', { status: 3 })
           return
         }
-        const newWindow = window.open('', '_blank')
-        setTimeout(() => {
-          newWindow.location.href = url
-        }, 0)
+        window.win1.location.href = url
+        window.win2.location.href = url
         this.timer = setInterval(() => {
           this.$store.dispatch('subscribe/checkOrderStatus', { order_no: orderNo })
         }, 1000)
