@@ -9,6 +9,8 @@
 </template>
 
 <script>
+// import $ from 'zepto'
+
 export default {
   props: {
     data: Object
@@ -33,9 +35,10 @@ export default {
           this.$store.commit('subscribe/changePayStatus', { status: 3 })
           return
         }
-        // window.open(url)
-        const newWindow = window.open(url, '_blank')
-        newWindow.location = url
+        const newWindow = document.createElement('a')
+        newWindow.href = url
+        newWindow.setAttribute('target', '_blank')
+        window.$(newWindow).trigger('click')
         this.timer = setInterval(() => {
           this.$store.dispatch('subscribe/checkOrderStatus', { order_no: orderNo })
         }, 1000)

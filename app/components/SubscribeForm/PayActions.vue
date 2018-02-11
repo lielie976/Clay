@@ -2,8 +2,8 @@
   <div>
     <p class="subscribe-form-final">账户余额：{{data.balance}} ，{{priceNeededToPay > 0 ? `剩余支付 ${priceNeededToPay} 元` : '优先使用账户余额支付'}}</p>
     <div :class="['subscribe-form-actions', `${priceNeededToPay <= 0 && 'only-balance'}`]">
-      <a class="subscribe-form-actions-pay pay-action-alipay" @click="() => goingToPay(1, 'alipay')"><i class="iconfont icon-zhifubaozhifu"></i>支付宝支付</a>
-      <a class="subscribe-form-actions-pay pay-action-wechat" @click="() => goingToPay(1, 'wechat')"><i class="iconfont icon-weixinzhifu"></i>微信支付</a>
+      <a class="subscribe-form-actions-pay pay-action-alipay" @click="goingToPay(1, 'alipay')"><i class="iconfont icon-zhifubaozhifu"></i>支付宝支付</a>
+      <a class="subscribe-form-actions-pay pay-action-wechat" @click="goingToPay(1, 'wechat')"><i class="iconfont icon-weixinzhifu"></i>微信支付</a>
       <a class="subscribe-form-actions-pay pay-action-balance" @click="payWithBalance">余额支付</a>
     </div>
   </div>
