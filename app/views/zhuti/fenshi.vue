@@ -631,7 +631,7 @@ export default {
 
       this.data_source.filtered_data_buckets = this.datafilterByTimeRanges(this.data_source.data,
         this.data_source.time_ranges, fields.t);
-      this.$store.commit('zhutiChart/setTimeRange', [this.data_source.time_ranges[0][0], this.data_source.time_ranges[this.data_source.time_ranges.length - 1][1]])
+      // this.$store.commit('zhutiChart/setTimeRange', [this.data_source.time_ranges[0][0], this.data_source.time_ranges[this.data_source.time_ranges.length - 1][1]])
       var y_max = Number.MIN_VALUE;
       var y_min = Number.MAX_VALUE;
       var y_actuals = this.data_source.filtered_data_buckets.map((bucket) => {
@@ -748,7 +748,7 @@ export default {
       this.data_source.filtered_data = filter_result.result;
       this.data_source.left_offset = filter_result.left_offset;
       this.data_source.right_offset = filter_result.right_offset;
-      this.$store.commit('zhutiChart/setTimeRange', [this.data_source.filtered_data[0][0], this.data_source.filtered_data[0][this.data_source.filtered_data.length - 1]])
+      this.$store.commit('zhutiChart/setTimeRange', [this.data_source.filtered_data[0][0], this.data_source.filtered_data[this.data_source.filtered_data.length - 1][0]])
       // calculate actual range of data
       var y_actual = chartCul.Coord.calcYRangeNew[fields.type](this.data_source.filtered_data, this.data_source.fields);
       var x_actual = [

@@ -36,14 +36,29 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 import shareMethodMixin from '~/mixins/shareMethodMixin'
 export default {
   computed: {
-    events () {
-      return this.$store.state.theme.themeGoodBad
-    },
     msgNews () {
       return this.$store.state.theme.themeMsg
+    },
+    timeRange () {
+      return this.$store.state.zhutiChart.timeRange
+    }
+  },
+  mounted () {
+    this.events = this.$store.state.theme.themeGoodBad
+  },
+  watch: {
+    timeRange (v) {
+      if(v && v.length == 2){
+        this.events = this.$store.state.theme.themeGoodBad.filter(i => {
+          return i.updated_at * 1000 > v[0] && i.updated_at * 1000 < v[1]
+        })
+      } else {
+        this.events = this.$store.state.theme.themeGoodBad
+      }
     }
   },
   data () {
@@ -56,7 +71,8 @@ export default {
         text: '深度',
         target: 'sd',
         selected: false
-      }]
+      }],
+      events: null
     }
   },
   methods: {

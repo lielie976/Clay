@@ -5,9 +5,9 @@ export const state = () => ({
   diejia: {
     fenshi: [],
     lishi: [],
-    fenxi: [],
-    timeRange: []
-  }
+    fenxi: []
+  },
+  timeRange: []
 })
 
 export const mutations = {
@@ -31,7 +31,7 @@ export const mutations = {
     state.mode = mode
   },
   setTimeRange (state, data) {
-    state.timeRange = data
+    state.timeRange = [...data]
   }
 }
 
