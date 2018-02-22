@@ -3,6 +3,10 @@
     <div>
       <ul class="aside-purchased-msgs">
         <msg-item  v-for="msg in msgs" :key="msg.Id" :msg="msg" />
+        <div class="no-purchased-msgs" v-if="!msgs || !msgs.length">
+          <img src="/img/no-purchased-msg.png" alt="">
+          <p>啊哦～您还未在精选栏目留下足迹，这里的内容更值得看哦~</p>
+        </div>
       </ul>
       <div class="pagination" v-if="data.total > data.params.limit">
         <Page
@@ -46,6 +50,16 @@ export default {
 }
 .pagination {
   padding: 10px 0;
+}
+.no-purchased-msgs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 470px;
+  p {
+    margin-top: 24px;
+  }
 }
 </style>
 
