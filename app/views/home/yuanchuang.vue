@@ -48,7 +48,7 @@ export default {
     font-size: 12px;
     color: #999999;
     line-height: 12px;
-    margin: 6px 0;
+    margin: 10px 0 5px;
     .iconfont {
       font-size: 12px;
     }

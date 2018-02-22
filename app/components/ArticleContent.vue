@@ -95,7 +95,7 @@ export default {
   img {
     cursor: zoom-in;
     padding: 20px;
-    width: 100%;
+    max-width: 100%;
   }
   blockquote {
     border-left: 5px solid #eee !important;
