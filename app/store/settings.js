@@ -50,7 +50,7 @@ export const actions = {
             })
           })
           commit('saveTrending', trending)
-        })
+        }).catch(err => reject(err))
         resolve()
       }).catch(err => reject(err))
     })

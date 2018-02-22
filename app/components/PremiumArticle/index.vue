@@ -3,7 +3,8 @@
     <section class="main-container-left">
       <article-content ref="content" :html="data.Content" v-if="readable" />
       <template v-else>
-        <article-content :html="data.PreviewContent" />
+        <article-content :html="data.PreviewContent" v-if="data.PreviewContent" />
+        <pre v-else-if="data.Summary" class="normal-pre-text">{{data.Summary}}</pre>
         <div class="unlock-msg">
           <span @click="unlock">
             <img src="/img/unlock.png" alt="解锁全文">
@@ -54,7 +55,7 @@ export default {
     },
     generateCypher () {
       if (!this.$refs.content) return
-      const userId = JSON.parse(localStorage.getItem('_xgb_userinfo') || {}).Id
+      const userId = JSON.parse(localStorage.getItem('_xgb_userinfo') || '{}').Id
       if (!userId) return
       axios.get(`https://api-prod.wallstreetcn.com/apiv1/anti_fake/image/gen?app_type=xgb&&backgroud_color_rgba=230,57,77,255&front_color_rgba=242,86,78,255&dx=8&dy=16&cipher=${userId}`)
         .then((res) => {
