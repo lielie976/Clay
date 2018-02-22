@@ -39,7 +39,7 @@ export const actions = {
   getTop ({ commit }, payload) {
     return getYuanchuangTop().then((res) => {
       commit('saveTop', res)
-    })
+    }).catch(err => reject(err))
   },
   getLatest ({ commit }, payload) {
     return new Promise((resolve, reject) => {

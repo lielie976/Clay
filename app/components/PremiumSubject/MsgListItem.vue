@@ -131,15 +131,15 @@ export default {
       width: 180px;
       height: 180px;
     }
-    &::before {
-      position: absolute;
-      content: '';
-      top: 0;
-      left: 0;
-      width: 180px;
-      height: 180px;
-      background: rgba( 53, 58, 71, 0.6);
-    }
+    // &::before {
+    //   position: absolute;
+    //   content: '';
+    //   top: 0;
+    //   left: 0;
+    //   width: 180px;
+    //   height: 180px;
+    //   background: rgba( 53, 58, 71, 0.6);
+    // }
   }
   &-content {
     display: flex;
