@@ -29,7 +29,7 @@ export const getters = {
     const items = getPath(state, 'subjectItems.items')
     const index = getPath(state, 'subjectItems.index')
     if (state.selectedType === 'message') {
-      return state.message.Price - state.balance
+      return parseFloat((state.message.Price - state.balance).toFixed(2))
     } else if (state.selectedType === 'subject' && items.length) {
       if (items) {
         const price = items[index].DiscountPrice - state.balance

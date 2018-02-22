@@ -41,7 +41,7 @@
         <yuanchuang-msgs :msgs="yuanchuang.msgs" />
       </section>
       <section class="original-rank">
-        <widget-box title="24小时热文">
+        <widget-box title="24小时热文" v-if="yuanchuang.dayRank && yuanchuang.dayRank.length">
           <ul class="original-rank-list">
             <li
               :class="{
@@ -62,7 +62,7 @@
             </li>
           </ul>
         </widget-box>
-        <widget-box title="一周热文">
+        <widget-box title="一周热文" v-if="yuanchuang.weekRank && yuanchuang.weekRank.length">
           <ul class="original-rank-list">
             <li
               :class="{

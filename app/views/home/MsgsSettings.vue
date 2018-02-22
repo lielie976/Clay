@@ -100,7 +100,7 @@ export default {
 <style lang="less" scoped>
 @import "../../styles/variables.less";
 
-.home-news-titlebar {  
+.home-news-titlebar {
   &-remind-container {
     position: relative;
     float: right;
@@ -188,6 +188,7 @@ export default {
     width: 32px;
     height: 16px;
     line-height: 16px;
+    margin-left: 4px;
     border-radius: 8px;
     transition: 0.4s;
     overflow: hidden;

@@ -14,6 +14,6 @@ export const actions = {
   getBaiduTTSToken ({ commit }) {
     return getBaiduTTSToken().then((res) => {
       commit('saveBaiduTTSToken', res)
-    }).catch(err => reject(err))
+    })
   }
 }
