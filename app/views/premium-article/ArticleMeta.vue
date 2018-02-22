@@ -3,6 +3,7 @@
     <div class="inner">
       <section class="main-container">
         <section class="main-container-left">
+          <p class="article-meta-time">{{time}}</p>
           <p class="article-meta-title" ref="title">{{data.Title}}</p>
         </section>
       </section>
@@ -12,6 +13,7 @@
 
 <script>
 import shave from 'shave'
+import { formatDate } from '~/utils/helpers'
 
 export default {
   props: {
@@ -20,6 +22,11 @@ export default {
   computed: {
     isStock () {
       return this.data.Title.indexOf('脱水个股') > -1 && '脱水个股'
+    },
+    time () {
+      const time = formatDate(this.data.CreatedAt * 1000, 'MM月DD日')
+      const subjTitle = this.data.FromSubject.Title
+      return `${time} ${subjTitle}`
     }
   },
   mounted () {
@@ -37,7 +44,7 @@ export default {
   background-repeat: no-repeat;
   color: #fff;
   .inner {
-    padding: 20px 0;
+    padding: 8px 0;
     background: rgba( 53, 58, 71, 0.8);
     height: 100%;
   }
@@ -56,6 +63,14 @@ export default {
     &.is-stock {
       background-image: linear-gradient(-133deg, #5283C5 0%, #D53C51 100%);
     }
+  }
+  &-time {
+    display: inline-block;
+    background: #E6394D;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 9px;
+    font-size: 14px;
   }
   &-title {
     font-size: 28px;
