@@ -15,6 +15,8 @@ export default {
   },
   methods: {
     redo () {
+      clearInterval(this.timer)
+      window.alipayWindow = window.open('', '_blank')
       this.createOrder()
     },
     finish () {
