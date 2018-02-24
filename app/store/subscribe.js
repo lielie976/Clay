@@ -1,3 +1,4 @@
+import URI from 'urijs'
 import { getUserBalance, buyMsgByBaodi, buySubjectByBaodi, createPayOrder, checkOrderStatus } from '~/api/premium'
 import { getDuration, formatDate } from '~/utils/helpers'
 import { getPath } from 'underscore-contrib'
@@ -194,10 +195,13 @@ export const actions = {
       }
     }
   },
-  toggleModal ({ commit, dispatch, rootState }) {
+  toggleModal ({ commit, dispatch, state, rootState }) {
+    const url = URI(location.href)
     if (rootState.user.userInfo.isLogged) {
+      history.pushState({}, null, url.search({}).readable())
       commit('toggleModal')
     } else {
+      history.pushState({}, null, url.search({ openSubscribe: true }).readable())
       dispatch('login/showLogin', null, { root: true })
     }
   }

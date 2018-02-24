@@ -37,7 +37,7 @@ export default {
   width: 100%;
   min-width: 1200px;
   height: 120px;
-  background-color: @navBarColor;
+  background-color: #353a47;
   // background-size: cover;
   background-size: auto 120px;
   background-position: center center;

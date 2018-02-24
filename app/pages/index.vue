@@ -19,7 +19,7 @@
 
 <script>
 import Indexes from '~/views/home/Indexes'
-import Banner from '~/views/home/Banner'
+import Banner from '~/views/home/banner'
 import Zhutiku from '~/views/home/Zhutiku'
 import MsgsContainer from '~/views/home/MsgsContainer'
 import Yuanchuang from '~/views/home/Yuanchuang'
