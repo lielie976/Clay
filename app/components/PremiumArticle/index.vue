@@ -65,9 +65,19 @@ export default {
             ele.style.backgroundSize = '8px 23px'
           })
         })
+    },
+    prevent () {
+      if (process.env.NODE_ENV === 'development') return
+      document.addEventListener('contextmenu', e => e.preventDefault())
+      document.addEventListener('selectstart', e => e.preventDefault())
+      document.addEventListener('copy', e => e.preventDefault())
+      document.addEventListener('keydown', e => {
+        if (e.ctrlKey || e.metaKey) e.preventDefault()
+      })
     }
   },
   mounted () {
+    this.prevent()
     this.generateCypher()
     if (!this.$store.state.subscribe.balance) {
       this.$store.dispatch('subscribe/getBalance')

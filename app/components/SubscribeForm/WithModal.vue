@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import URI from 'urijs'
 import Modal from './Modal'
 import SubscribeForm from './Form'
 import Paying from './Paying'
@@ -53,6 +54,10 @@ export default {
     isOpen (status) {
       return this.subscribeStore.isModalOpen && this.subscribeStore.payStatus === status
     }
+  },
+  mounted () {
+    const { openSubscribe } = URI(location.href).search(true)
+    if (openSubscribe) this.$store.dispatch('subscribe/toggleModal')
   }
 }
 </script>
