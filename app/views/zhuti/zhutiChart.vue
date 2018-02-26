@@ -7,12 +7,15 @@
             <span @click="swapChartTab(item)" :class="{active:item.selected}" class="zhuti-chart-graph-tab-list-item" :key="item.target" v-if="item.active">{{item.text}}</span>
           </template>
         </div>
-        <div v-if="chartMode == 'fenshi'" class="zhuti-chart-graph-tab-date">
+        <!-- <div v-if="chartMode == 'fenshi'" class="zhuti-chart-graph-tab-date">
           <span class="zhuti-chart-graph-tab-date-item"><i class="iconfont">&#xe638;</i> 前一天</span>
           <span class="zhuti-chart-graph-tab-date-item">后一天 <i class="iconfont">&#xe634;</i></span>
-        </div>
+        </div> -->
         <div v-if="chartMode == 'lishi'" class="zhuti-chart-graph-tab-tongji">
           <span @click="clickTongji" class="zhuti-chart-graph-tab-tongji-item"><i v-if="!startTongjiDrag" class="iconfont">&#xe608;</i><i v-else class="iconfont">&#xe610;</i> 区间统计</span>
+        </div>
+        <div v-if="chartMode == 'fenxi'" class="zhuti-chart-graph-tab-tongji">
+          <span @click="exitTongji" class="zhuti-chart-graph-tab-tongji-item"><i class="iconfont">&#xe608;</i> 退出统计</span>
         </div>
       </div>
       <div class="zhuti-chart-graph-main">
@@ -27,20 +30,20 @@
               <!-- <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i> -->
             </template>
              <template v-if="chartMode == 'lishi'&& chartDiejia.lishi && chartDiejia.lishi.length" >
-              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in chartDiejia.lishi" />
+              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`lishi`+item.symbol" :item="item" v-for="item in chartDiejia.lishi" />
               <!-- <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i> -->
             </template>
              <template v-if="chartMode == 'fenxi' && chartDiejia.fenxi && chartDiejia.fenxi.length" >
-              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenshi`+item.symbol" :item="item" v-for="item in chartDiejia.fenxi" />
+              <stock-watch-item @enterStock="enterStock" @leaveStock="leaveStock" :key="`fenxi`+item.symbol" :item="item" v-for="item in chartDiejia.fenxi" />
               <!-- <i @click="addStock" class="choose-icon iconfont">&#xe6cc;</i> -->
             </template>
           </div>
-          <fenshi :id="id" :fenxiStock="chartDiejia.fenxi" @switch-analyse="goAnalyse" :lishiStock="chartDiejia.lishi" @drag-selected="dragSelected" :startTongjiDrag="startTongjiDrag" :hasHovered="hasHovered" :chartMode="chartMode" :fenshiData="chartDiejia.fenshi" />
+          <fenshi @clear-event-select="clearEventSelect" @select-time="eventScroll" :id="id" :fenxiStock="chartDiejia.fenxi" @switch-analyse="goAnalyse" :lishiStock="chartDiejia.lishi" @drag-selected="dragSelected" :startTongjiDrag="startTongjiDrag" :hasHovered="hasHovered" :chartMode="chartMode" :fenshiData="chartDiejia.fenshi" />
         </div>
       </div>
     </div>
     <div class="zhuti-chart-event">
-      <zhuti-event />
+      <zhuti-event ref="newsEvent"  />
     </div>
   </div>
 </template>
@@ -248,7 +251,6 @@ export default {
       this.$store.commit('zhutiChart/changeMode', item.target)
     },
     goAnalyse () {
-      debugger
       this.$store.commit('zhutiChart/changeMode', 'fenxi')
       this.tabItems[0].active = false
       this.tabItems[1].active = false
@@ -256,6 +258,12 @@ export default {
     },
     clickTongji () {
       this.startTongjiDrag = !this.startTongjiDrag
+    },
+    exitTongji () {
+      this.$store.commit('zhutiChart/changeMode', 'lishi')
+      this.tabItems[0].active = false
+      this.tabItems[1].active = true
+      this.tabItems[2].active = false
     },
     enterStock (item) {
       item.hover = true
@@ -267,6 +275,12 @@ export default {
     },
     dragSelected (time) {
       this.startTongjiDrag = false
+    },
+    eventScroll (t) {
+      this.$refs.newsEvent.scrollToEvent(t)
+    },
+    clearEventSelect () {
+      this.$refs.newsEvent.clearEventSelect()
     },
     addStock () {
       let data = [{

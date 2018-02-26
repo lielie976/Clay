@@ -3,11 +3,18 @@
     <div @click="clickDelegate" class="chart" id="XGBchart">
       <!--明天用vue吧label重写，z-index放高，添加时间，循环位置的时候用clone对象操作-->
       <!--showAnalyseShadow 时间转图上坐标点-->
+      <!-- drag的边界处理，以及后续的loadmore操作 -->
+      <!-- crosshair的下方和右边的tips样式修改以及时间的处理 -->
     </div>
     <template v-if="fenshiLabel && fenshiLabel.length">
       <span @mouseenter="enterLabel(item)" @mouseleave="leaveLabel(item)" v-for="item in fenshiLabel" class="fenshi-stock-label" :symbol="item.symbol"
       :style="{'backgroundColor': item.color,'left': item.pos.left +'px', 'top': item.pos.top +'px', width: item.width +'px'}">{{item.text}}</span>
-     </template>
+    </template>
+    <template v-if="(chartMode == 'lishi' || chartMode == 'fenxi') && timeDotMap">
+      <template v-for="item in data_source.filtered_data" >
+        <span @mouseleave="clearDotSelected" @mouseenter="dotSelected(timeDotMap[item[0]])" :class="dotColor(timeDotMap[item[0]])" :style="{left:(item.x - dotWidth/2) + 'px',top:dotPos(item) + 'px',width:dotWidth + 'px',height:dotWidth + 'px','border-radius':dotWidth + 'px'}" v-if="timeDotMap[item[0]]" class="chart-inner-item"></span>
+      </template>
+    </template>
   </div>
 </template>
 <script>
@@ -27,7 +34,14 @@ export default {
       this.changingData = true
       if (this.chartMode === 'fenshi') {
         this.$store.dispatch('stockTrend/getTrend', this.fenshiData.map(i => i.symbol).join(',')).then(res => {
-          this.trend = JSON.parse(JSON.stringify(this.$store.state.stockTrend.trend)).map(i => {
+          let source = JSON.parse(JSON.stringify(this.$store.state.stockTrend.trend))
+          if (source.length > 121) {
+            console.log(source[121])
+            let halfLast = JSON.parse(JSON.stringify(source[120]))
+            halfLast[0] = new Date().setHours(13, 0, 0, 0) / 1000
+            source.splice(121, 0, halfLast)
+          }
+          this.trend = source.map(i => {
             i[0] *= 1000
             return i
           })
@@ -64,6 +78,7 @@ export default {
         })
       } else if (mode === 'lishi') {
         this.removeCanvas(document.getElementById('XGBchart'))
+        this.analyseTime = []
         let pre = this.$store.state.zhutiTrend.preValue
         this.kline = JSON.parse(JSON.stringify(this.$store.state.zhutiTrend.kline)).map(i => {
           i = i.map((item, index) => {
@@ -177,6 +192,34 @@ export default {
       }
       console.log(this.data_source.fields)
       this.rerender(true)
+    },
+    timeRange (v) {
+      if (v && v.length == 2) {
+        this.newsEvents = this.$store.state.theme.themeGoodBad.filter(i => {
+          return i.updated_at * 1000 > v[0] && i.updated_at * 1000 < v[1]
+        })
+        let timeDotMap = {}
+        this.newsEvents.map(i => {
+          // let t = format(i.updated_at * 1000, 'YYYYMMDD')
+          let t = new Date(i.updated_at * 1000).setHours(0, 0, 0, 0)
+          if (!timeDotMap[t]) {
+            timeDotMap[t] = {
+              time: t,
+              impact: i.impact
+            }
+          } else {
+            if (timeDotMap[t].impact * i.impact <= 0) {
+              timeDotMap[t].impact = 0
+            }
+          }
+        })
+        if (timeDotMap == {}) {
+          timeDotMap = null
+        }
+        this.timeDotMap = timeDotMap
+      } else {
+        this.newsEvents = this.$store.state.theme.themeGoodBad
+      }
     }
   },
   beforeDestroy () {
@@ -204,6 +247,12 @@ export default {
         r[l.symbol] = l
       })
       return r
+    },
+    timeRange () {
+      return this.$store.state.zhutiChart.timeRange
+    },
+    dotWidth() {
+      return this.viewport.width > 16 ? 16 : this.viewport.width
     }
   },
   mounted () {
@@ -246,7 +295,9 @@ export default {
       fenshiLabel: [],
       dragTime: [],
       analyseTime: [],
-      hsmap: {}
+      hsmap: {},
+      newsEvents: null,
+      timeDotMap: null
       // startDate: new Date().setHours(9, 30, 0, 0),
       // endDate: new Date().setHours(15, 30, 0, 0)
     }
@@ -261,15 +312,16 @@ export default {
       zhutiTrend.map(z => {
         zhutiMap[z[0] * 1000] = z[1] / zhutiPre - 1
       })
-
+      let lastRate = 0 // 用来记录之前的数据 ，防止数据有漏的
       this.trendRate = this.trend.map(i => {
         let timeTrend = i.map((ii, iid) => {
           return iid == 0 ? ii : (ii / init[iid - 1]) - 1
         })
         if (zhutiMap[timeTrend[0]]) {
           timeTrend.push(zhutiMap[timeTrend[0]])
+          lastRate = zhutiMap[timeTrend[0]]
         } else {
-          timeTrend.push(0)
+          timeTrend.push(lastRate)
         }
         return timeTrend
       })
@@ -283,7 +335,7 @@ export default {
         data_source: {
           data: this.trendRate,
           fields: fields,
-          time_ranges: [[this.selectedDate.setHours(9, 30, 0, 0), this.selectedDate.setHours(11, 30, 0, 0)], [this.selectedDate.setHours(13, 1, 0, 0), this.selectedDate.setHours(15, 0, 0, 0)]]
+          time_ranges: [[this.selectedDate.setHours(9, 30, 0, 0), this.selectedDate.setHours(11, 30, 0, 0)], [this.selectedDate.setHours(13, 0, 0, 0), this.selectedDate.setHours(15, 0, 0, 0)]]
         },
         price_precision: 4,
         style: {
@@ -352,7 +404,6 @@ export default {
       [this.canvas_el, this.ia_canvas_el, this.mid_canvas_el] = this.initCanvas(document.getElementById('XGBchart'), pattern)
       this.genCtx()
       this.Prepare(pattern)
-
       this.genStyle()
       this.rerender(true)
       this.events = genDefaultEvents.call(this)
@@ -386,6 +437,9 @@ export default {
         tempFields.push({name: map[stock.symbol].name, code: stock.symbol, type: 'line', t: 0, val_index: mainStockIndex, color: `rgba(${this.lineColorList[stockIndex]},1)`, line_width: 1, stockIndex: stockIndex + 1})
       })
       let tempwidth = Math.floor((this.origin_width - this.style.padding.left - this.style.padding.right) / dt.length)
+      if (tempwidth < 6) {
+        tempwidth = 6
+      }
       let pattern = {
         data_source: {
           data: dt,
@@ -501,9 +555,15 @@ export default {
     },
     Prepare (pattern) {
       this.defaults = this.DEFAULTS();
-      ['viewport', 'price_precision', 'style', 'data_style', 'data_source'].forEach((key) => {
-        this[key] = pattern[key] || this.defaults[key];
-      })
+      if (this.viewport && this.viewport.offset && this.viewport.width) {
+        ['price_precision', 'style', 'data_style', 'data_source'].forEach((key) => {
+          this[key] = pattern[key] || this.defaults[key];
+        })
+      } else {
+        ['viewport', 'price_precision', 'style', 'data_style', 'data_source'].forEach((key) => {
+          this[key] = pattern[key] || this.defaults[key];
+        })
+      }
     },
     genStyle () {
       this.ctx.font = this.style.font.size + 'px ' + this.style.font.family;
@@ -840,7 +900,7 @@ export default {
         // vertical grid line drawing for candlestick chart
         for (var l = this.data_source.data.length - 1; l >= 0; l -= ~~(this.style.grid.span.x / this.viewport.width)) {
           if (this.data_source.data[l].x > this.style.padding.left &&
-              this.data_source.data[l].x < this.style.padding.right_pos) {
+              this.data_source.data[l].x <= this.style.padding.right_pos) {
             vertical_lines.push({display: ~~this.data_source.data[l].x + 0.5, actual: this.data_source.data[l][self.data_source.fields[0].t]});
           }
         }
@@ -1273,6 +1333,32 @@ export default {
           ctx.fillText(min_val, self.style.padding.right_pos + self.style.axis.pointer_length + self.style.axis.label_pos.y_axis.x, min_y + 5);
         }, self.style.tip.low_color);
       }
+    },
+    dotPos(item) {
+      var fields = this.data_source.fields[0];
+      return ~~chartCul.Coord.linearActual2Display(item[fields.h], this.coord.y) - 40
+    },
+    dotColor(item) {
+      switch (item.impact) {
+        case -2:
+          return 'superbad'
+        case -1:
+          return 'bad'
+        case 0:
+          return 'normal'
+        case 1:
+          return 'good'
+        case 2:
+          return 'supergood'
+        default:
+          break;
+      }
+    },
+    dotSelected(t) {
+      this.$emit('select-time', t.time)
+    },
+    clearDotSelected() {
+      this.$emit('clear-event-select')
     }
   }
 }
@@ -1286,6 +1372,89 @@ export default {
     position: absolute;
     display: inline-block;
     text-align: center;
+  }
+  .chart-inner-item{
+    position: absolute;
+    display: block;
+    cursor: pointer;
+    overflow: visible;
+    background: #fff;
+    z-index: 10;
+    &.good{
+      border: 2px solid #E6394D;
+      &:hover{
+        &:before{
+          content:'';
+          position: absolute;
+          left: -6px;
+          right: -6px;
+          top: -6px;
+          bottom:-6px;
+          border-radius:40px;
+          border: 5px solid rgba(230, 57, 77, 0.5)
+        }
+      }
+    }
+    &.normal{
+      border: 2px solid #979797;
+      &:hover{
+        &:before{
+          content:'';
+          position: absolute;
+          left: -6px;
+          right: -6px;
+          top: -6px;
+          bottom:-6px;
+          border-radius:40px;
+          border: 5px solid rgba(151, 151, 151, 0.5)
+        }
+      }
+    }
+    &.bad{
+      border: 2px solid #18A66B;
+      &:hover{
+        &:before{
+          content:'';
+          position: absolute;
+          left: -6px;
+          right: -6px;
+          top: -6px;
+          bottom:-6px;
+          border-radius:40px;
+          border: 5px solid rgba(24, 166, 107, 0.5)
+        }
+      }
+    }
+    &.supergood{
+      border: 2px solid #E6394D;
+      &:hover{
+        &:before{
+          content:'';
+          position: absolute;
+          left: -6px;
+          right: -6px;
+          top: -6px;
+          bottom:-6px;
+          border-radius:40px;
+          border: 5px solid rgba(230, 57, 77, 0.5)
+        }
+      }
+    }
+    &.superbad{
+      border: 2px solid #18A66B;
+      &:hover{
+        &:before{
+          content:'';
+          position: absolute;
+          left: -6px;
+          right: -6px;
+          top: -6px;
+          bottom:-6px;
+          border-radius:40px;
+          border: 5px solid rgba(24, 166, 107, 0.5)
+        }
+      }
+    }
   }
 }
 .chart{

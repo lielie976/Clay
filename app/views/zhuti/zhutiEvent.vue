@@ -5,8 +5,8 @@
         <span @click="swapEventTab(item)" :class="{active:item.selected}" class="zhuti-event-tab-list-item">{{item.text}}</span>
       </template>
     </div>
-    <div class="zhuti-event-list" v-if="tabItems[0].selected && events && events.length">
-      <div :key="item.id" class="zhuti-event-item" v-for="item in events">
+    <div ref="eventContainer" class="zhuti-event-list" v-if="tabItems[0].selected && events && events.length">
+      <div :id="`event`+ item.id" :class="{selected:item.selected}" :key="item.id" class="zhuti-event-item" v-for="item in events">
         <div class="event-timeline">
         </div>
         <div class="event-main">
@@ -113,6 +113,29 @@ export default {
         i.selected = (i.target === item.target)
         return i
       })
+    },
+    scrollToEvent(t){
+      let scrollTarget = null
+      this.events = this.events.map(i => {
+        if(new Date(i.updated_at * 1000).setHours(0, 0, 0, 0) == t){
+          i.selected = true
+          if(!scrollTarget) {
+            scrollTarget = i.id
+          }
+        } else {
+          i.selected = false
+        }
+        return i
+      })
+      if (this.tabItems[0].selected && this.events && this.events.length) {
+        this.$refs.eventContainer.scrollTo(0, document.getElementById(`event` + scrollTarget).offsetTop)
+      }
+    },
+    clearEventSelect () {
+      this.events = this.events.map(i => {
+        i.selected = false
+        return i
+      })
     }
   },
   mixins: [shareMethodMixin]
@@ -166,7 +189,9 @@ export default {
     .zhuti-event-item{
       display: flex;
       position: relative;
-
+      &.selected{
+        background: #999;
+      }
       .event-timeline{
         width: 16px;
         flex: 0 1 16px;

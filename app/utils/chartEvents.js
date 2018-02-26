@@ -290,12 +290,33 @@ var dragMove = function(e){
 
   var offset = this.state.events.drag_x_px - this.state.events.mouse_x_px;
   var new_offset = this.state.events.drag_offset + offset;
-  if ((offset > 0 && new_offset < this.style.padding.right_pos - this.style.padding.left - this.viewport.width * 5) ||
-      (offset < 0 && new_offset > this.viewport.width * -(this.data_source.data.length - 5))){
-    this.viewport.offset = new_offset;
+  console.log(offset, new_offset)
+  // 往左拖offset是正的
+  // 贴右边时 new_offset 为0
+  // 贴左边时 new_offset为 this.style.padding.right_pos - this.style.padding.left -  this.viewport.width * (this.data_source.data.length
+  // if ((offset > 0 && new_offset < this.style.padding.right_pos - this.style.padding.left - this.viewport.width * 5) ||
+  //     (offset < 0 && new_offset > this.viewport.width * -(this.data_source.data.length - 5))){
+  //   this.viewport.offset = new_offset;
+  //   this.rerender();
+  // }
+  if (offset < 0){
+    if(new_offset > this.style.padding.right_pos - this.style.padding.left -  this.viewport.width * this.data_source.data.length){
+      this.viewport.offset = new_offset;
+    }else {
+      new_offset = this.style.padding.right_pos - this.style.padding.left -  this.viewport.width * this.data_source.data.length
+    }
     this.rerender();
   }
-};
+  if (offset > 0){
+    if(new_offset < this.viewport.width){
+      this.viewport.offset = new_offset;
+
+    }else {
+      this.viewport.offset = this.viewport.width;
+    }
+      this.rerender();
+    }
+  };
 
 var dragEnd = function(e){
   this.state.events.drag_offset = null;
@@ -344,7 +365,7 @@ var zoom = function(e){
         if (this.viewport.width < 64)
           do_zooming = true;
       } else {
-        if (this.viewport.width > 4)
+        if (this.viewport.width > 6)
           do_zooming = true;
       }
 
@@ -365,7 +386,7 @@ var zoom = function(e){
         this.rerender();
       }
     } else {
-      if (this.viewport.width > 4){
+      if (this.viewport.width > 6){
         this.viewport.width -= this.style.wheel_zoom_step;
         this.viewport.offset += offset_index * this.style.wheel_zoom_step;
         this.rerender();
@@ -411,7 +432,7 @@ var selected_cs_point = function(){
 
 var cleanDragRect = function(e, name, force){
   console.log(e.toElement.className)
-  if(e.toElement.className == 'drag-analyse-btn' || e.toElement.className == 'drag-zoom-btn' || e.toElement.className == 'drag-choice-div') {return}
+  if(e.toElement.className == 'chart-inner-item' || e.toElement.className == 'drag-analyse-btn' || e.toElement.className == 'drag-zoom-btn' || e.toElement.className == 'drag-choice-div') {return}
   this.removeDragEndChoice()
   this.ia_ctx.clearRect(0, 0, this.origin_width, this.origin_height);
 
