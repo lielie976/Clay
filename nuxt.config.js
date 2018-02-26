@@ -65,7 +65,8 @@ module.exports = {
   plugins: [
     '~/plugins/filters',
     '~/plugins/styles',
-    { src: '~/plugins/lightgallerty', ssr: false }
+    { src: '~/plugins/lightgallerty', ssr: false },
+    { src: '~/plugins/taotie' }
   ],
   env: {
     ENV: process.env.ENV
