@@ -1,5 +1,5 @@
 <template>
-  <div class="stocklist-container">
+  <div v-if="diejiaMode != 'fenxi'" class="stocklist-container">
     <div class="stocklist-tabs">
       <div v-for="item in tabItems" class="stocklist-tabs-item">
         <span v-if="item.visible" @click="swapTab(item)" class="stocklist-tabs-item-text">{{item.label}}</span>
@@ -36,6 +36,7 @@
       </div>
     </div>
   </div>
+
 </template>
 <script>
 /* eslint-disable no-debugger */

@@ -59,10 +59,12 @@ export default {
         this.events = genDefaultEvents.call(this)
         bindEvents.call(this)
         this.genCtx()
+        this.genStyle()
       } else {
         this.events = genDefaultEvents.call(this)
         bindEvents.call(this)
         this.genCtx()
+        this.genStyle()
       }
       this.rerender(true)
     },

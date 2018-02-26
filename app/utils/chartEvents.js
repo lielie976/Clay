@@ -174,7 +174,7 @@ var crosshair = function(e, name, force){
   // find the horizontal label width
   var label_horiz_width = 0;
   Util.Draw.Text(self.ia_ctx, function(ctx){
-    label_horiz_width = ctx.measureText(Util.Coord.getDateStr(self.state.events.mouse_x_val)).width +
+    label_horiz_width = ctx.measureText(Util.Coord.getDateStr(self.state.events.mouse_x_val, !!self.data_source.time_ranges, !self.data_source.time_ranges)).width +
       self.style.crosshair.label_horiz_padding * 2;
   });
 
@@ -194,25 +194,40 @@ var crosshair = function(e, name, force){
   Util.Draw.Text(self.ia_ctx, function(ctx){
     var block_left = self.style.crosshair.pos_offset.horizontal.x + (vertical_pos - label_horiz_width / 2);
     var block_width = self.style.crosshair.pos_offset.horizontal.width || label_horiz_width;
-    ctx.fillText(Util.Coord.getDateStr(self.state.events.mouse_x_val),
+    ctx.fillText(Util.Coord.getDateStr(self.state.events.mouse_x_val, !!self.data_source.time_ranges, !self.data_source.time_ranges),
                   block_left < 0 ? self.style.crosshair.label_horiz_padding : (block_left + block_width > self.origin_width ? self.origin_width - block_width : block_left) + self.style.crosshair.label_horiz_padding,
                   self.style.crosshair.pos_offset.horizontal.y + (self.style.axis.x_axis_pos > 0 ?
                     self.style.padding.bottom_pos + self.style.font.size + 2
                   :
                     self.style.padding.top - self.style.crosshair.label_height + self.style.font.size + 2));
   }, self.style.crosshair.label_color);
+  // Util.Draw.Text(self.ia_ctx, function(ctx){
+  //   var block_left = self.style.crosshair.pos_offset.horizontal.x + (vertical_pos - label_horiz_width / 2);
+  //   var block_width = self.style.crosshair.pos_offset.horizontal.width || label_horiz_width;
+  //   ctx.fillText(Util.Coord.getDateStr(self.state.events.mouse_x_val),
+  //                 block_left < 0 ? self.style.crosshair.label_horiz_padding : (block_left + block_width > self.origin_width ? self.origin_width - block_width : block_left) + self.style.crosshair.label_horiz_padding,
+  //                 self.style.crosshair.pos_offset.horizontal.y + (self.style.axis.x_axis_pos > 0 ?
+  //                   self.style.padding.bottom_pos + self.style.font.size + 2
+  //                 :
+  //                   self.style.padding.top - self.style.crosshair.label_height + self.style.font.size + 2));
+  // }, self.style.crosshair.label_color);
 
   // draw y label blocks
   Util.Draw.Fill(self.ia_ctx, function(ctx){
     if (!force)
+    console.log(self.style.crosshair.pos_offset.vertical.x + (self.style.axis.y_axis_pos > 0 ? self.style.padding.right_pos : 0),
+    self.style.crosshair.pos_offset.vertical.y + (horiz_pos - self.style.crosshair.label_height / 2),
+    self.style.crosshair.pos_offset.vertical.width || (self.style.axis.y_axis_pos > 0 ? self.style.padding.right : ctx.measureText(actual_val).width),
+    self.style.crosshair.label_height)
       ctx.rect(self.style.crosshair.pos_offset.vertical.x + (self.style.axis.y_axis_pos > 0 ? self.style.padding.right_pos : 0),
               self.style.crosshair.pos_offset.vertical.y + (horiz_pos - self.style.crosshair.label_height / 2),
-              self.style.crosshair.pos_offset.vertical.width || (self.style.axis.y_axis_pos > 0 ? self.style.padding.right : ctx.measureText(actual_val).width + self.style.axis.label_pos.y_axis.x * 2),
+              self.style.crosshair.pos_offset.vertical.width || (self.style.axis.y_axis_pos > 0 ? self.style.padding.right : ctx.measureText(actual_val).width),
               self.style.crosshair.label_height);
 
   }, self.style.crosshair.label_bg);
 
   // draw y label text
+  let color = actual_val>=0?self.style.tip.high_color:self.style.tip.low_color
   Util.Draw.Text(self.ia_ctx, function(ctx){
     if (!force)
       var y_val = actual_val
@@ -223,8 +238,7 @@ var crosshair = function(e, name, force){
                   ((self.style.axis.y_axis_pos > 0 ? self.style.padding.right_pos : 0) +
                     self.style.axis.label_pos.y_axis.x + self.style.axis.pointer_length),
                   self.style.crosshair.pos_offset.vertical.y + (horiz_pos - self.style.crosshair.label_height / 2 + self.style.font.size + 2));
-  }, self.style.crosshair.label_color);
-
+  }, color);
 };
 
 var dragStart = function(e){
@@ -281,7 +295,7 @@ var dragStart = function(e){
         }
       }
     }
-    console.log(self.state.events.dragstart_x_val)
+    // console.log(self.state.events.dragstart_x_val)
   }
 };
 
@@ -290,7 +304,7 @@ var dragMove = function(e){
 
   var offset = this.state.events.drag_x_px - this.state.events.mouse_x_px;
   var new_offset = this.state.events.drag_offset + offset;
-  console.log(offset, new_offset)
+  // console.log(offset, new_offset)
   // 往左拖offset是正的
   // 贴右边时 new_offset 为0
   // 贴左边时 new_offset为 this.style.padding.right_pos - this.style.padding.left -  this.viewport.width * (this.data_source.data.length

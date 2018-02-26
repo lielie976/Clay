@@ -261,7 +261,7 @@ export default {
     },
     exitTongji () {
       this.$store.commit('zhutiChart/changeMode', 'lishi')
-      this.tabItems[0].active = false
+      this.tabItems[0].active = true
       this.tabItems[1].active = true
       this.tabItems[2].active = false
     },
@@ -275,6 +275,8 @@ export default {
     },
     dragSelected (time) {
       this.startTongjiDrag = false
+      if (!time || time.length < 2) return
+      this.$store.dispatch('zhutiTongji/getTongji', {plate_id: this.id, start_date: time[0], end_date: time[1]})
     },
     eventScroll (t) {
       this.$refs.newsEvent.scrollToEvent(t)

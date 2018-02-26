@@ -230,3 +230,15 @@ export const fetchHideEvent = ({plateId, from_time, end_time}) => {
     }
   })
 }
+
+export const fetchTongji = ({plate_id, start_date, end_date}) => {
+  return wows({
+    method: 'GET',
+    url: `/v3/aioria/plates/stocks/statistics`,
+    params: {
+      plate_id,
+      start_date,
+      end_date
+    }
+  })
+}
